@@ -17,7 +17,7 @@ export default class NavigationBar extends Component {
                         <FormControl type="text" placeholder="Search" className="mr-sm-3" />
                         {/* <Button variant="outline-info" style={{marginRight:'10px'}}>Search</Button> */}
                         <Button variant="outline-info" style={{ marginRight: '10px' }} href = "/login" >Login</Button>
-                        <Button variant="outline-info" style={{marginRight:'10px'}} to = "/register" >Sign up</Button>
+                        <Button variant="outline-info" style={{marginRight:'10px'}} href = "/register" >Sign up</Button>
                     </Form>
                 </Navbar>
             </>
