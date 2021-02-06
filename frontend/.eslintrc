@@ -1,0 +1,12 @@
+{
+    "extends": [
+        "wesbos"
+    ],
+    "rules": {
+        "prettier/prettier" : [
+            {
+                "tabWidth":4
+            }
+        ]
+    }
+}
