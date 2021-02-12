@@ -21,6 +21,12 @@ function Cards() {
               label='Limited Liability'
               path='/services'
             />
+            <CardItem
+              src='images/img-2.jpg'
+              text='The enhanced cleaning policy requires hosts to clean & disinfect their cars so you can feel good behind the wheel.'
+              label='Clean & disinfected cars'
+              path='/services'
+            />
           </ul>
           <ul className='cards__items'>
             <CardItem
