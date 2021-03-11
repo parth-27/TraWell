@@ -1,5 +1,6 @@
 @media (min-width: 1000px) {
-  #timeline .demo-card:nth-child(even) .head::after, #timeline .demo-card:nth-child(odd) .head::after {
+  #timeline .demo-card:nth-child(even) .head::after,
+  #timeline .demo-card:nth-child(odd) .head::after {
     position: absolute;
     content: "";
     width: 0;
@@ -8,7 +9,8 @@
     border-bottom: 15px solid transparent;
   }
 
-  #timeline .demo-card:nth-child(even) .head::before, #timeline .demo-card:nth-child(odd) .head::before {
+  #timeline .demo-card:nth-child(even) .head::before,
+  #timeline .demo-card:nth-child(odd) .head::before {
     position: absolute;
     content: "";
     width: 9px;
@@ -165,7 +167,8 @@ body {
   font-size: 35px;
   line-height: 35px;
   font-weight: 600;
-  background: rgba(0, 0, 0, 0.17);
+  background-color: #151515;
+  /* background: rgba(0, 0, 0, 0.17); */
 }
 #timeline .demo-card .head h2 {
   text-transform: uppercase;
@@ -213,32 +216,32 @@ body {
   width: 100%;
 }
 #timeline .demo-card--step1 {
-  background-color: #46b8e9;
+  background-color: #453c3b;
 }
 #timeline .demo-card--step1 .head::after {
-  border-color: #46b8e9;
+  border-color: #453c3b;
 }
 #timeline .demo-card--step2 {
-  background-color: #3ee9d1;
+  background-color: #453c3b;
 }
 #timeline .demo-card--step2 .head::after {
-  border-color: #3ee9d1;
+  border-color: #453c3b;
 }
 #timeline .demo-card--step3 {
-  background-color: #ce43eb;
+  background-color: #453c3b;
 }
 #timeline .demo-card--step3 .head::after {
-  border-color: #ce43eb;
+  border-color: #453c3b;
 }
 #timeline .demo-card--step4 {
-  background-color: #4d92eb;
+  background-color: #453c3b;
 }
 #timeline .demo-card--step4 .head::after {
-  border-color: #4d92eb;
+  border-color: #453c3b;
 }
 #timeline .demo-card--step5 {
-  background-color: #46b8e9;
+  background-color: #453c3b;
 }
 #timeline .demo-card--step5 .head::after {
-  border-color: #46b8e9;
+  border-color: #453c3b;
 }
