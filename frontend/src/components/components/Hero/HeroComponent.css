@@ -6,6 +6,16 @@ video {
   z-index: -1;
 }
 
+.nbr{
+  font-size: 7.30vw;
+  color: #fff;
+}
+
+.ltr{
+  font-size: 7.30vw;
+  color: #fff;
+}
+
 .hero-container {
   /* background: url('/images/img-home.jpg') center center/cover no-repeat; */
   height: 100vh;
