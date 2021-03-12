@@ -23,7 +23,7 @@ function HeroComponent() {
           buttonSize='btn--large'
           onClick={console.log('hey')}
         >
-          LAND YOUR CAR <i className='far fa-play-circle' />
+          LEND YOUR CAR <i className='far fa-play-circle' />
         </Button>
       </div>
     </div>
