@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 
 import Home from "./components/pages/Home";
 import Navbar from "./components/components/Navbar/Navbar";
-import { Authenticate } from "./components/Auth/index";
+import { Authenticate } from "./components/pages/Auth/index.js";
 
 function App() {
 	return (

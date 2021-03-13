@@ -6,7 +6,7 @@ import './Navbar.css';
 function Navbar() {
     const [click, setClick] = useState(false);
     const [button, setButton] = useState(true);
-
+    const [navbar, setNavbar] = useState(false);
     const handleClick = () => setClick(!click);
     const closeMobileMenu = () => setClick(false);
 
@@ -24,9 +24,19 @@ function Navbar() {
 
     window.addEventListener('resize', showButton);
 
+    const changeBackground = () =>{
+        if(window.scrollY >= 80){
+            setNavbar(true);
+        }else{
+            setNavbar(false);
+        }
+    }
+
+    window.addEventListener('scroll', changeBackground);    
+
     return (
         <>
-            <nav className='navbar'>
+            <nav className='navbar active'>
                 <div className='navbar-container'>
                     <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
                         TraWell
@@ -56,7 +66,7 @@ function Navbar() {
                                 className='nav-links'
                                 onClick={closeMobileMenu}
                             >
-                                Rent Car
+                                Rent a Car
                             </Link>
                         </li>
                         <li className='nav-item'>
@@ -79,7 +89,7 @@ function Navbar() {
                             </Link>
                         </li>
                     </ul>
-                    {button && <Button buttonStyle='btn--outline'>LOG IN</Button>}
+                    {button && <Button buttonStyle='btn--outline' style={{marginRight:'2.5vw'}}>LOG IN</Button>}
                 </div>
             </nav>
         </>
