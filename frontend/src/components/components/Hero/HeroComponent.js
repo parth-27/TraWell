@@ -19,7 +19,7 @@ class HeroComponent extends React.Component {
 		var $data = 0;
 		var index;
 		var change;
-		var letters = ["H", "I", "T", " ", "T", "H", "E", " ", "R", "O", "A", "D", " ", "C", "O", "N", "F", "I", "D", "E", "N", "T", "L", "Y"];
+		var letters = ["W", "H", "A", "T", " ", "A", "R", "E", " ", "Y", "O", "U", " ", "W", "A", "I", "T", "I", "N", "G", " ", "F", "O", "R", "?"];
 
 		$randomnbr.each(function () {
 
@@ -116,8 +116,12 @@ class HeroComponent extends React.Component {
 	render() {
 		return (
 			<div className='hero-container'>
-				<video src='/videos/ff.mp4' autoPlay loop muted />
+				<video src='/videos/ff2.mp4' autoPlay loop muted />
 				{/* <h1>HIT THE ROAD CONFIDENTLY</h1> */}
+				<h1 class="typewrite" data-period="2000" data-type='[ "HIT THE ROAD CONFIDENTLY" ]'>
+					<span class="wrap"></span>
+				</h1>
+
 				<div className="content">
 					<div className="random">
 						<span className="nbr ltr">0</span>
@@ -144,11 +148,9 @@ class HeroComponent extends React.Component {
 						<span className="nbr ltr">0</span>
 						<span className="nbr ltr">0</span>
 						<span className="nbr ltr">0</span>
+						<span className="nbr ltr">0</span>
 					</div>
 				</div>
-				<p class="typewrite" data-period="2000" data-type='[ "What are you waiting for?" ]'>
-					<span class="wrap"></span>
-				</p>
 				{/* <p>What are you waiting for?</p> */}
 				<div className='hero-btns'>
 					<Button

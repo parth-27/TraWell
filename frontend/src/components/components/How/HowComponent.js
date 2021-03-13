@@ -1,12 +1,12 @@
 import React from 'react';
-import './HowComponent.css'
+import './HowComponent.css';
 
 function HowComponent() {
     return (
         <div className="timeline" id="timeline">
             <h1> How it Works </h1>
             <div className="demo-card-wrapper">
-                <div className="demo-card demo-card--step1">
+                <div className="demo-card demo-card--step1" data-aos="fade-right" data-aos-duration="2400ms">
                     <div className="head">
                         <div className="number-box">
                             <span>01</span>
@@ -19,7 +19,7 @@ function HowComponent() {
                     </div>
                 </div>
 
-                <div className="demo-card demo-card--step2">
+                <div className="demo-card demo-card--step2" data-aos="fade-left" data-aos-duration="2400ms">
                     <div className="head">
                         <div className="number-box">
                             <span>02</span>
@@ -32,7 +32,7 @@ function HowComponent() {
                     </div>
                 </div>
 
-                <div className="demo-card demo-card--step3">
+                <div className="demo-card demo-card--step3" data-aos="fade-right" data-aos-duration="2400ms">
                     <div className="head">
                         <div className="number-box">
                             <span>03</span>
@@ -46,7 +46,7 @@ function HowComponent() {
                     </div>
                 </div>
 
-                <div className="demo-card demo-card--step4">
+                <div className="demo-card demo-card--step4" data-aos="fade-left" data-aos-duration="2400ms">
                     <div className="head">
                         <div className="number-box">
                             <span>04</span>
@@ -59,12 +59,12 @@ function HowComponent() {
                     </div>
                 </div>
 
-                <div className="demo-card demo-card--step5">
+                <div className="demo-card demo-card--step5" data-aos="fade-right" data-aos-duration="2400ms">
                     <div className="head">
                         <div className="number-box">
                             <span>05</span>
                         </div>
-                        <h2>  Return</h2>
+                        <h2>Return</h2>
                     </div>
                     <div className="body">
                         <p>Return Back the car at the Lander's preferred location.</p>
