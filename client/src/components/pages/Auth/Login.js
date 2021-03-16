@@ -9,6 +9,7 @@ import {
     SubmitButton,
 } from "./common";
 import { AccountContext } from "./context";
+import axios from 'axios';
 
 export function Login(props) {
     const { switchToSignup } = useContext(AccountContext);
@@ -52,7 +53,7 @@ export function Login(props) {
             password: userInfo.password,
         };
         axios.post("http://localhost:3000/login", payload).then((res) => {
-            
+            console.log(res);
         });
     }
 
