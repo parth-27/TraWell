@@ -104,102 +104,105 @@ const InnerContainer = styled.div`
 `;
 
 const backdropVariants = {
-    expanded: {
-        width: "133%",
-        height: "1150px",
-        borderRadius: "20%",
-        transform: "rotate(-5deg)",
-        top:0,
-        left:0,
-    },
-    collapsed: {
-        width: "50%",
-        height: "240px",
-        borderRadius: "50%",
-        transform: "rotate(-20deg)",
-        top:10,
-        left:10,
-    },
+	expanded: {
+		width: "133%",
+		height: "1150px",
+		borderRadius: "20%",
+		transform: "rotate(-5deg)",
+		top: 0,
+		left: 0,
+	},
+	collapsed: {
+		width: "50%",
+		height: "240px",
+		borderRadius: "50%",
+		transform: "rotate(-20deg)",
+		top: 10,
+		left: 10,
+	},
 };
 
 const expandingTransition = {
-    type: "spring",
-    duration: 2.5,
-    stiffness: 40,
+	type: "spring",
+	duration: 2.5,
+	stiffness: 40,
 };
 
-export function Authenticate(props) {
-    const { initialActive } = props;
-    const [isExpanded, setExpanded] = useState(false);
-    const [active, setActive] = useState(
-        initialActive ? initialActive : "signin"
-    );
+export const Authenticate = (props) => {
+	console.log(props.signup);
+	const initialActive = props.signup;
+	const [isExpanded, setExpanded] = useState(false);
+	const [active, setActive] = useState(
+		initialActive ? "signup" : "signin"
+	);
 
-    const playExpandingEffect = () => {
-        setExpanded(true);
-        /*
-          Collapse it after short amount of time
-          To Finish transition 
-        */
-        setTimeout(() => {
-            setExpanded(false);
-        }, expandingTransition.duration * 1000 - 1500);
-    };
+	const playExpandingEffect = () => {
+		setExpanded(true);
+		/*
+		  Collapse it after short amount of time
+		  To Finish transition 
+		*/
+		setTimeout(() => {
+			setExpanded(false);
+		}, expandingTransition.duration * 1000 - 1500);
+	};
 
-    const switchActive = (active) => {
-        setTimeout(() => setActive(active), 400);
-    };
+	const switchActive = (active) => {
+		setTimeout(() => setActive(active), 400);
+	};
 
-    const switchToSignup = () => {
-        playExpandingEffect();
-        switchActive("signup");
-    };
+	const switchToSignup = () => {
+		playExpandingEffect();
+		switchActive("signup");
+	};
 
-    const switchToSignin = () => {
-        playExpandingEffect();
-        switchActive("signin");
-    };
+	const switchToSignin = () => {
+		playExpandingEffect();
+		switchActive("signin");
+	};
 
-    const contextValue = {
-        switchToSignup,
-        switchToSignin,
-        playExpandingEffect,
-    };
+	const contextValue = {
+		switchToSignup,
+		switchToSignin,
+		playExpandingEffect,
+	};
 
-    return (
-        <AccountContext.Provider value={contextValue}>
-            <BoxContainer>
-                <TopContainer>
-                    <BackDrop
-                        variants={backdropVariants}
-                        transition={expandingTransition}
-                        initial={false}
-                        animate={isExpanded ? "expanded" : "collapsed"}
-                    />
-                    {active === "signin" && (
-                        <>
-                            <HeaderContainer>
-                                <HeaderText>Welcome</HeaderText>
-                                <HeaderText>Back</HeaderText>
-                            </HeaderContainer>
-                            <SmallText>Please sign-in to continue!</SmallText>
-                        </>
-                    )}
-                    {active === "signup" && (
-                        <>
-                            <HeaderContainer>
-                                <HeaderText>Create </HeaderText>
-                                <HeaderText>Account</HeaderText>
-                            </HeaderContainer>
-                            <SmallText>Please sign-up to continue!</SmallText>
-                        </>
-                    )}
-                </TopContainer>
-                <InnerContainer>
-                    {active === "signin" && <Login />}
-                    {active === "signup" && <Signup />}
-                </InnerContainer>
-            </BoxContainer>
-        </AccountContext.Provider>
-    );
+	console.log(initialActive, contextValue, active);
+
+	return (
+		<AccountContext.Provider value={contextValue}>
+			<BoxContainer>
+				<TopContainer>
+					<BackDrop
+						variants={backdropVariants}
+						transition={expandingTransition}
+						initial={false}
+						animate={isExpanded ? "expanded" : "collapsed"}
+					/>
+					{active === "signin" && (
+						<>
+							<HeaderContainer>
+								<HeaderText>Welcome</HeaderText>
+								<HeaderText>Back</HeaderText>
+							</HeaderContainer>
+							<SmallText>Please sign-in to continue!</SmallText>
+						</>
+					)}
+					{active === "signup" && (
+						<>
+							<HeaderContainer>
+								<HeaderText>Create </HeaderText>
+								<HeaderText>Account</HeaderText>
+							</HeaderContainer>
+							<SmallText>Please sign-up to continue!</SmallText>
+						</>
+					)}
+				</TopContainer>
+				<InnerContainer>
+					{active === "signin" && <Login />}
+					{active === "signup" && <Signup />}
+				</InnerContainer>
+			</BoxContainer>
+		</AccountContext.Provider>
+	);
 }
