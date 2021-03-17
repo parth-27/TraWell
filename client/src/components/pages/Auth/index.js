@@ -129,7 +129,6 @@ const expandingTransition = {
 };
 
 export const Authenticate = (props) => {
-	console.log(props.signup);
 	const initialActive = props.signup;
 	const [isExpanded, setExpanded] = useState(false);
 	const [active, setActive] = useState(
@@ -166,8 +165,6 @@ export const Authenticate = (props) => {
 		switchToSignin,
 		playExpandingEffect,
 	};
-
-	console.log(initialActive, contextValue, active);
 
 	return (
 		<AccountContext.Provider value={contextValue}>
