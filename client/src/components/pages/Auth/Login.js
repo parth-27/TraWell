@@ -14,11 +14,13 @@ import axios from 'axios';
 export function Login(props) {
     const { switchToSignup } = useContext(AccountContext);
     
+    // user information
     const [userInfo, setUserInfo] = useState({
         email: "",
         password: "",
     });
 
+    // error state
     const [errorState, setErrorState] = useState({
         email: false,
         password: false,
@@ -33,18 +35,34 @@ export function Login(props) {
         // console.log(userInfo.email, userInfo.password);
     };
 
+    const validateForm = () => {
+        let isValid = true;
+        if (userInfo.email.length === 0)
+        {
+            setErrorState(errorState.email = true);
+            isValid = false;
+        }
+
+        if (userInfo.email.length < 8) {
+            setErrorState(errorState.password = true);
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
 
     const handleSubmit = (e) => {
+        console.log("login bitch");
         e.preventDefault();
-        
-        if (
-            userInfo.email.length === 0 ||
-            userInfo.password.length === 0
-        ) {
-            alert("one or more fields are empty!");
-        } else {
+
+        if (!validateForm()) {
+            alert("Inputs are not proper");
+        }
+        else {
             sendToServer();
         }
+        
     };
 
     const sendToServer = () => {
@@ -61,12 +79,12 @@ export function Login(props) {
     return (
         <BoxContainer>
             <FormContainer onSubmit={handleSubmit}>
-                <Input placeholder="Email" name="email" onChange={ handleChange }/>
-                <Input type="password" placeholder="Password" name="password" onChange={ handleChange }/>
+                <Input placeholder="Email" name="email" onChange={handleChange} pattern='/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i' required/>
+                <Input type="password" placeholder="Password" name="password" onChange={ handleChange } required/>
+                <SubmitButton>Login</SubmitButton>
             </FormContainer>
             <MutedLink href="#">Forgot Password?</MutedLink>
             <Marginer direction="vertical" margin="1em" />
-            <SubmitButton>Login</SubmitButton>
             <Marginer direction="vertical" margin={5} />
             <MutedLink href="/signup">
                 Dont have an Account?
