@@ -48,7 +48,7 @@ export const Input = styled.input`
   }
   &:focus {
     outline: none;
-    //box-shadow: 0px 0px 2px rgba(200, 200, 200, 1);
+    box-shadow: 0px 0px 2px rgba(200, 200, 200, 1);
     border-bottom: 2px solid #5963c3;
   }
 `;

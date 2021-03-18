@@ -18,7 +18,12 @@ export function Signup(props) {
         fullName:"",
         email: "",
         password: "",
-        confirmPassword:"",
+        confirmPassword: "",
+        phoneNumber: "",
+        address1: "",
+        address2: "",
+        city: "",
+        pincode: "",
     });
 
     const handleChange = (e) => {
@@ -30,18 +35,46 @@ export function Signup(props) {
         // console.log(userInfo.email, userInfo.password);
     };
 
+    const validateForm = () => {
+        let isValid = false;
+        
+        const passValidation = "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$";
+        var emailPattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+        
+        
+        if (userInfo.password === userInfo.confirmPassword && userInfo.password.match(passValidation) && userInfo.password.length !== 0)
+        {
+            isValid = true;
+        }
+
+        if (emailPattern.test(userInfo.email) && userInfo.email.length !== 0)
+        {
+            isValid = true;
+        }
+
+        if (userInfo.fullName.length !== 0 && userInfo.phoneNumber.length !== 0)
+        {
+            isValid = true;
+        }
+
+        debugger;
+        return isValid;
+    }
+
     const handleSubmit = (e) => {
+        console.log("heuuuu bitch");
+        debugger;
         e.preventDefault();
 
-        if (
-            userInfo.fullName.length === 0 ||
-            userInfo.email.length === 0 ||
-            userInfo.password.length === 0
-        ) {
-            alert("one or more fields are empty!");
-        } else {
+        if (!validateForm())
+        {
+            alert("Inputs are not proper");
+        }
+        else
+        {
             sendToServer();
         }
+
     };
 
     const sendToServer = () => {
@@ -49,6 +82,8 @@ export function Signup(props) {
             fullName:userInfo.fullName,
             email: userInfo.email,
             password: userInfo.password,
+            phoneNumber: userInfo.phoneNumber,
+            address:userInfo.address,
         };
         axios.post("http://localhost:3000/login", payload).then((res) => {
             console.log(res);
@@ -57,14 +92,19 @@ export function Signup(props) {
 
     return (
         <BoxContainer>
-            <FormContainer onSubmit={handleSubmit}>
-                <Input placeholder="Full Name" onChange={ handleChange } name="fullName"/>
-                <Input placeholder="Email" onChange={handleChange} name="email"/>
-                <Input type="password" placeholder="Password" onChange={handleChange} name="password"/>
-                <Input type="password" placeholder="Confirm Password" onChange={handleChange} name="confirmPassword" />
+            <FormContainer >
+                <Input placeholder="Full Name" onChange={ handleChange } name="fullName" required/>
+                <Input type="email" placeholder="Email" onChange={handleChange} name="email" pattern='/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i' required/>
+                <Input type="password" placeholder="Password with atleast one letter and one number" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" onChange={handleChange} name="password" required/>
+                <Input type="password" placeholder="Confirm Password" patter="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" onChange={handleChange} name="confirmPassword" required/>
+                <Input type="tel" placeholder="888 888 8888" pattern="[0-9]{3} [0-9]{3} [0-9]{4}" maxlength="10" onChange={handleChange} name="phoneNumber" required />
+                <Input placeholder="Address 1" onChange={handleChange} name="address1" />
+                <Input placeholder="Address 2" onChange={handleChange} name="address2" />
+                <Input placeholder="City" onChange={handleChange} name="city" />
+                <Input placeholder="Pincode" onChange={handleChange} name="pincode" />
+                <SubmitButton onSubmit={handleSubmit} >Signup</SubmitButton>
             </FormContainer>
             <Marginer direction="vertical" margin="1em" />
-            <SubmitButton>Signup</SubmitButton>
             <Marginer direction="vertical" margin={5} />
             <MutedLink href="/login" onClick={switchToSignin}>
                 Already have an account?
