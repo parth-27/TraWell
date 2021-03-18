@@ -57,13 +57,10 @@ export function Signup(props) {
             isValid = true;
         }
 
-        debugger;
         return isValid;
     }
 
     const handleSubmit = (e) => {
-        console.log("heuuuu bitch");
-        debugger;
         e.preventDefault();
 
         if (!validateForm())
@@ -74,27 +71,46 @@ export function Signup(props) {
         {
             sendToServer();
         }
-
     };
 
     const sendToServer = () => {
+        console.log(`function called`);
+        setTimeout(5000);
+        debugger;
         const payload = {
             fullName:userInfo.fullName,
             email: userInfo.email,
             password: userInfo.password,
             phoneNumber: userInfo.phoneNumber,
             address:userInfo.address,
-        };
-        axios.post("http://localhost:3000/login", payload).then((res) => {
-            console.log(res);
-        });
+        }
+        // axios.post('http://localhost:8000/user/create',payload).then(res => console.log(res.data));
+        axios.get('http://localhost:8000/user/get').then((res)=>{
+            console.log(res);;
+        },(err)=>{
+            console.log(err);
+            debugger;
+        })
+        // axios.post("http://localhost:8000/user/create", payload).then((res) => {
+        //     debugger;
+        // if(res.status==200){
+        //         console.log(`succcess`);
+        //         setTimeout(10000)
+        //         debugger;
+        //     }else{
+        //         console.log(`error`);
+        //         setTimeout(10000)
+        //         debugger;
+        //     }
+        // });
+        window.location.href = '/user/signin';
     }
 
     return (
         <BoxContainer>
             <FormContainer >
                 <Input placeholder="Full Name" onChange={ handleChange } name="fullName" required/>
-                <Input type="email" placeholder="Email" onChange={handleChange} name="email" pattern='/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i' required/>
+                <Input type="email" placeholder="Email" onChange={handleChange} name="email" pattern='/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i' />
                 <Input type="password" placeholder="Password with atleast one letter and one number" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" onChange={handleChange} name="password" required/>
                 <Input type="password" placeholder="Confirm Password" patter="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" onChange={handleChange} name="confirmPassword" required/>
                 <Input type="tel" placeholder="888 888 8888" pattern="[0-9]{3} [0-9]{3} [0-9]{4}" maxlength="10" onChange={handleChange} name="phoneNumber" required />
@@ -102,13 +118,13 @@ export function Signup(props) {
                 <Input placeholder="Address 2" onChange={handleChange} name="address2" />
                 <Input placeholder="City" onChange={handleChange} name="city" />
                 <Input placeholder="Pincode" onChange={handleChange} name="pincode" />
-                <SubmitButton onSubmit={handleSubmit} >Signup</SubmitButton>
+                <SubmitButton onClick={handleSubmit} >Signup</SubmitButton>
             </FormContainer>
             <Marginer direction="vertical" margin="1em" />
             <Marginer direction="vertical" margin={5} />
-            <MutedLink href="/login" onClick={switchToSignin}>
+            <MutedLink href="/user/signin" onClick={switchToSignin}>
                 Already have an account?
-            <BoldLink href="/login" onClick={switchToSignin}>
+            <BoldLink href="/user/signin" onClick={switchToSignin}>
                     Log In
             </BoldLink>
             </MutedLink>

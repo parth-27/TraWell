@@ -86,9 +86,9 @@ export function Login(props) {
             <MutedLink href="#">Forgot Password?</MutedLink>
             <Marginer direction="vertical" margin="1em" />
             <Marginer direction="vertical" margin={5} />
-            <MutedLink href="/signup">
+            <MutedLink href="/user/signup">
                 Dont have an Account?
-        <BoldLink href="/signup" onClick={switchToSignup}>
+        <BoldLink href="/user/signup" onClick={switchToSignup}>
                     Sign Up
         </BoldLink>
             </MutedLink>
