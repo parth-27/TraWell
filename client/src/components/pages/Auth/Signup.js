@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext,useEffect,useState } from "react";
 import { Marginer } from "./marginer";
 import {
     BoldLink,
@@ -66,11 +66,11 @@ export function Signup(props) {
             <Marginer direction="vertical" margin="1em" />
             <SubmitButton>Signup</SubmitButton>
             <Marginer direction="vertical" margin={5} />
-            <MutedLink href="#">
+            <MutedLink href="/login" onClick={switchToSignin}>
                 Already have an account?
-        <BoldLink href="#" onClick={switchToSignin}>
+            <BoldLink href="/login" onClick={switchToSignin}>
                     Log In
-        </BoldLink>
+            </BoldLink>
             </MutedLink>
         </BoxContainer>
     );

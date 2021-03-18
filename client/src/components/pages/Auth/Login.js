@@ -48,11 +48,12 @@ export function Login(props) {
     };
 
     const sendToServer = () => {
+        console.log("hello");
         const payload = {
             email: userInfo.email,
             password: userInfo.password,
         };
-        axios.post("http://localhost:3000/login", payload).then((res) => {
+        axios.post("http://localhost:3000/", payload).then((res) => {
             console.log(res);
         });
     }
@@ -67,9 +68,9 @@ export function Login(props) {
             <Marginer direction="vertical" margin="1em" />
             <SubmitButton>Login</SubmitButton>
             <Marginer direction="vertical" margin={5} />
-            <MutedLink href="#">
+            <MutedLink href="/signup">
                 Dont have an Account?
-        <BoldLink href="#" onClick={switchToSignup}>
+        <BoldLink href="/signup" onClick={switchToSignup}>
                     Sign Up
         </BoldLink>
             </MutedLink>
