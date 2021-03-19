@@ -1,17 +1,33 @@
 import React, { useContext,useEffect,useState } from "react";
 import { Marginer } from "./marginer";
 import {
-    BoldLink,
     BoxContainer,
     FormContainer,
     Input,
-    MutedLink,
     SubmitButton,
 } from "./common";
 import { AccountContext } from "./context";
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export function Login(props) {
+
+    const navLinkStyle = {
+        color: 'rgba(170, 170, 170, 1)',
+        fontSize: '15px',
+        fontWeight: '500',
+        margin: '10px 0',
+        textDecoration: 'none',
+    }
+
+    const boldLink = {
+        color: '#5963c3',
+        fontWeight: '600',
+        fontSize: '16px',
+        textDecoration: 'none',
+        margin: '0 3px',
+    }
+
     const { switchToSignup } = useContext(AccountContext);
     
     // user information
@@ -53,7 +69,6 @@ export function Login(props) {
 
 
     const handleSubmit = (e) => {
-        console.log("login bitch");
         e.preventDefault();
 
         if (!validateForm()) {
@@ -66,7 +81,7 @@ export function Login(props) {
     };
 
     const sendToServer = () => {
-        console.log("hello");
+        
         const payload = {
             email: userInfo.email,
             password: userInfo.password,
@@ -78,20 +93,20 @@ export function Login(props) {
 
     return (
         <BoxContainer>
-            <FormContainer onSubmit={handleSubmit}>
+            <FormContainer >
                 <Input placeholder="Email" name="email" onChange={handleChange} pattern='/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i' required/>
                 <Input type="password" placeholder="Password" name="password" onChange={ handleChange } required/>
-                <SubmitButton>Login</SubmitButton>
+                <SubmitButton onClick={handleSubmit}>Login</SubmitButton>
             </FormContainer>
-            <MutedLink href="#">Forgot Password?</MutedLink>
+            <Link to="/forgotPassword" style={navLinkStyle}>Forgot Password?</Link>
             <Marginer direction="vertical" margin="1em" />
             <Marginer direction="vertical" margin={5} />
-            <MutedLink href="/user/signup">
+            <Link to="/user/signup" style={navLinkStyle} onClick={switchToSignup}>
                 Dont have an Account?
-        <BoldLink href="/user/signup" onClick={switchToSignup}>
+            <Link to="/user/signup" onClick={switchToSignup} style={boldLink}>
                     Sign Up
-        </BoldLink>
-            </MutedLink>
+            </Link>
+            </Link>
         </BoxContainer>
     );
 }
