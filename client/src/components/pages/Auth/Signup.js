@@ -79,7 +79,7 @@ export function Signup(props) {
         
         return isValid;
     }
-
+    
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -94,21 +94,20 @@ export function Signup(props) {
     };
 
     const sendToServer = () => {
-        console.log(`function called`);
-        setTimeout(5000);
-        debugger;
         const payload = {
-            fullName:userInfo.fullName,
+            name:userInfo.fullName,
             email: userInfo.email,
             password: userInfo.password,
-            phoneNumber: userInfo.phoneNumber,
-            address:userInfo.address,
+            phone_no: userInfo.phoneNumber,
+            address:userInfo.address1+userInfo.address2+userInfo.city+userInfo.pincode,
         }
         axios.post("http://localhost:8000/user/create", payload).then((res) => {
         if(res.status==200){
                 window.location.href = '/user/signin';
             }else{
                 console.log(`error`);
+                window.alert('Error please try again!!');
+                window.location.href='/user/signup';
             }
         });
     }
