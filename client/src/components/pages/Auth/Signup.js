@@ -104,26 +104,13 @@ export function Signup(props) {
             phoneNumber: userInfo.phoneNumber,
             address:userInfo.address,
         }
-        // axios.post('http://localhost:8000/user/create',payload).then(res => console.log(res.data));
-        axios.get('http://localhost:8000/user/get').then((res)=>{
-            console.log(res);;
-        },(err)=>{
-            console.log(err);
-            debugger;
-        })
-        // axios.post("http://localhost:8000/user/create", payload).then((res) => {
-        //     debugger;
-        // if(res.status==200){
-        //         console.log(`succcess`);
-        //         setTimeout(10000)
-        //         debugger;
-        //     }else{
-        //         console.log(`error`);
-        //         setTimeout(10000)
-        //         debugger;
-        //     }
-        // });
-        window.location.href = '/user/signin';
+        axios.post("http://localhost:8000/user/create", payload).then((res) => {
+        if(res.status==200){
+                window.location.href = '/user/signin';
+            }else{
+                console.log(`error`);
+            }
+        });
     }
 
     return (
