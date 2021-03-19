@@ -75,7 +75,7 @@ class HeroComponent extends React.Component {
 				this.txt = fullTxt.substring(0, this.txt.length + 1);
 			}
 
-			this.el.innerHTML = '<span className="wrap">' + this.txt + '</span>';
+			this.el.innerHTML = '<span class="wrap">' + this.txt + '</span>';
 
 			var that = this;
 			var delta = 200 - Math.random() * 100;
