@@ -1,10 +1,5 @@
 const User = require('../models/user'); 
 
-module.exports.get=function(req,res){
-    console.log(`called`);
-    return res.json('MCC');
-}
-
 module.exports.create = function(req,res){
     console.log(req.body);
     return res.json('User Added');
