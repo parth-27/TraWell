@@ -26,6 +26,9 @@ export function Signup(props) {
         pincode: "",
     });
 
+
+
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setUserInfo((prevState) => ({
