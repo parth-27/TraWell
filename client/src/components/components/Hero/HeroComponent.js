@@ -75,7 +75,7 @@ class HeroComponent extends React.Component {
 				this.txt = fullTxt.substring(0, this.txt.length + 1);
 			}
 
-			this.el.innerHTML = '<span class="wrap">' + this.txt + '</span>';
+			this.el.innerHTML = '<span className="wrap">' + this.txt + '</span>';
 
 			var that = this;
 			var delta = 200 - Math.random() * 100;
@@ -116,8 +116,8 @@ class HeroComponent extends React.Component {
 			<div className='hero-container'>
 				<video src='/videos/ff2.mp4' autoPlay loop muted />
 				{/* <h1>HIT THE ROAD CONFIDENTLY</h1> */}
-				<h1 class="typewrite" data-period="2000" data-type='[ "HIT THE ROAD CONFIDENTLY" ]'>
-					<span class="wrap"></span>
+				<h1 className="typewrite" data-period="2000" data-type='[ "HIT THE ROAD CONFIDENTLY" ]'>
+					<span className="wrap"></span>
 				</h1>
 
 				<div className="content">
