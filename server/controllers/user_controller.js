@@ -1,14 +1,20 @@
 const User = require('../models/user'); 
 
+module.exports.get=function(req,res){
+    console.log(`called`);
+    return res.json('MCC');
+}
+
 module.exports.create = function(req,res){
     console.log(req.body);
-    User.create(req.body,function(err){
-        if(err){
-            console.log(err);
-        }else{
-            console.log(`User created`);
-        }
-    })
+    return res.json('User Added');
+    // User.create(req.body,function(err){
+    //     if(err){
+    //         console.log(err);
+    //     }else{
+    //         console.log(`User created`);
+    //     }
+    // })
     // if(req.body.password != req.body.confirm_password){
     //     // return res.redirect('/users/signup');
     //     console.log(`Password does not match`);
