@@ -2,34 +2,25 @@ const User = require('../models/user');
 
 module.exports.create = function(req,res){
     console.log(req.body);
-    User.create(req.body,function(err){
-        if(err){
-            console.log(err);
-        }else{
-            console.log(`User created`);
+    User.findOne({email:req.body.email},function(err,user){
+        if(user){
+            console.log(`User with same email already exists`);
+            return res.status(404).end();
+        }
+        else if(!user){
+            User.create(req.body,function(err){
+                if(err){
+                    console.log(`Error in adding the user to database`);
+                    console.log(err);
+                    return res.status(404).end();
+                }
+                console.log(`User Successfully created`);
+                return res.status(200).end();
+            })
+        }
+        else{
+            console.log(`Error in finding user`);
+            return res.status(404).end();
         }
     })
-    // if(req.body.password != req.body.confirm_password){
-    //     // return res.redirect('/users/signup');
-    //     console.log(`Password does not match`);
-    // }
-    // User.findOne({email:req.body.email},function(err,user){
-    //     if(err){
-    //         console.log(`Error in finding user in signing up`);
-    //         return;
-    //     }
-    //     if(!user){
-    //         console.log(`User created`);
-    //         // User.create(req.body,function(err){
-    //         //     if(err){
-    //         //         console.log(`Error in signing up user`);
-    //         //         return;
-    //         //     }
-    //         //     return res.redirect('/users/signin');
-    //         // });
-    //     }else{
-    //         console.log(`Error in creating user`);
-    //         // return res.redirect('/users/signup');
-    //     }
-    // })
 }

@@ -13,8 +13,8 @@ function App() {
 				<Navbar />
 				<Switch>
 					<Route path='/' exact component={Home} />
-					<Route path='/signup' exact render={(props) => <Authenticate {...props} signup={true} />}/>
-					<Route path='/login' exact render={()=> <Authenticate /> }/>
+					<Route path='/user/signup' exact render={(props) => <Authenticate {...props} signup={true} />}/>
+					<Route path='/user/signin' exact render={()=> <Authenticate /> }/>
 					{/* <Route path='/sign-up' exact component={Signup} /> */}
 				</Switch>
 			</Router>
