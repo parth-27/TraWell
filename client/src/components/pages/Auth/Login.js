@@ -101,9 +101,9 @@ export function Login(props) {
             <Link to="/forgotPassword" style={navLinkStyle}>Forgot Password?</Link>
             <Marginer direction="vertical" margin="1em" />
             <Marginer direction="vertical" margin={5} />
-            <Link to="/signup" style={navLinkStyle} onClick={switchToSignup}>
+            <Link to="/user/signup" style={navLinkStyle} onClick={switchToSignup}>
                 Dont have an Account?
-            <Link to="/signup" onClick={switchToSignup} style={boldLink}>
+            <Link to="/user/signup" onClick={switchToSignup} style={boldLink}>
                     Sign Up
             </Link>
             </Link>
