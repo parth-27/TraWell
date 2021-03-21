@@ -4,6 +4,7 @@ const cors = require('cors')
 const app = express()
 const port = 8000;
 const db = require('./config/mongoose');
+const passportJWT = require('./config/passport-jwt-strategy');
 
 app.use(cors());
 app.use(express.json());

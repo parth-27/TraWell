@@ -86,7 +86,7 @@ export function Login(props) {
             email: userInfo.email,
             password: userInfo.password,
         };
-        axios.post("http://localhost:3000/", payload).then((res) => {
+        axios.post("http://localhost:8000/user/signin", payload).then((res) => {
             console.log(res);
         });
     }
