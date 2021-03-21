@@ -6,9 +6,9 @@ import Home from "./components/pages/Home";
 import Navbar from "./components/components/Navbar/Navbar";
 import { Authenticate } from "./components/pages/Auth/index.js";
 import Main from "./components/pages/Main";
-import ForgotPassword from './components/pages/Auth/ForgotPassword';
-import ConfirmOTP from './components/pages/Auth/ConfirmOTP';
-import NewPassword from './components/pages/Auth/NewPassword';
+import { ForgotPassword } from './components/pages/Auth/ForgotPassword';
+import {ConfirmOTP} from './components/pages/Auth/ConfirmOTP';
+import { NewPassword } from './components/pages/Auth/NewPassword';
 
 function App() {
 	return (
