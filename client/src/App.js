@@ -6,6 +6,9 @@ import Home from "./components/pages/Home";
 import Navbar from "./components/components/Navbar/Navbar";
 import { Authenticate } from "./components/pages/Auth/index.js";
 import Main from "./components/pages/Main";
+import { ForgotPassword } from './components/pages/Auth/ForgotPassword';
+import {ConfirmOTP} from './components/pages/Auth/ConfirmOTP';
+import { NewPassword } from './components/pages/Auth/NewPassword';
 
 function App() {
 	return (
@@ -13,11 +16,13 @@ function App() {
 			<Router>
 				<Navbar />
 				<Switch>
-					<Route path='/' exact component={Home} />
-					<Route path='/user/signup' exact render={(props) => <Authenticate {...props} signup={true} />}/>
-					<Route path='/user/signin' exact render={()=> <Authenticate /> }/>
-					<Route path='/rent' exact component={Main} />
-					{/* <Route path='/sign-up' exact component={Signup} /> */}
+					<Route path='/' exact render = {()=> <Home/>} />
+					<Route path='/user/signup' exact render = {(props) => <Authenticate {...props} signup={true} />}/>
+					<Route path='/user/signin' exact render = {()=> <Authenticate /> }/>
+					<Route path='/rent' exact render = {() => <Main />} />
+					<Route path='/user/confirmOTP' exact render = {() => <ConfirmOTP />} />
+					<Route path='/forgotPassword' exact render = {() => <ForgotPassword />} />
+					<Route path='/resetPassword' exact render = {() => <NewPassword />} />
 				</Switch>
 			</Router>
 		</>
