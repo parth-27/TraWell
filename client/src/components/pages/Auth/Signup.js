@@ -55,29 +55,23 @@ export function Signup(props) {
     };
 
     const validateForm = () => {
-        let isValid = false;
         
         const passValidation = "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$";
         var emailPattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
         
         
-        if (userInfo.password === userInfo.confirmPassword && userInfo.password.match(passValidation) && userInfo.password.length !== 0)
+        if (!(userInfo.password === userInfo.confirmPassword && userInfo.password.match(passValidation)))
         {
-            isValid = true;
+            return false;
         }
 
-        if (emailPattern.test(userInfo.email) && userInfo.email.length !== 0)
+        if (!(emailPattern.test(userInfo.email)))
         {
-            isValid = true;
-        }
-
-        if (userInfo.fullName.length !== 0 && userInfo.phoneNumber.length !== 0)
-        {
-            isValid = true;
+            return false;
         }
 
         
-        return isValid;
+        return true;
     }
     
     const handleSubmit = (e) => {
@@ -102,9 +96,12 @@ export function Signup(props) {
             address:userInfo.address1+userInfo.address2+userInfo.city+userInfo.pincode,
         }
         axios.post("http://localhost:8000/user/create", payload).then((res) => {
-        if(res.status==200){
+            if (res.status == 200)
+            {
                 window.location.href = '/user/signin';
-            }else{
+            }
+            else
+            {
                 console.log(`error`);
                 window.alert('Error please try again!!');
                 window.location.href='/user/signup';
@@ -116,7 +113,7 @@ export function Signup(props) {
         <BoxContainer>
             <FormContainer >
                 <Input placeholder="Full Name" onChange={ handleChange } name="fullName" required/>
-                <Input type="email" placeholder="Email" onChange={handleChange} name="email" pattern='/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i' />
+                <Input type="email" placeholder="Email" onChange={handleChange} name="email" required/>
                 <Input type="password" placeholder="Password with atleast one letter and one number" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" onChange={handleChange} name="password" required/>
                 <Input type="password" placeholder="Confirm Password" patter="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" onChange={handleChange} name="confirmPassword" required/>
                 <Input type="tel" placeholder="0123456789" pattern="[0-9]{10}" maxlength="10" onChange={handleChange} name="phoneNumber" required />
