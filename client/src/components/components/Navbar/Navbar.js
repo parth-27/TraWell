@@ -89,7 +89,7 @@ function Navbar() {
                             </Link>
                         </li>
                     </ul>
-                    {button && <Button buttonStyle='btn--outline' style={{marginRight:'2.5vw'}}>LOG IN</Button>}
+                    {button && <Button buttonStyle='btn--outline' style={{marginRight:'2.5vw'}} link="/user/signin" >LOG IN</Button>}
                 </div>
             </nav>
         </>
