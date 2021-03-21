@@ -191,7 +191,7 @@ class HeroComponent extends React.Component {
 						className='btns'
 						buttonStyle='btn--outline'
 						buttonSize='btn--large'
-						ref="/rent"
+						// link="/rent"	// work pending to redirect from modal to /rent
 						onClick={this.showModal}
 					>
 						RENT A CAR
@@ -201,7 +201,7 @@ class HeroComponent extends React.Component {
 						className='btns'
 						buttonStyle='btn--primary'
 						buttonSize='btn--large'
-						ref="/rent"
+						link="/rent"
 					>
 						LEND YOUR CAR <i className='far fa-play-circle' />
 					</Button>
