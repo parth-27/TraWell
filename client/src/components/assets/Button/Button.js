@@ -16,8 +16,6 @@ export class Button extends React.Component {
         
         const checkButtonSize = SIZES.includes(buttonSize) ? buttonSize : SIZES[0];
 
-        console.log(link);
-
         return (
             <Link to={link} className='btn-mobile'>
                 <button
