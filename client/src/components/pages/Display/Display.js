@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import "./Main.css";
-import dummyData from "../../data";
+import "./Display.css";
+import dummyData from "../../../data";
 
-import CardList from "../assets/CarCard/CardList";
-import SkeletonCard from "../assets/CarCard/SkeletonCarCard";
+import CardList from "../../assets/CarCard/CardList";
+import SkeletonCard from "../../assets/CarCard/SkeletonCarCard";
 
 const Main = () => {
   const [videos, setVideos] = useState([]);
