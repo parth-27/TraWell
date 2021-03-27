@@ -16,6 +16,7 @@ export default function Home(){
 
     return (
         <>
+            {/* use React.memo() for stopping the unnecessary rendering in multiple nested components */}
             <HeroComponent />
             <HowComponent />
             <WhyComponent />
