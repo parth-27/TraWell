@@ -56,21 +56,20 @@ export function Signup(props) {
 
     const validateForm = () => {
         
-        const passValidation = "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$";
+        const passValidation = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/);
         var emailPattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
         
         
-        if (!(userInfo.password === userInfo.confirmPassword && userInfo.password.match(passValidation)))
+        if (!(userInfo.password === userInfo.confirmPassword && passValidation.test(userInfo.password)))
         {
             return false;
         }
 
         if (!(emailPattern.test(userInfo.email)))
-        {
+        {   
             return false;
         }
 
-        
         return true;
     }
     
@@ -108,6 +107,10 @@ export function Signup(props) {
             }
         });
     }
+
+    useEffect(() => {
+        document.title = "Create your account"
+    }, [])
 
     return (
         <BoxContainer>
