@@ -9,8 +9,11 @@ import {
 import { AccountContext } from "./context";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { userContext } from '../../context/index';
 
 export function Login(props) {
+
+    const UserContext = useContext(userContext);
 
     const navLinkStyle = {
         color: 'rgba(170, 170, 170, 1)',
@@ -87,9 +90,28 @@ export function Login(props) {
             password: userInfo.password,
         };
         axios.post("http://localhost:8000/user/signin", payload).then((res) => {
-            console.log(res);
+            if (res.status == 200) {
+
+                UserContext.userDispatch({
+                    type: 'SET_USER', payload: {
+                        email: userInfo.email,
+                        token:"",
+                    }
+                });
+                
+                window.location.href = '/userProfile';
+            }
+            else {
+                console.log(`error`);
+                window.alert('Error please try again!!');
+                window.location.href = '/user/signin';
+            }
         });
     }
+
+    useEffect(() => {
+        document.title = "Login into your account"
+    },[])
 
     return (
         <BoxContainer>
