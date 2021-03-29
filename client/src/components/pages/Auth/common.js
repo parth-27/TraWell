@@ -32,6 +32,7 @@ export const BoldLink = styled.a`
 `;
 
 export const Input = styled.input`
+  margin-bottom:10px;
   width: 100%;
   height: 42px;
   outline: none;
@@ -51,6 +52,7 @@ export const Input = styled.input`
     box-shadow: 0px 0px 2px rgba(200, 200, 200, 1);
     border-bottom: 2px solid #5963c3;
   }
+  box-shadow : 0px 0px 2.5px rgb(185, 185, 185);
 `;
 
 export const SubmitButton = styled.button`

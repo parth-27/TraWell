@@ -125,7 +125,6 @@ export function Login(props) {
                 UserContext.userDispatch({
                     type: 'SET_USER', payload: {
                         email: userInfo.email,
-                        token:"",
                     }
                 });
                 
