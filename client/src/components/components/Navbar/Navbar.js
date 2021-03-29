@@ -119,7 +119,7 @@ function Navbar() {
                         }
                     </ul>
                     {
-                        UserContext.currentUser.userEmail !== ""
+                        UserContext.currentUser.userEmail === ""
                             ?
                             <>
                                 {button && <Button buttonStyle='btn--outline' style={{ marginRight: '2.5vw' }} link="/user/signin" >LOG IN</Button>}
