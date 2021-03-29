@@ -1,6 +1,5 @@
 export const initialUserState = {
     userEmail: "",
-    token:"",
 }
 
 export const userReducer = (state, action) => {
