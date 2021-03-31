@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/TraWell',{useNewUrlParser:true,useUnifiedTopology:true});
+mongoose.connect('mongodb://localhost/TraWell',{useCreateIndex:true,useNewUrlParser:true,useUnifiedTopology:true});
 
 const db = mongoose.connection;
 
