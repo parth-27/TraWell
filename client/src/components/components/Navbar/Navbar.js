@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import { Button } from '../../assets/Button/Button';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
+import { userContext } from '../../context/index';
 
 function Navbar() {
     const [click, setClick] = useState(false);
@@ -9,6 +10,8 @@ function Navbar() {
     const [navbar, setNavbar] = useState(false);
     const handleClick = () => setClick(!click);
     const closeMobileMenu = () => setClick(false);
+
+    const UserContext = useContext(userContext);
 
     const showButton = () => {
         if (window.innerWidth <= 960) {
@@ -79,17 +82,61 @@ function Navbar() {
                             </Link>
                         </li>
 
-                        <li>
-                            <Link
-                                to='/user/signin'
-                                className='nav-links-mobile'
-                                onClick={closeMobileMenu}
-                            >
-                                Log In
-                            </Link>
-                        </li>
+                        {
+                            UserContext.currentUser.userEmail === ""
+                                ? 
+                                <li>
+                                    <Link
+                                        to='/user/signin'
+                                        className='nav-links-mobile'
+                                        onClick={closeMobileMenu}
+                                    >
+                                        Log In
+                                    </Link>
+                                </li> 
+                                :
+                                <div>
+                                    <li>
+                                        <Link
+                                            to='/userProfile'
+                                            className='nav-links-mobile'
+                                            onClick={closeMobileMenu}
+                                        >
+                                            My Profile
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            to='/user/signin'
+                                            className='nav-links-mobile'
+                                            onClick={closeMobileMenu}
+                                        >
+                                            Log Out
+                                        </Link>
+                                    </li>
+                                </div>
+                                
+                        }
                     </ul>
-                    {button && <Button buttonStyle='btn--outline' style={{marginRight:'2.5vw'}} link="/user/signin" >LOG IN</Button>}
+                    {
+                        UserContext.currentUser.userEmail === ""
+                            ?
+                            <>
+                                {button && <Button buttonStyle='btn--outline' style={{ marginRight: '2.5vw' }} link="/user/signin" >LOG IN</Button>}
+                            </>
+                            :
+                            <>
+                                {
+                                    button
+                                    &&
+                                    <>
+                                        <Button buttonStyle='btn--outline' style={{ marginRight: '2.5vw' }} link="/user/signin" >My Profile</Button>
+                                        &nbsp; &nbsp;
+                                        <Button buttonStyle='btn--outline' style={{ marginRight: '2.5vw' }} link="/user/signin" >LogOut</Button>
+                                    </>
+                                }
+                            </>
+                    }
                 </div>
             </nav>
         </>

@@ -1,4 +1,4 @@
-import React, { useContext,useEffect,useState } from "react";
+import React, { useContext,useEffect,useState,useRef } from "react";
 import { Marginer } from "./marginer";
 import {
     BoxContainer,
@@ -9,11 +9,23 @@ import {
 import { AccountContext } from "./context";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { userContext } from '../../context/index';
 
 export function Login(props) {
 
+    const inputRef = useRef(null);
+    const UserContext = useContext(userContext);
+
     const navLinkStyle = {
         color: 'rgba(170, 170, 170, 1)',
+        fontSize: '15px',
+        fontWeight: '500',
+        margin: '10px 0',
+        textDecoration: 'none',
+    }
+
+    const errorStyle = {
+        color: '#c2372d',
         fontSize: '15px',
         fontWeight: '500',
         margin: '10px 0',
@@ -38,8 +50,8 @@ export function Login(props) {
 
     // error state
     const [errorState, setErrorState] = useState({
-        email: false,
-        password: false,
+        error: false,
+        statement:""
     });
 
     const handleChange = (e) => {
@@ -52,19 +64,40 @@ export function Login(props) {
     };
 
     const validateForm = () => {
-        let isValid = true;
         if (userInfo.email.length === 0)
         {
-            setErrorState(errorState.email = true);
-            isValid = false;
+            setErrorState({
+                error: true,
+                statement:"Email Field is empty"
+            });
+            return false;
         }
 
-        if (userInfo.email.length < 8) {
-            setErrorState(errorState.password = true);
-            isValid = false;
+        if (userInfo.password.length < 8) {
+            
+            if (userInfo.password.length > 0)
+            {
+                setErrorState({
+                    error: true,
+                    statement: "Please Enter Password in given format",
+                });
+            }
+            else
+            {
+                setErrorState({
+                    error: true,
+                    statement: "Please Enter Your Password",
+                });
+            }
+
+            return false;
         }
 
-        return isValid;
+        setErrorState({
+            error: false,
+            statement:""
+        })
+        return true;
     }
 
 
@@ -72,7 +105,7 @@ export function Login(props) {
         e.preventDefault();
 
         if (!validateForm()) {
-            alert("Inputs are not proper");
+            return;
         }
         else {
             sendToServer();
@@ -87,14 +120,38 @@ export function Login(props) {
             password: userInfo.password,
         };
         axios.post("http://localhost:8000/user/signin", payload).then((res) => {
-            console.log(res);
+            if (res.status == 200) {
+
+                UserContext.userDispatch({
+                    type: 'SET_USER', payload: {
+                        email: userInfo.email,
+                    }
+                });
+                
+                window.location.href = '/userProfile';
+            }
+            else {
+                setErrorState({
+                    error: true,
+                    statement:"Please try again to signin"
+                })
+                window.alert('Error please try again!!');
+                window.location.href = '/user/signin';
+                
+            }
         });
     }
 
+    useEffect(() => {
+        inputRef.current.focus();
+        document.title = "Login into your account";
+    },[])
+
     return (
         <BoxContainer>
+            <p style={errorStyle}>{errorState.error && errorState.statement}</p>
             <FormContainer >
-                <Input placeholder="Email" name="email" onChange={handleChange} pattern='/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i' required/>
+                <Input ref={inputRef} placeholder="Email" name="email" onChange={handleChange} pattern='/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i' required/>
                 <Input type="password" placeholder="Password" name="password" onChange={ handleChange } required/>
                 <SubmitButton onClick={handleSubmit}>Login</SubmitButton>
             </FormContainer>

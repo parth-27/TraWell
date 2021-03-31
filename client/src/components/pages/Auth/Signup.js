@@ -1,4 +1,4 @@
-import React, { useContext,useEffect,useState } from "react";
+import React, { useContext,useEffect,useState,useRef } from "react";
 import { Marginer } from "./marginer";
 import {
     BoxContainer,
@@ -12,8 +12,18 @@ import { Link } from 'react-router-dom';
 
 export function Signup(props) {
 
+    const inputRef = useRef(null);
+
     const navLinkStyle = {
         color: 'rgba(170, 170, 170, 1)',
+        fontSize: '15px',
+        fontWeight: '500',
+        margin: '10px 0',
+        textDecoration: 'none',
+    }
+
+    const errorStyle = {
+        color: '#c2372d',
         fontSize: '15px',
         fontWeight: '500',
         margin: '10px 0',
@@ -42,8 +52,11 @@ export function Signup(props) {
         pincode: "",
     });
 
-
-
+    // error state
+    const [errorState, setErrorState] = useState({
+        error: false,
+        statement: ""
+    });
     
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -56,21 +69,46 @@ export function Signup(props) {
 
     const validateForm = () => {
         
-        const passValidation = "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$";
+        const passValidation = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/);
         var emailPattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
         
-        
-        if (!(userInfo.password === userInfo.confirmPassword && userInfo.password.match(passValidation)))
+        if (userInfo.fullName.length === 0)
         {
+            setErrorState({
+                error: true,
+                statement: "Please Enter Your Full Name"
+            })
             return false;
         }
-
+        
         if (!(emailPattern.test(userInfo.email)))
         {
+            setErrorState({
+                error: true,
+                statement: "Please Enter Proper Email-ID"
+            })
+            return false;
+        }
+        
+        if (!(userInfo.password === userInfo.confirmPassword && passValidation.test(userInfo.password)))
+        {
+            setErrorState({
+                error: true,
+                statement:"Please Enter Password satisfying all the requirements"
+            })
             return false;
         }
 
-        
+
+
+        if (userInfo.phoneNumber.length < 10) {
+            setErrorState({
+                error: true,
+                statement: "Please Enter Correct Phone Number"
+            })
+            return false;
+        }
+
         return true;
     }
     
@@ -79,7 +117,7 @@ export function Signup(props) {
 
         if (!validateForm())
         {
-            alert("Inputs are not proper");
+            return;
         }
         else
         {
@@ -102,17 +140,26 @@ export function Signup(props) {
             }
             else
             {
-                console.log(`error`);
+                setErrorState({
+                    error: true,
+                    statement: "Please try again to signup"
+                })
                 window.alert('Error please try again!!');
                 window.location.href='/user/signup';
             }
         });
     }
 
+    useEffect(() => {
+        inputRef.current.focus();
+        document.title = "Create your account";
+    }, [])
+
     return (
         <BoxContainer>
+            <p style={errorStyle}>{errorState.error && errorState.statement}</p>
             <FormContainer >
-                <Input placeholder="Full Name" onChange={ handleChange } name="fullName" required/>
+                <Input ref={inputRef} placeholder="Full Name" onChange={ handleChange } name="fullName" required/>
                 <Input type="email" placeholder="Email" onChange={handleChange} name="email" required/>
                 <Input type="password" placeholder="Password with atleast one letter and one number" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" onChange={handleChange} name="password" required/>
                 <Input type="password" placeholder="Confirm Password" patter="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" onChange={handleChange} name="confirmPassword" required/>

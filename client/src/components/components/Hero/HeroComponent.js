@@ -212,4 +212,4 @@ class HeroComponent extends React.Component {
 	}
 }
 
-export default HeroComponent;
+export default React.memo(HeroComponent);
