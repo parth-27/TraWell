@@ -77,4 +77,4 @@ function HowComponent() {
     );
 }
 
-export default HowComponent;
+export default React.memo(HowComponent);

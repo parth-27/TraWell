@@ -101,6 +101,8 @@
     opacity: 1;
     transition: all 0.5s ease;
     z-index: 1;
+    margin-right: auto;
+    margin-left: 0;
   }
 
   .nav-links {

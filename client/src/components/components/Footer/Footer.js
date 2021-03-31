@@ -1,6 +1,6 @@
 import React from 'react';
 import './Footer.css';
-import { Button } from '../../assets/Button';
+import { Button } from '../../assets/Button/Button';
 import { Link } from 'react-router-dom';
 
 function Footer() {
@@ -82,4 +82,4 @@ function Footer() {
     );
 }
 
-export default Footer;
+export default React.memo(Footer);

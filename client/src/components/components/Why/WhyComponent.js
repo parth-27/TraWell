@@ -1,6 +1,6 @@
 import React from 'react';
 import './WhyComponent.css';
-import CardItem from '../../assets/CardItem';
+import CardItem from '../../assets/Card Item/CardItem';
 
 function Cards() {
   return (
@@ -66,4 +66,4 @@ function Cards() {
   );
 }
 
-export default Cards;
+export default React.memo(Cards);

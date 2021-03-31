@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../../App.css';
-import { Button } from './../../assets/Button';
+import { Button } from './../../assets/Button/Button';
 import './HeroComponent.css';
 import $ from 'jquery';
 import { Modal } from './../../assets/Modal/Modal';
@@ -171,7 +171,7 @@ class HeroComponent extends React.Component {
 					handleClose={this.hideModal} 
 					title="Rental"
 					tagLine="Safe Car Rentals in India">
-					<label for="city">Choose a city:</label>
+					<label htmlFor="city">Choose a city:</label>
 					<select name="city" id="city">
 						<option value="ahmedabab">Ahmedabad</option>
 						<option value="bengaluru">Bengaluru</option>
@@ -179,10 +179,10 @@ class HeroComponent extends React.Component {
 						<option value="delhi">Delhi</option>
 					</select>
 					<br />
-					<label for="start-time">Select a starting time:</label>
+					<label htmlFor="start-time">Select a starting time:</label>
 					<input type="time" id="start-time" name="start-time" /> 
 					<br />
-					<label for="end-time">Select a ending time:</label>
+					<label htmlFor="end-time">Select a ending time:</label>
 					<input type="time" id="end-time" name="end-time" /> 
 					<br />
 				</Modal>
@@ -191,7 +191,8 @@ class HeroComponent extends React.Component {
 						className='btns'
 						buttonStyle='btn--outline'
 						buttonSize='btn--large'
-						// link="/rent"	// work pending to redirect from modal to /rent
+						link="/rent"
+						// TODO : first redirect to link and then open the modal
 						onClick={this.showModal}
 					>
 						RENT A CAR
@@ -211,4 +212,4 @@ class HeroComponent extends React.Component {
 	}
 }
 
-export default HeroComponent;
+export default React.memo(HeroComponent);
