@@ -11,10 +11,10 @@ module.exports.create = async function (req, res) {
     Otp.findOne({ email: req.body.email }, async function (err, otp) {
       if (!otp) {
         console.log(`Server Error`);
-        return res.status(404).json({ message: "server error"});
+        return res.status(404).json({ message: "server error" });
       }
-      if(req.body.otp!=otp.code){
-        return res.status(404).json({ message: "Wrong OTP"});          
+      if (req.body.otp != otp.code) {
+        return res.status(404).json({ message: "Wrong OTP" });
       }
       const salt = await bcrypt.genSalt(10);
       const hashpwd = await bcrypt.hash(req.body.password, salt);
@@ -82,26 +82,26 @@ module.exports.profile = async function (req, res, next) {
   }
 };
 
-module.exports.sentotp = async function (req, res) {
+module.exports.userverifymail = async function (req, res) {
   try {
     User.findOne({ email: req.body.email }, async function (err, user) {
       if (user) {
         console.log(`User already exists`);
         return res.status(404).json({ message: "User already exists" });
       }
-      Otp.deleteMany({email:req.body.email},async function(err){
-          if(err){
-              console.log(err);
-              return res.status(404).json({message:'No user'});
-          }
+      Otp.deleteMany({ email: req.body.email }, async function (err) {
+        if (err) {
+          console.log(err);
+          return res.status(404).json({ message: "No user" });
+        }
       });
       const secretCode = cryptoRandomString({
         length: 6,
       });
       const newCode = new Otp({
-          code: secretCode,
-          email: req.body.email
-      })
+        code: secretCode,
+        email: req.body.email,
+      });
       newCode.save();
       const data = {
         from: '"Shreyansh Shah" <shreyansh_shah@yahoo.com>',
@@ -118,3 +118,78 @@ module.exports.sentotp = async function (req, res) {
     res.status(404).json({ message: "Error in catch block" });
   }
 };
+
+module.exports.resetpassmail = async function (req, res) {
+  try {
+      User.findOne({email:req.body.email},async function(err,user){
+          if(err || !user){
+              res.status(404).json({message:'Please enter valid email'});
+          }
+          Otp.deleteMany({ email: req.body.email }, async function (err) {
+            if (err) {
+              console.log(err);
+              return res.status(404).json({ message: "No user" });
+            }
+          });
+          const secretCode = cryptoRandomString({
+            length: 6,
+          });
+          const newCode = new Otp({
+            code: secretCode,
+            email: req.body.email,
+          });
+          newCode.save();
+          const data = {
+            from: '"Shreyansh Shah" <shreyansh_shah@yahoo.com>',
+            to: req.body.email,
+            subject: "TraWell: Verify OTP",
+            text: secretCode,
+            html: `<b>Your OTP: ${secretCode}</b>`,
+          };
+          await emailservice.sendMail(data);
+          res.status(200).json({ message: secretCode });    
+      })
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ message: "Error in catch block" });
+  }
+};
+
+module.exports.verifyotp = async function(req,res){
+    try{
+        Otp.findOne({email:req.body.email},async function(err,otp){
+            if(err || !otp){
+                return res.status(404).json({message:'Error in finding user'});
+            }
+            if(req.body.otp!=otp.code){
+                return res.status(400).json({message:'wrong otp'});
+            }
+            res.status(200).json({message:'OTP verified'});
+        })
+    }catch(err){
+        console.log(err);
+        res.status.json({message:'Error in catch block'});
+    }
+}
+
+module.exports.setnewpass = async function(req,res){
+    try{
+        User.findOne({email:req.body.email},async function(err,user){
+            if(err || !user){
+                return res.status(400).json({message:"Please enter valid email"});
+            }
+            const salt = await bcrypt.genSalt(10);
+            const hashpwd = await bcrypt.hash(req.body.password, salt);                  
+            user.password=hashpwd;
+            user.save(function(err){
+                if(err){
+                    res.status(400).json({message:'Error in updating the password'});
+                }
+            })
+            res.status(200).json({message:'Password changed successfully'});
+        })
+    }catch(err){
+        console.log(err);
+        res.status(404).json({message:'Error in catch block'});
+    }
+}
