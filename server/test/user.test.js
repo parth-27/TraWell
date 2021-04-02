@@ -1,12 +1,12 @@
+const app = require('../index');
 const User = require ( '../models/user')
 const request = require('supertest')
-const app = require('../index');
 
 
 // it('Testing to see if Jest works', () => {
 //   expect(1).toBe(1)
 // })
-
+// jest.useFakeTimers();
 // describe('Post Endpoints', () => {
 //   it('should create a new post', async () => {
 //     const res = await request(app)
@@ -23,15 +23,18 @@ const app = require('../index');
 //   })
 // })
 
-
+afterAll(done => {
+  app.close();
+  done();
+});
 
 test('Should signup for a new user', async()=> {
   await request(app).post('/user/create')
   .send({
     name: "sam",
-        email: "sam@ed.info",
+        email: "sam122@ed.info",
         password: "12jhjhjhj",
-        phone_no: "1234567890",
+        phone_no: "129834567890",
         address : "jfkjkg kjgkrjgkcd"
   })
   .expect(200)
