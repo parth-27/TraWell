@@ -62,7 +62,7 @@ const SmallText = styled.h5`
 export const ConfirmOTP = (props) => {
 
     const [otp, setOTP] = useState(0);
-    const email = props.location.state.email;
+    const payload = props.location.state.payload;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -80,12 +80,9 @@ export const ConfirmOTP = (props) => {
 
 
     const sendToServer = () => {
-        const payload = {
-            otp: otp,
-            email: email,
-        }
-        console.log(email);
-        axios.post("http://localhost:8000/user/verifyotp", payload).then((res) => {
+        
+        console.log(payload);
+        axios.post("http://localhost:8000/user/create", payload).then((res) => {
             if (res.status == 200) {
                 window.location.href = '/user/signin';
             } else {
