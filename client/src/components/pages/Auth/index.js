@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { Login } from "./Login";
 import { AccountContext } from "./context";
 import { Signup } from "./Signup";
-import { MutedLink } from "./common";
 
 const BoxContainer = styled.div`
   margin-left:auto;

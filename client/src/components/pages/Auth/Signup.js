@@ -5,7 +5,7 @@ import {
     FormContainer,
     Input,
     SubmitButton,
-} from "./common";
+} from "../../../styles/style";
 import { AccountContext } from "./context";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
