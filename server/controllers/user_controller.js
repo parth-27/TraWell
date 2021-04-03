@@ -121,6 +121,7 @@ module.exports.userverifymail = async function (req, res) {
 
 module.exports.resetpassmail = async function (req, res) {
   try {
+    console.log(req.body);
       User.findOne({email:req.body.email},async function(err,user){
           if(err || !user){
               res.status(404).json({message:'Please enter valid email'});

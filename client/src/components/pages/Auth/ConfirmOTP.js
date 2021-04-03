@@ -82,9 +82,9 @@ export const ConfirmOTP = () => {
         const payload = {
             otp: otp,
         }
-        axios.post("http://localhost:8000/user/create", payload).then((res) => {
+        axios.post("http://localhost:8000/user/verifyotp", payload).then((res) => {
             if (res.status == 200) {
-                window.location.href = '/resetPassword';
+                window.location.href = '/user/resetPassword';
             } else {
                 console.log(`error`);
                 window.alert('Error please try again!!');

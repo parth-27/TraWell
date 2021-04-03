@@ -88,15 +88,15 @@ export const ForgotPassword = () => {
 
     const sendToServer = () => {
         const payload = {
-            email: email,
+            email: email.email,
         }
-        axios.post("http://localhost:8000/user/create", payload).then((res) => {
+        axios.post("http://localhost:8000/user/resetpassmail", payload).then((res) => {
             if (res.status == 200) {
                 window.location.href = '/user/confirmOTP';
             } else {
                 console.log(`error`);
                 window.alert('Error please try again!!');
-                window.location.href = '/forgotPassword';
+                window.location.href = '/user/forgotPassword';
             }
         });
     }
