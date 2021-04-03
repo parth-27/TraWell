@@ -2,6 +2,7 @@ import React,{useState} from 'react';
 import styled from "styled-components";
 import { BoxContainer, FormContainer, Input, SubmitButton } from "../../../styles/style";
 import axios from 'axios';
+import { useHistory } from "react-router-dom";
 
 const Container = styled.div`
         margin-left:auto;
@@ -63,6 +64,7 @@ export const ConfirmOTP = (props) => {
 
     const [otp, setOTP] = useState(0);
     const email = props.location.state.email;
+    const history = useHistory();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -86,8 +88,13 @@ export const ConfirmOTP = (props) => {
         }
         console.log(email);
         axios.post("http://localhost:8000/user/verifyotp", payload).then((res) => {
+            console.log(res.status);
             if (res.status == 200) {
-                window.location.href = '/user/resetPassword';
+                history.push({
+                    pathname: "/user/resetPassword",
+                    state: { email: payload.email }
+                });
+                // window.location.href = '/user/resetPassword';
             } else {
                 console.log(`error`);
                 window.alert('Error please try again!!');

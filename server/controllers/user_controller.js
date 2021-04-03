@@ -162,7 +162,7 @@ module.exports.verifyotp = async function(req,res){
             if(err || !otp){
                 return res.status(404).json({message:'Error in finding user'});
             }
-            if(req.body.otp!=otp.code){
+            if(req.body.otp.otp!=otp.code){
                 return res.status(400).json({message:'wrong otp'});
             }
             res.status(200).json({message:'OTP verified'});

@@ -100,8 +100,8 @@ const SubmitButton = styled.button`
         }
     `;
 
-export const NewPassword = () => {
-
+export const NewPassword = (props) => {
+    const email1 = props.location.state.email;
 
     const [newPass, setPassword] = useState({
         password: "",
@@ -120,30 +120,31 @@ export const NewPassword = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const passValidation = "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$";
+        const passValidation = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/);
 
-        if(newPass.password.match(passValidation) && newPass.password===newPass.confirmPassword && newPass.password.length !== 0)
+        if( newPass.password === newPass.confirmPassword && passValidation.test(newPass.password)){
             sendToServer();
+        }
         else
         {
-            console.log(`error`);
+            console.log(`error0`);
             window.alert('Error please try again!!');
-            window.location.href = '/resetPassword';
+            window.location.href = '/user/resetPassword';
         }
-
     };
 
     const sendToServer = () => {
         const payload = {
+            email: email1,
             password: newPass.password,
         }
-        axios.post("http://localhost:8000/user/create", payload).then((res) => {
+        axios.post("http://localhost:8000/user/setnewpass", payload).then((res) => {
             if (res.status == 200) {
                 window.location.href = '/user/signin';
             } else {
-                console.log(`error`);
+                console.log(`error1`);
                 window.alert('Error please try again!!');
-                window.location.href = '/resetPassword';
+                window.location.href = '/user/resetPassword';
             }
         });
     }
