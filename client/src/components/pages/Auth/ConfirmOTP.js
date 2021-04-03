@@ -62,7 +62,7 @@ const SmallText = styled.h5`
 export const ConfirmOTP = (props) => {
 
     const [otp, setOTP] = useState(0);
-    const { email } = props;
+    const email = props.location.state.email;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
