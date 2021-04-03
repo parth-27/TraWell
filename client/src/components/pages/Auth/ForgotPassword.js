@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from "styled-components";
 import { BoxContainer, FormContainer, Input, SubmitButton } from "../../../styles/style";
 import axios from 'axios';
+import { Redirect } from 'react-router';
 
 const Container = styled.div`
         margin-left:auto;
@@ -92,7 +93,7 @@ export const ForgotPassword = () => {
         }
         axios.post("http://localhost:8000/user/resetpassmail", payload).then((res) => {
             if (res.status == 200) {
-                window.location.href = '/user/confirmOTP';
+                <Redirect to="/user/confirmOTP" email={ email.email }/>
             } else {
                 console.log(`error`);
                 window.alert('Error please try again!!');
