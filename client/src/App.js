@@ -32,8 +32,8 @@ function App() {
 						<Route path='/user/signin' exact render={() => <Authenticate />} />
 						<Route path='/rent' exact render={() => <Display />} />
 						<Route path='/user/confirmOTP' exact render={() => <ConfirmOTP />} />
-						<Route path='/forgotPassword' exact render={() => <ForgotPassword />} />
-						<Route path='/resetPassword' exact render={() => <NewPassword />} />
+						<Route path='/user/forgotPassword' exact render={() => <ForgotPassword />} />
+						<Route path='/user/resetPassword' exact render={() => <NewPassword />} />
 					</Switch>
 				</Router>
 			</userContext.Provider>
