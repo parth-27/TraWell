@@ -13,7 +13,7 @@ module.exports.create = async function (req, res) {
         console.log(`Server Error`);
         return res.status(404).json({ message: "server error" });
       }
-      if (req.body.otp != otp.code) {
+      if (req.body.otp.otp != otp.code) {
         return res.status(404).json({ message: "Wrong OTP" });
       }
       const salt = await bcrypt.genSalt(10);

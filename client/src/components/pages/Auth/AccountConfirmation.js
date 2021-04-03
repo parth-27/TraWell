@@ -59,10 +59,10 @@ const SmallText = styled.h5`
         line-height: 14.24;
     `;
 
-export const ConfirmOTP = (props) => {
+export const AccountConfirmation = (props) => {
 
     const [otp, setOTP] = useState(0);
-    const payload = props.location.state.payload;
+    var payload = props.location.state.payload;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -80,7 +80,10 @@ export const ConfirmOTP = (props) => {
 
 
     const sendToServer = () => {
-        
+        payload = {
+            ...payload,
+            otp:otp
+        }
         console.log(payload);
         axios.post("http://localhost:8000/user/create", payload).then((res) => {
             if (res.status == 200) {
