@@ -155,7 +155,7 @@ export function Login(props) {
                 <Input type="password" placeholder="Password" name="password" onChange={ handleChange } required/>
                 <SubmitButton onClick={handleSubmit}>Login</SubmitButton>
             </FormContainer>
-            <Link to="/forgotPassword" style={navLinkStyle}>Forgot Password?</Link>
+            <Link to="/user/forgotPassword" style={navLinkStyle}>Forgot Password?</Link>
             <Marginer direction="vertical" margin="1em" />
             <Marginer direction="vertical" margin={5} />
             <Link to="/user/signup" style={navLinkStyle} onClick={switchToSignup}>
