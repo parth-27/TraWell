@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from "styled-components";
-import { BoxContainer, FormContainer, Input, SubmitButton } from "./common";
+import { BoxContainer, FormContainer, Input, SubmitButton } from "../../../styles/style";
 import axios from 'axios';
 
 const Container = styled.div`
