@@ -136,7 +136,7 @@ export function Signup(props) {
         axios.post("http://localhost:8000/user/create", payload).then((res) => {
             if (res.status == 200)
             {
-                window.location.href = '/user/signin';
+                window.location.href = '/user/accountConfirmation';
             }
             else
             {
