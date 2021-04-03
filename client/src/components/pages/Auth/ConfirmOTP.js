@@ -59,9 +59,10 @@ const SmallText = styled.h5`
         line-height: 14.24;
     `;
 
-export const ConfirmOTP = () => {
+export const ConfirmOTP = (props) => {
 
     const [otp, setOTP] = useState(0);
+    const { email } = props;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -81,7 +82,9 @@ export const ConfirmOTP = () => {
     const sendToServer = () => {
         const payload = {
             otp: otp,
+            email:email,
         }
+        console.log(email);
         axios.post("http://localhost:8000/user/verifyotp", payload).then((res) => {
             if (res.status == 200) {
                 window.location.href = '/user/resetPassword';
