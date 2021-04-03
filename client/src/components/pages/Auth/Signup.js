@@ -8,9 +8,11 @@ import {
 } from "../../../styles/style";
 import { AccountContext } from "./context";
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 export function Signup(props) {
+
+    const history = useHistory();
 
     const inputRef = useRef(null);
 
@@ -133,10 +135,13 @@ export function Signup(props) {
             phone_no: userInfo.phoneNumber,
             address:userInfo.address1+userInfo.address2+userInfo.city+userInfo.pincode,
         }
-        axios.post("http://localhost:8000/user/create", payload).then((res) => {
+        axios.post("http://localhost:8000/user/userverifymail", payload).then((res) => {
             if (res.status == 200)
             {
-                window.location.href = '/user/accountConfirmation';
+                history.push({
+                    pathname: "/user/accountConfirmation",
+                    state: { payload: payload }
+                });
             }
             else
             {
