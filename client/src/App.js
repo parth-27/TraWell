@@ -10,6 +10,7 @@ import Display from "./components/pages/Display/Display";
 import { ForgotPassword } from './components/pages/Auth/ForgotPassword';
 import { ConfirmOTP } from './components/pages/Auth/ConfirmOTP';
 import { NewPassword } from './components/pages/Auth/NewPassword';
+import { AccountConfirmation } from './components/pages/Auth/AccountConfirmation';
 
 import { userReducer, initialUserState } from './components/reducer';
 import { userContext } from './components/context';
@@ -34,6 +35,7 @@ function App() {
 						<Route path='/user/confirmOTP' exact render={(props) => <ConfirmOTP {...props} />} />
 						<Route path='/user/forgotPassword' exact render={() => <ForgotPassword />} />
 						<Route path='/user/resetPassword' exact render={(props) => <NewPassword {...props} />} />
+						<Route path='/user/accountConfirmation' exact render={(props) => <AccountConfirmation {...props} />} />
 					</Switch>
 				</Router>
 			</userContext.Provider>
