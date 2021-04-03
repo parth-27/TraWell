@@ -1,8 +1,7 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import styled from "styled-components";
 import { BoxContainer, FormContainer, Input, SubmitButton } from "../../../styles/style";
 import axios from 'axios';
-import { useHistory } from "react-router-dom";
 
 const Container = styled.div`
         margin-left:auto;
@@ -60,11 +59,10 @@ const SmallText = styled.h5`
         line-height: 14.24;
     `;
 
-export const ConfirmOTP = (props) => {
+export const AccountConfirmation = (props) => {
 
     const [otp, setOTP] = useState(0);
-    const email = props.location.state.email;
-    const history = useHistory();
+    var payload = props.location.state.payload;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -76,29 +74,24 @@ export const ConfirmOTP = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+
         sendToServer();
     };
 
 
     const sendToServer = () => {
-        const payload = {
-            otp: otp,
-            email:email,
+        payload = {
+            ...payload,
+            otp:otp
         }
-        console.log(email);
-        axios.post("http://localhost:8000/user/verifyotp", payload).then((res) => {
-            console.log(res.status);
+        console.log(payload);
+        axios.post("http://localhost:8000/user/create", payload).then((res) => {
             if (res.status == 200) {
-                history.push({
-                    pathname: "/user/resetPassword",
-                    state: { email: payload.email }
-                });
-                // window.location.href = '/user/resetPassword';
+                window.location.href = '/user/signin';
             } else {
                 console.log(`error`);
                 window.alert('Error please try again!!');
-                window.location.href = '/user/confirmOTP';
+                window.location.href = '/user/accountConfirmation';
             }
         });
     }

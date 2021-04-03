@@ -13,7 +13,7 @@ module.exports.create = async function (req, res) {
         console.log(`Server Error`);
         return res.status(404).json({ message: "server error" });
       }
-      if (req.body.otp != otp.code) {
+      if (req.body.otp.otp != otp.code) {
         return res.status(404).json({ message: "Wrong OTP" });
       }
       const salt = await bcrypt.genSalt(10);
@@ -162,7 +162,7 @@ module.exports.verifyotp = async function(req,res){
             if(err || !otp){
                 return res.status(404).json({message:'Error in finding user'});
             }
-            if(req.body.otp!=otp.code){
+            if(req.body.otp.otp!=otp.code){
                 return res.status(400).json({message:'wrong otp'});
             }
             res.status(200).json({message:'OTP verified'});

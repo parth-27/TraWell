@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from "styled-components";
 import { BoxContainer, FormContainer, Input, SubmitButton } from "../../../styles/style";
 import axios from 'axios';
-import { Redirect } from 'react-router';
+import { useHistory } from "react-router-dom";
 
 const Container = styled.div`
         margin-left:auto;
@@ -63,6 +63,7 @@ const SmallText = styled.h5`
 export const ForgotPassword = () => {
 
     const [email, setEmail] = useState("");
+    const history = useHistory();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -91,9 +92,13 @@ export const ForgotPassword = () => {
         const payload = {
             email: email.email,
         }
+        
         axios.post("http://localhost:8000/user/resetpassmail", payload).then((res) => {
             if (res.status == 200) {
-                <Redirect to="/user/confirmOTP" email={ email.email }/>
+                history.push({
+                    pathname: "/user/confirmOTP",
+                    state: { email: payload.email }
+                });
             } else {
                 console.log(`error`);
                 window.alert('Error please try again!!');
