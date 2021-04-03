@@ -31,7 +31,7 @@ function App() {
 						<Route path='/user/signup' exact render={(props) => <Authenticate {...props} signup={true} />} />
 						<Route path='/user/signin' exact render={() => <Authenticate />} />
 						<Route path='/rent' exact render={() => <Display />} />
-						<Route path='/user/confirmOTP' exact render={() => <ConfirmOTP />} />
+						<Route path='/user/confirmOTP' exact render={(props) => <ConfirmOTP {...props} />} />
 						<Route path='/user/forgotPassword' exact render={() => <ForgotPassword />} />
 						<Route path='/user/resetPassword' exact render={() => <NewPassword />} />
 					</Switch>
