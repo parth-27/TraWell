@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const bookingSchema = new mongoose.Schema({
+const RequestBookingSchema = new mongoose.Schema({
     bookingID:{
         type:String,
         required: true,
@@ -33,15 +33,7 @@ const bookingSchema = new mongoose.Schema({
         type:Number,
         default:0
     },
-    rating_borrower:{
-        type: Number,
-        default: 0
-    },
-    rating_lender:{
-        type: Number,
-        default: 0
-    }
 });
 
-const Booking = mongoose.model('Booking',bookingSchema);
-module.exports = Booking;
+const RequestBooking = mongoose.model('RequestBooking',RequestBookingSchema);
+module.exports = RequestBooking;
