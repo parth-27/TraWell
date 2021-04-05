@@ -58,7 +58,7 @@ module.exports.createSession = async function (req, res) {
       var token = jwt.sign({ id: user._id }, "Trawell", {
         expiresIn: 86400, // expires in 24 hours
       });
-      return res.status(200).json({ id: user._id, token: token });
+      return res.status(200).json({ id: user._id, accessToken: token });
     });
   } catch (err) {
     console.log(`Error in db connerction`);
