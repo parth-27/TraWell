@@ -8,13 +8,14 @@ import {
 } from "../../../styles/style";
 import { AccountContext } from "./context";
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link,useHistory } from 'react-router-dom';
 import { userContext } from '../../context/index';
 
 export function Login(props) {
 
     const inputRef = useRef(null);
     const UserContext = useContext(userContext);
+    const history = useHistory();
 
     const navLinkStyle = {
         color: 'rgba(170, 170, 170, 1)',
@@ -129,7 +130,7 @@ export function Login(props) {
                     }
                 });
                 
-                window.location.href = '/user/profile';
+                history.push("/");
             }
             else {
                 setErrorState({
