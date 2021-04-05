@@ -1,18 +1,46 @@
-import React, { useState, useEffect,useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '../../assets/Button/Button';
 import { Link } from 'react-router-dom';
+import AuthService from "../../../services/auth";
 import './Navbar.css';
-import { userContext } from '../../context/index';
+import styled from "styled-components";
+
+const LoginButton = styled.button`
+    :root{
+        ---primary:#fff;
+    }
+
+    padding: 8px 20px;
+    font-size: 18px;
+    
+    background-color: transparent;
+    color: #fff;
+    padding: 8px 20px;
+    border: 1px solid var(--primary);
+    transition: all 0.3s ease-out;
+    
+    padding: 8px 20px;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+
+    &:hover {
+        transition: all 0.3s ease-out;
+        background: #fff;
+        color: #242424;
+        transition: 250ms;
+    }
+
+`;
 
 function Navbar() {
     const [click, setClick] = useState(false);
     const [button, setButton] = useState(true);
     const [navbar, setNavbar] = useState(false);
+
     const handleClick = () => setClick(!click);
     const closeMobileMenu = () => setClick(false);
-
-    const UserContext = useContext(userContext);
-
+        
     const showButton = () => {
         if (window.innerWidth <= 960) {
             setButton(false);
@@ -23,7 +51,8 @@ function Navbar() {
 
     useEffect(() => {
         showButton();
-    }, []);
+    },[]);
+
 
     window.addEventListener('resize', showButton);
 
@@ -83,7 +112,7 @@ function Navbar() {
                         </li>
 
                         {
-                            UserContext.currentUser.userEmail === ""
+                            !(AuthService.getCurrentUser() && AuthService.getCurrentUser().token)
                                 ? 
                                 <li>
                                     <Link
@@ -98,7 +127,7 @@ function Navbar() {
                                 <div>
                                     <li>
                                         <Link
-                                            to='/userProfile'
+                                            to='/user/profile'
                                             className='nav-links-mobile'
                                             onClick={closeMobileMenu}
                                         >
@@ -107,9 +136,12 @@ function Navbar() {
                                     </li>
                                     <li>
                                         <Link
-                                            to='/user/signin'
+                                            to='/'
                                             className='nav-links-mobile'
-                                            onClick={closeMobileMenu}
+                                            onClick={() => {
+                                                AuthService.logout();
+                                                closeMobileMenu();
+                                            }}
                                         >
                                             Log Out
                                         </Link>
@@ -119,7 +151,7 @@ function Navbar() {
                         }
                     </ul>
                     {
-                        UserContext.currentUser.userEmail === ""
+                        !(AuthService.getCurrentUser() && AuthService.getCurrentUser().token)
                             ?
                             <>
                                 {button && <Button buttonStyle='btn--outline' style={{ marginRight: '2.5vw' }} link="/user/signin" >LOG IN</Button>}
@@ -130,9 +162,10 @@ function Navbar() {
                                     button
                                     &&
                                     <>
-                                        <Button buttonStyle='btn--outline' style={{ marginRight: '2.5vw' }} link="/user/signin" >My Profile</Button>
+                                        <Button buttonStyle='btn--outline' style={{ marginRight: '2.5vw' }} link="/user/profile" >My Profile</Button>
                                         &nbsp; &nbsp;
-                                        <Button buttonStyle='btn--outline' style={{ marginRight: '2.5vw' }} link="/user/signin" >LogOut</Button>
+                                        <LoginButton onClick={() => { AuthService.logout() }}>LogOut</LoginButton>
+                                        {/* <Button buttonStyle='btn--outline' style={{ marginRight: '2vw' }} link="/" onClick={()=>logout}>LogOut</Button> */}
                                     </>
                                 }
                             </>
