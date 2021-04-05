@@ -119,16 +119,17 @@ export function Login(props) {
             email: userInfo.email,
             password: userInfo.password,
         };
-        axios.post("http://localhost:8000/user/signin", payload).then((res) => {
+        
+        axios.post("http://localhost:8000/user/createsession", payload).then((res) => {
             if (res.status == 200) {
-
+                localStorage.setItem("user", JSON.stringify(res.data));
                 UserContext.userDispatch({
                     type: 'SET_USER', payload: {
                         email: userInfo.email,
                     }
                 });
                 
-                window.location.href = '/userProfile';
+                window.location.href = '/user/profile';
             }
             else {
                 setErrorState({
