@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '../../assets/Button/Button';
-import { Link } from 'react-router-dom';
+import { Link,useHistory } from 'react-router-dom';
 import AuthService from "../../../services/auth";
+import {authHeader} from "../../../services/authHeader";
 import './Navbar.css';
 import styled from "styled-components";
+import axios from 'axios';
 
 const LoginButton = styled.button`
     :root{
@@ -40,6 +42,7 @@ function Navbar() {
 
     const handleClick = () => setClick(!click);
     const closeMobileMenu = () => setClick(false);
+    const history = useHistory();
         
     const showButton = () => {
         if (window.innerWidth <= 960) {
@@ -64,7 +67,17 @@ function Navbar() {
         }
     }
 
-    window.addEventListener('scroll', changeBackground);    
+    window.addEventListener('scroll', changeBackground);
+    
+    const fetchUserProfile = () => {
+        console.log("fuck");
+        axios.get("http://localhost:8000/user/profile", { headers: authHeader() }).then((res) => {
+            if (res.status == 200) {
+                console.log(res);
+                history.push("/user/profile");
+            }
+        });
+    }
 
     return (
         <>
@@ -112,7 +125,7 @@ function Navbar() {
                         </li>
 
                         {
-                            !(AuthService.getCurrentUser() && AuthService.getCurrentUser().token)
+                            !(AuthService.getCurrentUser() && AuthService.getCurrentUser().accessToken)
                                 ? 
                                 <li>
                                     <Link
@@ -127,9 +140,13 @@ function Navbar() {
                                 <div>
                                     <li>
                                         <Link
-                                            to='/user/profile'
                                             className='nav-links-mobile'
-                                            onClick={closeMobileMenu}
+                                            onClick={
+                                                () =>{
+                                                    fetchUserProfile();
+                                                    closeMobileMenu();
+                                                }
+                                            }
                                         >
                                             My Profile
                                         </Link>
@@ -151,7 +168,7 @@ function Navbar() {
                         }
                     </ul>
                     {
-                        !(AuthService.getCurrentUser() && AuthService.getCurrentUser().token)
+                        !(AuthService.getCurrentUser() && AuthService.getCurrentUser().accessToken)
                             ?
                             <>
                                 {button && <Button buttonStyle='btn--outline' style={{ marginRight: '2.5vw' }} link="/user/signin" >LOG IN</Button>}
@@ -162,7 +179,7 @@ function Navbar() {
                                     button
                                     &&
                                     <>
-                                        <Button buttonStyle='btn--outline' style={{ marginRight: '2.5vw' }} link="/user/profile" >My Profile</Button>
+                                        <LoginButton onClick={() => {fetchUserProfile()}} >My Profile</LoginButton>
                                         &nbsp; &nbsp;
                                         <LoginButton onClick={() => { AuthService.logout() }}>LogOut</LoginButton>
                                         {/* <Button buttonStyle='btn--outline' style={{ marginRight: '2vw' }} link="/" onClick={()=>logout}>LogOut</Button> */}
