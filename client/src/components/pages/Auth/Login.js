@@ -5,27 +5,21 @@ import {
     FormContainer,
     Input,
     SubmitButton,
+    DisplayError
 } from "../../../styles/style";
 import { AccountContext } from "./context";
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link,useHistory } from 'react-router-dom';
 import { userContext } from '../../context/index';
 
 export function Login(props) {
 
     const inputRef = useRef(null);
-    const UserContext = useContext(userContext);
+    const {user,dispatch} = useContext(userContext);
+    const history = useHistory();
 
     const navLinkStyle = {
         color: 'rgba(170, 170, 170, 1)',
-        fontSize: '15px',
-        fontWeight: '500',
-        margin: '10px 0',
-        textDecoration: 'none',
-    }
-
-    const errorStyle = {
-        color: '#c2372d',
         fontSize: '15px',
         fontWeight: '500',
         margin: '10px 0',
@@ -119,25 +113,25 @@ export function Login(props) {
             email: userInfo.email,
             password: userInfo.password,
         };
-        axios.post("http://localhost:8000/user/signin", payload).then((res) => {
+        
+        axios.post("http://localhost:8000/user/createsession", payload).then((res) => {
             if (res.status == 200) {
-
-                UserContext.userDispatch({
-                    type: 'SET_USER', payload: {
+                localStorage.setItem("user", JSON.stringify(res.data));
+                dispatch({
+                    type: "SET_USER",
+                    payload: {
                         email: userInfo.email,
                     }
                 });
-                
-                window.location.href = '/userProfile';
+                console.log(user.currentUser);
+                history.push("/");
             }
             else {
                 setErrorState({
                     error: true,
                     statement:"Please try again to signin"
                 })
-                window.alert('Error please try again!!');
-                window.location.href = '/user/signin';
-                
+                history.push("/user/signin");
             }
         });
     }
@@ -149,7 +143,7 @@ export function Login(props) {
 
     return (
         <BoxContainer>
-            <p style={errorStyle}>{errorState.error && errorState.statement}</p>
+            <DisplayError>{errorState.error && errorState.statement}</DisplayError>
             <FormContainer >
                 <Input ref={inputRef} placeholder="Email" name="email" onChange={handleChange} pattern='/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i' required/>
                 <Input type="password" placeholder="Password" name="password" onChange={ handleChange } required/>

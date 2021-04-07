@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from "styled-components";
-import { BoxContainer, FormContainer, Input, SubmitButton } from "../../../styles/style";
+import { BoxContainer, FormContainer, Input, SubmitButton,DisplayError } from "../../../styles/style";
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
 
@@ -64,6 +64,11 @@ export const ForgotPassword = () => {
 
     const [email, setEmail] = useState("");
     const history = useHistory();
+    // error state
+    const [errorState, setErrorState] = useState({
+        error: false,
+        statement: ""
+    });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -83,8 +88,11 @@ export const ForgotPassword = () => {
             sendToServer();
         else
         {
-            window.alert('Error please try again!!');
-            window.location.href = '/user/forgotPassword';
+            setErrorState({
+                error: true,
+                statement:"Please Enter Valid Email ID"
+            })
+            history.push("/user/forgotPassword");
         }
     };
 
@@ -100,9 +108,11 @@ export const ForgotPassword = () => {
                     state: { email: payload.email }
                 });
             } else {
-                console.log(`error`);
-                window.alert('Error please try again!!');
-                window.location.href = '/user/forgotPassword';
+                setErrorState({
+                    error: true,
+                    statement: "Something went wrong :( Please Try again"
+                })
+                history.push("/user/forgotPassword");
             }
         });
     }
@@ -116,6 +126,7 @@ export const ForgotPassword = () => {
                 </>
             </TopContainer>
             <BoxContainer>
+                <DisplayError>{errorState.error && errorState.statement}</DisplayError>
                 <FormContainer>
                     <Input type="email" placeholder="Email" onChange={handleChange} name="email" required />
                     <SubmitButton onClick={handleSubmit} >Send&nbsp;OTP</SubmitButton>

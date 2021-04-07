@@ -1,18 +1,52 @@
 import React, { useState, useEffect,useContext } from 'react';
 import { Button } from '../../assets/Button/Button';
-import { Link } from 'react-router-dom';
+import { Link,useHistory } from 'react-router-dom';
+import AuthService from "../../../services/auth";
+import {authHeader} from "../../../services/authHeader";
 import './Navbar.css';
+import styled from "styled-components";
+import axios from 'axios';
 import { userContext } from '../../context/index';
+
+const LoginButton = styled.button`
+    :root{
+        ---primary:#fff;
+    }
+
+    padding: 8px 20px;
+    font-size: 18px;
+    
+    background-color: transparent;
+    color: #fff;
+    padding: 8px 20px;
+    border: 1px solid var(--primary);
+    transition: all 0.3s ease-out;
+    
+    padding: 8px 20px;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+
+    &:hover {
+        transition: all 0.3s ease-out;
+        background: #fff;
+        color: #242424;
+        transition: 250ms;
+    }
+
+`;
 
 function Navbar() {
     const [click, setClick] = useState(false);
     const [button, setButton] = useState(true);
     const [navbar, setNavbar] = useState(false);
+
     const handleClick = () => setClick(!click);
     const closeMobileMenu = () => setClick(false);
+    const history = useHistory();
 
-    const UserContext = useContext(userContext);
-
+    const {user,dispatch} = useContext(userContext);
+        
     const showButton = () => {
         if (window.innerWidth <= 960) {
             setButton(false);
@@ -23,7 +57,8 @@ function Navbar() {
 
     useEffect(() => {
         showButton();
-    }, []);
+    },[]);
+
 
     window.addEventListener('resize', showButton);
 
@@ -35,7 +70,22 @@ function Navbar() {
         }
     }
 
-    window.addEventListener('scroll', changeBackground);    
+    window.addEventListener('scroll', changeBackground);
+    
+    const fetchUserProfile = () => {
+        axios.get("http://localhost:8000/user/profile", { headers: authHeader() }).then((res) => {
+            if (res.status == 200) {
+                console.log(res);
+                console.log(user.userEmail);
+                // UserContext.userDispatch({
+                //     type: 'SET_USER', payload: {
+                //         email: userInfo.email,
+                //     }
+                // });
+                history.push("/user/profile");
+            }
+        });
+    }
 
     return (
         <>
@@ -83,7 +133,7 @@ function Navbar() {
                         </li>
 
                         {
-                            UserContext.currentUser.userEmail === ""
+                            !(AuthService.getCurrentUser() && AuthService.getCurrentUser().accessToken)
                                 ? 
                                 <li>
                                     <Link
@@ -98,18 +148,25 @@ function Navbar() {
                                 <div>
                                     <li>
                                         <Link
-                                            to='/userProfile'
                                             className='nav-links-mobile'
-                                            onClick={closeMobileMenu}
+                                            onClick={
+                                                () =>{
+                                                    fetchUserProfile();
+                                                    closeMobileMenu();
+                                                }
+                                            }
                                         >
                                             My Profile
                                         </Link>
                                     </li>
                                     <li>
                                         <Link
-                                            to='/user/signin'
+                                            to='/'
                                             className='nav-links-mobile'
-                                            onClick={closeMobileMenu}
+                                            onClick={() => {
+                                                AuthService.logout();
+                                                closeMobileMenu();
+                                            }}
                                         >
                                             Log Out
                                         </Link>
@@ -119,7 +176,7 @@ function Navbar() {
                         }
                     </ul>
                     {
-                        UserContext.currentUser.userEmail === ""
+                        !(AuthService.getCurrentUser() && AuthService.getCurrentUser().accessToken)
                             ?
                             <>
                                 {button && <Button buttonStyle='btn--outline' style={{ marginRight: '2.5vw' }} link="/user/signin" >LOG IN</Button>}
@@ -130,9 +187,10 @@ function Navbar() {
                                     button
                                     &&
                                     <>
-                                        <Button buttonStyle='btn--outline' style={{ marginRight: '2.5vw' }} link="/user/signin" >My Profile</Button>
+                                        <LoginButton onClick={() => {fetchUserProfile()}} >My Profile</LoginButton>
                                         &nbsp; &nbsp;
-                                        <Button buttonStyle='btn--outline' style={{ marginRight: '2.5vw' }} link="/user/signin" >LogOut</Button>
+                                        <LoginButton onClick={() => { AuthService.logout() }}>LogOut</LoginButton>
+                                        {/* <Button buttonStyle='btn--outline' style={{ marginRight: '2vw' }} link="/" onClick={()=>logout}>LogOut</Button> */}
                                     </>
                                 }
                             </>

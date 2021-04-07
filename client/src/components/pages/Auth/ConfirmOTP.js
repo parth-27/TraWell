@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import styled from "styled-components";
-import { BoxContainer, FormContainer, Input, SubmitButton } from "../../../styles/style";
+import { BoxContainer, FormContainer, Input, SubmitButton,DisplayError } from "../../../styles/style";
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
 
@@ -63,8 +63,13 @@ const SmallText = styled.h5`
 export const ConfirmOTP = (props) => {
 
     const [otp, setOTP] = useState(0);
-    const email = props.location.state.email;
     const history = useHistory();
+    // error state
+    const [errorState, setErrorState] = useState({
+        error: false,
+        statement: ""
+    });
+    const email = props.location.state.email;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -86,19 +91,23 @@ export const ConfirmOTP = (props) => {
             otp: otp,
             email:email,
         }
-        console.log(email);
+        
         axios.post("http://localhost:8000/user/verifyotp", payload).then((res) => {
-            console.log(res.status);
+            
             if (res.status == 200) {
                 history.push({
                     pathname: "/user/resetPassword",
                     state: { email: payload.email }
                 });
-                // window.location.href = '/user/resetPassword';
+                
             } else {
-                console.log(`error`);
-                window.alert('Error please try again!!');
-                window.location.href = '/user/confirmOTP';
+
+                setErrorState({
+                    error: true,
+                    statement: "Something went wrong :( Please Try again"
+                })
+                history.push("/user/confirmOTP")
+            
             }
         });
     }
@@ -112,6 +121,7 @@ export const ConfirmOTP = (props) => {
                 </>
             </TopContainer>
             <BoxContainer>
+                <DisplayError>{errorState.error && errorState.statement}</DisplayError>
                 <FormContainer>
                     <Input type="text" placeholder="Enter your OTP" name="otp" onChange={handleChange} required />
                     <SubmitButton onClick={handleSubmit} >Verify</SubmitButton>

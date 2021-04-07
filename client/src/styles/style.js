@@ -95,3 +95,11 @@ export const SubmitButton = styled.button`
   	transition: 250ms;
   }
 `;
+
+export const DisplayError = styled.p`
+  color: #c2372d;
+  font-size: 15px;
+  font-weight: 500;
+  margin: 10px 0;
+  text-decoration: none;
+`;

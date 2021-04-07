@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useReducer, } from 'react';
 import './App.css';
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -11,19 +11,20 @@ import { ForgotPassword } from './components/pages/Auth/ForgotPassword';
 import { ConfirmOTP } from './components/pages/Auth/ConfirmOTP';
 import { NewPassword } from './components/pages/Auth/NewPassword';
 import { AccountConfirmation } from './components/pages/Auth/AccountConfirmation';
+import { Profile } from './components/pages/Profile/Profile';
 
 import { userReducer, initialUserState } from './components/reducer';
 import { userContext } from './components/context';
 
 function App() {
 
-	const [user, userDispatch] = useReducer(userReducer, initialUserState);
+	const [user, dispatch] = useReducer(userReducer, initialUserState);
 
 	return (
 		<>
 			<userContext.Provider value={{
-				currentUser: user,
-				userDispatch: userDispatch
+				user,
+				dispatch
 			}}>
 				<Router>
 					<Navbar />
@@ -36,6 +37,7 @@ function App() {
 						<Route path='/user/forgotPassword' exact render={() => <ForgotPassword />} />
 						<Route path='/user/resetPassword' exact render={(props) => <NewPassword {...props} />} />
 						<Route path='/user/accountConfirmation' exact render={(props) => <AccountConfirmation {...props} />} />
+						<Route path='/user/profile' exact render={(props) => <Profile {...props} />} />
 					</Switch>
 				</Router>
 			</userContext.Provider>

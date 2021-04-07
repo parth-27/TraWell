@@ -15,7 +15,7 @@ const Main = () => {
     const timer = setTimeout(() => {
       setVideos(dummyData);
       setLoading(false);
-    }, 5000);
+    }, 2500);
     // Cancel the timer while unmounting
     return () => clearTimeout(timer);
   }, []);

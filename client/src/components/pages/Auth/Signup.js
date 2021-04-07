@@ -5,6 +5,7 @@ import {
     FormContainer,
     Input,
     SubmitButton,
+    DisplayError
 } from "../../../styles/style";
 import { AccountContext } from "./context";
 import axios from 'axios';
@@ -18,14 +19,6 @@ export function Signup(props) {
 
     const navLinkStyle = {
         color: 'rgba(170, 170, 170, 1)',
-        fontSize: '15px',
-        fontWeight: '500',
-        margin: '10px 0',
-        textDecoration: 'none',
-    }
-
-    const errorStyle = {
-        color: '#c2372d',
         fontSize: '15px',
         fontWeight: '500',
         margin: '10px 0',
@@ -149,8 +142,7 @@ export function Signup(props) {
                     error: true,
                     statement: "Please try again to signup"
                 })
-                window.alert('Error please try again!!');
-                window.location.href='/user/signup';
+                history.push("/user/signup")
             }
         });
     }
@@ -162,7 +154,7 @@ export function Signup(props) {
 
     return (
         <BoxContainer>
-            <p style={errorStyle}>{errorState.error && errorState.statement}</p>
+            <DisplayError>{errorState.error && errorState.statement}</DisplayError>
             <FormContainer >
                 <Input ref={inputRef} placeholder="Full Name" onChange={ handleChange } name="fullName" required/>
                 <Input type="email" placeholder="Email" onChange={handleChange} name="email" required/>
