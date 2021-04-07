@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styled from "styled-components";
-import { BoxContainer, FormContainer, Input, SubmitButton } from "../../../styles/style";
+import { BoxContainer, FormContainer, Input, SubmitButton,DisplayError } from "../../../styles/style";
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 const Container = styled.div`
         margin-left:auto;
@@ -62,6 +63,13 @@ const SmallText = styled.h5`
 export const AccountConfirmation = (props) => {
 
     const [otp, setOTP] = useState(0);
+    // error state
+    const [errorState, setErrorState] = useState({
+        error: false,
+        statement: ""
+    });
+    const history = useHistory();
+
     var payload = props.location.state.payload;
 
     const handleChange = (e) => {
@@ -74,7 +82,6 @@ export const AccountConfirmation = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         sendToServer();
     };
 
@@ -84,14 +91,16 @@ export const AccountConfirmation = (props) => {
             ...payload,
             otp:otp
         }
-        console.log(payload);
+
         axios.post("http://localhost:8000/user/create", payload).then((res) => {
             if (res.status == 200) {
-                window.location.href = '/user/signin';
+                history.push("/user/signin")
             } else {
-                console.log(`error`);
-                window.alert('Error please try again!!');
-                window.location.href = '/user/accountConfirmation';
+                setErrorState({
+                    error: true,
+                    statement:"Something went wrong :( Please Try again"
+                })
+                history.push("/user/accountConfirmation")
             }
         });
     }
@@ -105,6 +114,7 @@ export const AccountConfirmation = (props) => {
                 </>
             </TopContainer>
             <BoxContainer>
+                <DisplayError>{errorState.error && errorState.statement}</DisplayError>
                 <FormContainer>
                     <Input type="text" placeholder="Enter your OTP" name="otp" onChange={handleChange} required />
                     <SubmitButton onClick={handleSubmit} >Verify</SubmitButton>
