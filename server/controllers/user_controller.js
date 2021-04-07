@@ -74,7 +74,12 @@ module.exports.profile = async function (req, res, next) {
         return res.status(404).json({ mesage: "User doesnt exis" });
       }
       console.log(req.userId);
-      res.status(200).json({ name: user.name });
+      res.status(200).json({
+        name: user.name,
+        email: user.email,
+        phone_no: user.phone_no,
+        address:user.address
+      });
     });
   } catch (err) {
     console.log("Error in db connection");
