@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useReducer, } from 'react';
 import './App.css';
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -18,13 +18,13 @@ import { userContext } from './components/context';
 
 function App() {
 
-	const [user, userDispatch] = useReducer(userReducer, initialUserState);
+	const [user, dispatch] = useReducer(userReducer, initialUserState);
 
 	return (
 		<>
 			<userContext.Provider value={{
-				currentUser: user,
-				userDispatch: userDispatch
+				user,
+				dispatch
 			}}>
 				<Router>
 					<Navbar />
