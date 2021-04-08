@@ -10,12 +10,12 @@ import {
 import { AccountContext } from "./context";
 import axios from 'axios';
 import { Link,useHistory } from 'react-router-dom';
-import { userContext } from '../../context/index';
+import { GlobalState } from '../../context/index';
 
 export function Login(props) {
 
     const inputRef = useRef(null);
-    const {user,dispatch} = useContext(userContext);
+    const [user,dispatch] = useContext(GlobalState);
     const history = useHistory();
 
     const navLinkStyle = {
@@ -58,12 +58,14 @@ export function Login(props) {
     };
 
     const validateForm = () => {
-        if (userInfo.email.length === 0)
-        {
+
+        var emailPattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+
+        if (!(emailPattern.test(userInfo.email))) {
             setErrorState({
                 error: true,
-                statement:"Email Field is empty"
-            });
+                statement: "Please Enter Proper Email-ID"
+            })
             return false;
         }
 
@@ -123,7 +125,7 @@ export function Login(props) {
                         email: userInfo.email,
                     }
                 });
-                console.log(user.currentUser);
+                console.log(user);
                 history.push("/");
             }
             else {
@@ -145,7 +147,7 @@ export function Login(props) {
         <BoxContainer>
             <DisplayError>{errorState.error && errorState.statement}</DisplayError>
             <FormContainer >
-                <Input ref={inputRef} placeholder="Email" name="email" onChange={handleChange} pattern='/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i' required/>
+                <Input ref={inputRef} placeholder="Email" name="email" onChange={handleChange} required />
                 <Input type="password" placeholder="Password" name="password" onChange={ handleChange } required/>
                 <SubmitButton onClick={handleSubmit}>Login</SubmitButton>
             </FormContainer>
@@ -153,10 +155,7 @@ export function Login(props) {
             <Marginer direction="vertical" margin="1em" />
             <Marginer direction="vertical" margin={5} />
             <Link to="/user/signup" style={navLinkStyle} onClick={switchToSignup}>
-                Dont have an Account?
-            <Link to="/user/signup" onClick={switchToSignup} style={boldLink}>
-                    Sign Up
-            </Link>
+                Dont have an Account?<span style={boldLink}>Sign Up</span>
             </Link>
         </BoxContainer>
     );

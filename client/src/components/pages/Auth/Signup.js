@@ -170,10 +170,7 @@ export function Signup(props) {
             <Marginer direction="vertical" margin="1em" />
             <Marginer direction="vertical" margin={5} />
             <Link to="/user/signin" onClick={switchToSignin} style={navLinkStyle}>
-                Already have an account?
-            <Link to="/user/signin" onClick={switchToSignin} style={boldLink}>
-                    Log In
-            </Link>
+                Already have an account?<span style={boldLink}>Log In</span>
             </Link>
         </BoxContainer>
     );
