@@ -126,11 +126,15 @@ export function Signup(props) {
             email: userInfo.email,
             password: userInfo.password,
             phone_no: userInfo.phoneNumber,
-            address:userInfo.address1+userInfo.address2+userInfo.city+userInfo.pincode,
+            address: userInfo.address1 + "," + userInfo.address2,
+            pincode: userInfo.pincode,
+            city:userInfo.city,
         }
+        console.log(payload)
         axios.post("http://localhost:8000/user/userverifymail", payload).then((res) => {
             if (res.status == 200)
             {
+                console.log(payload)
                 history.push({
                     pathname: "/user/accountConfirmation",
                     state: { payload: payload }

@@ -120,12 +120,11 @@ export function Login(props) {
             if (res.status == 200) {
                 localStorage.setItem("user", JSON.stringify(res.data));
                 dispatch({
-                    type: "SET_USER",
+                    type: "LOGIN_SUCESS",
                     payload: {
                         email: userInfo.email,
                     }
                 });
-                console.log(user);
                 history.push("/");
             }
             else {
