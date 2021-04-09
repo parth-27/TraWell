@@ -76,6 +76,15 @@ function Navbar() {
         axios.get("http://localhost:8000/user/profile", { headers: authHeader() }).then((res) => {
             if (res.status == 200) {
                 console.log(res);
+                dispatch({
+                    type: "SET_USER_DETAILS",
+                    payload: {
+                        email: res.data.email,
+                        fullName: res.data.name,
+                        phoneNumber: res.data.phone_no,
+                        address:res.data.address
+                    }
+                })
                 history.push("/user/profile");
             }
         });
