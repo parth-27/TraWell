@@ -3,25 +3,26 @@ import '../../../App.css';
 import { Button } from './../../assets/Button/Button';
 import './HeroComponent.css';
 import $ from 'jquery';
-import { Modal } from './../../assets/Modal/Modal';
+//import { Modal } from './../../assets/Modal/Modal';
+import Modal from 'react-awesome-modal'
 
 class HeroComponent extends React.Component {
 
 	constructor() {
 		super();
 		this.state = {
-			show: false
+			visible: false
 		};
 		this.showModal = this.showModal.bind(this);
 		this.hideModal = this.hideModal.bind(this);
 	}
 
 	showModal = () => {
-		this.setState({ show: true });
+		this.setState({ visible: true });
 	};
 
 	hideModal = () => {
-		this.setState({ show: false });
+		this.setState({ visible: false });
 	};
 
 	componentDidMount() {
@@ -167,6 +168,38 @@ class HeroComponent extends React.Component {
 					</div>
 				</div>
 				{/* <p>What are you waiting for?</p> */}
+				
+				<Modal visible={this.state.visible} width="600" height="450" effect="fadeInUp" onClickAway={() => this.hideModal()}>
+                    <div className="modal-container">
+						<div className="modal-header">
+							<h1>Car Rental</h1>
+							<p>Safe Car Rentals in India</p>
+							<a href="javascript:void(0);" onClick={() => this.hideModal()}>Close</a>
+							<hr />
+						</div>
+						<div className="modal-content">
+							<form className="CarSearchForm" action="">
+							<label htmlFor="city">Choose a city:</label>
+							<select name="city" id="city">
+								<option value="ahmedabab">Ahmedabad</option>
+								<option value="bengaluru">Bengaluru</option>
+								<option value="chennai">Chennai</option>
+								<option value="delhi">Delhi</option>
+							</select>
+							<br />
+							<label htmlFor="start-time">Select a starting time:</label>
+							<input type="time" id="start-time" name="start-time" /> 
+							<br />
+							<label htmlFor="end-time">Select a ending time:</label>
+							<input type="time" id="end-time" name="end-time" /> 
+							<br />
+							<button type="submit" onClick="">Search Cars</button>
+							</form>
+						</div>
+                    </div>
+                </Modal>
+				
+				{/*
 				<Modal show={this.state.show} 
 					handleClose={this.hideModal} 
 					title="Rental"
@@ -186,12 +219,12 @@ class HeroComponent extends React.Component {
 					<input type="time" id="end-time" name="end-time" /> 
 					<br />
 				</Modal>
+		*/}
 				<div className='hero-btns'>
 					<Button
 						className='btns'
 						buttonStyle='btn--outline'
 						buttonSize='btn--large'
-						link="/rent"
 						// TODO : first redirect to link and then open the modal
 						onClick={this.showModal}
 					>
