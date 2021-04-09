@@ -32,9 +32,19 @@ module.exports.addcar = function (req, res) {
 };
 
 module.exports.car_details = function (req, res) {
-  console.log("Request for details of car: " + req.body.carID);
-  data = cars.find({ carID: req.body.carid });
-  res.json(data);
+  try{
+    cars.findOne({carid:req.body.carid},function(err,car){
+      if(err || !car){
+        console.log(`Error in finding car`);
+        return res.status(404).json({message:'Error in finding car'});
+      }
+      console.log(car);
+      return res.status(200).json(car);
+    })  
+  }catch(err){
+    console.log('Error in catch block');
+    return res.status(404).json({message:'Error in catch block'})
+  }
 };
 
 module.exports.getCarfromLocationAndDate = function (req, res) {
