@@ -14,7 +14,7 @@ import { AccountConfirmation } from './components/pages/Auth/AccountConfirmation
 import { Profile } from './components/pages/Profile/Profile';
 
 import { userReducer, initialUserState } from './components/reducer';
-import { userContext } from './components/context';
+import { GlobalState } from './components/context';
 
 function App() {
 
@@ -22,10 +22,7 @@ function App() {
 
 	return (
 		<>
-			<userContext.Provider value={{
-				user,
-				dispatch
-			}}>
+			<GlobalState.Provider value={[user, dispatch]}>
 				<Router>
 					<Navbar />
 					<Switch>
@@ -40,7 +37,7 @@ function App() {
 						<Route path='/user/profile' exact render={(props) => <Profile {...props} />} />
 					</Switch>
 				</Router>
-			</userContext.Provider>
+			</GlobalState.Provider>
 		</>
 	);
 }

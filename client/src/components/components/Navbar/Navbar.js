@@ -6,7 +6,7 @@ import {authHeader} from "../../../services/authHeader";
 import './Navbar.css';
 import styled from "styled-components";
 import axios from 'axios';
-import { userContext } from '../../context/index';
+import { GlobalState } from '../../context/index';
 
 const LoginButton = styled.button`
     :root{
@@ -45,7 +45,7 @@ function Navbar() {
     const closeMobileMenu = () => setClick(false);
     const history = useHistory();
 
-    const {user,dispatch} = useContext(userContext);
+    const [user,dispatch] = useContext(GlobalState);
         
     const showButton = () => {
         if (window.innerWidth <= 960) {
@@ -76,12 +76,17 @@ function Navbar() {
         axios.get("http://localhost:8000/user/profile", { headers: authHeader() }).then((res) => {
             if (res.status == 200) {
                 console.log(res);
-                console.log(user.userEmail);
-                // UserContext.userDispatch({
-                //     type: 'SET_USER', payload: {
-                //         email: userInfo.email,
-                //     }
-                // });
+                dispatch({
+                    type: "SET_USER_DETAILS",
+                    payload: {
+                        email: res.data.email,
+                        fullName: res.data.name,
+                        phoneNumber: res.data.phone_no,
+                        address: res.data.address,
+                        city: res.data.city,
+                        pincode:res.data.pincode,
+                    }
+                })
                 history.push("/user/profile");
             }
         });
@@ -146,18 +151,21 @@ function Navbar() {
                                 </li> 
                                 :
                                 <div>
-                                    <li>
-                                        <Link
-                                            className='nav-links-mobile'
-                                            onClick={
-                                                () =>{
-                                                    fetchUserProfile();
-                                                    closeMobileMenu();
-                                                }
+                                    <li
+                                        className='nav-links-mobile'
+                                        onClick={
+                                            () => {
+                                                fetchUserProfile();
+                                                closeMobileMenu();
                                             }
-                                        >
+                                        }
+                                    >
+                                        {/* <Link
+                                            to="/"
+                                            
+                                        > */}
                                             My Profile
-                                        </Link>
+                                        {/* </Link> */}
                                     </li>
                                     <li>
                                         <Link
