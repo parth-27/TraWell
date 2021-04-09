@@ -80,7 +80,9 @@ module.exports.profile = async function (req, res, next) {
         name: user.name,
         email: user.email,
         phone_no: user.phone_no,
-        address:user.address
+        address: user.address,
+        city: user.city,
+        pincode:user.pincode,
       });
     });
   } catch (err) {
