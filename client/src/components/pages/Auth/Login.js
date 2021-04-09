@@ -5,28 +5,21 @@ import {
     FormContainer,
     Input,
     SubmitButton,
+    DisplayError
 } from "../../../styles/style";
 import { AccountContext } from "./context";
 import axios from 'axios';
 import { Link,useHistory } from 'react-router-dom';
-import { userContext } from '../../context/index';
+import { GlobalState } from '../../context/index';
 
 export function Login(props) {
 
     const inputRef = useRef(null);
-    const UserContext = useContext(userContext);
+    const [user,dispatch] = useContext(GlobalState);
     const history = useHistory();
 
     const navLinkStyle = {
         color: 'rgba(170, 170, 170, 1)',
-        fontSize: '15px',
-        fontWeight: '500',
-        margin: '10px 0',
-        textDecoration: 'none',
-    }
-
-    const errorStyle = {
-        color: '#c2372d',
         fontSize: '15px',
         fontWeight: '500',
         margin: '10px 0',
@@ -65,12 +58,14 @@ export function Login(props) {
     };
 
     const validateForm = () => {
-        if (userInfo.email.length === 0)
-        {
+
+        var emailPattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+
+        if (!(emailPattern.test(userInfo.email))) {
             setErrorState({
                 error: true,
-                statement:"Email Field is empty"
-            });
+                statement: "Please Enter Proper Email-ID"
+            })
             return false;
         }
 
@@ -124,12 +119,12 @@ export function Login(props) {
         axios.post("http://localhost:8000/user/createsession", payload).then((res) => {
             if (res.status == 200) {
                 localStorage.setItem("user", JSON.stringify(res.data));
-                UserContext.userDispatch({
-                    type: 'SET_USER', payload: {
+                dispatch({
+                    type: "LOGIN_SUCESS",
+                    payload: {
                         email: userInfo.email,
                     }
                 });
-                
                 history.push("/");
             }
             else {
@@ -137,9 +132,7 @@ export function Login(props) {
                     error: true,
                     statement:"Please try again to signin"
                 })
-                window.alert('Error please try again!!');
-                window.location.href = '/user/signin';
-                
+                history.push("/user/signin");
             }
         });
     }
@@ -151,9 +144,9 @@ export function Login(props) {
 
     return (
         <BoxContainer>
-            <p style={errorStyle}>{errorState.error && errorState.statement}</p>
+            <DisplayError>{errorState.error && errorState.statement}</DisplayError>
             <FormContainer >
-                <Input ref={inputRef} placeholder="Email" name="email" onChange={handleChange} pattern='/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i' required/>
+                <Input ref={inputRef} placeholder="Email" name="email" onChange={handleChange} required />
                 <Input type="password" placeholder="Password" name="password" onChange={ handleChange } required/>
                 <SubmitButton onClick={handleSubmit}>Login</SubmitButton>
             </FormContainer>
@@ -161,10 +154,7 @@ export function Login(props) {
             <Marginer direction="vertical" margin="1em" />
             <Marginer direction="vertical" margin={5} />
             <Link to="/user/signup" style={navLinkStyle} onClick={switchToSignup}>
-                Dont have an Account?
-            <Link to="/user/signup" onClick={switchToSignup} style={boldLink}>
-                    Sign Up
-            </Link>
+                Dont have an Account?<span style={boldLink}>Sign Up</span>
             </Link>
         </BoxContainer>
     );

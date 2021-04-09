@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styled from "styled-components";
-import { BoxContainer, FormContainer, Input } from "../../../styles/style";
+import { BoxContainer, FormContainer, Input,DisplayError } from "../../../styles/style";
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 const Container = styled.div`
         margin-left:auto;
@@ -101,7 +102,14 @@ const SubmitButton = styled.button`
     `;
 
 export const NewPassword = (props) => {
+    
     const email1 = props.location.state.email;
+    const history = useHistory();
+    // error state
+    const [errorState, setErrorState] = useState({
+        error: false,
+        statement: ""
+    });
 
     const [newPass, setPassword] = useState({
         password: "",
@@ -127,9 +135,13 @@ export const NewPassword = (props) => {
         }
         else
         {
-            console.log(`error0`);
-            window.alert('Error please try again!!');
-            window.location.href = '/user/resetPassword';
+            setErrorState({
+                error: true,
+                statement:"Please Enter Your Password According to Constraints"
+            })
+            history.push("/user/resetPassword")
+            // window.alert('Error please try again!!');
+            // window.location.href = '/user/resetPassword';
         }
     };
 
@@ -140,11 +152,16 @@ export const NewPassword = (props) => {
         }
         axios.post("http://localhost:8000/user/setnewpass", payload).then((res) => {
             if (res.status == 200) {
-                window.location.href = '/user/signin';
+                history.push("/user/signin")
+                // window.location.href = '/user/signin';
             } else {
-                console.log(`error1`);
-                window.alert('Error please try again!!');
-                window.location.href = '/user/resetPassword';
+                setErrorState({
+                    error: true,
+                    statement:"Something went wrong :( Please Try again"
+                })
+                history.push("/user/resetPassword")
+                // window.alert('Error please try again!!');
+                // window.location.href = '/user/resetPassword';
             }
         });
     }
@@ -158,6 +175,7 @@ export const NewPassword = (props) => {
                 </>
             </TopContainer>
             <BoxContainer>
+                <DisplayError>{errorState.error && errorState.statement}</DisplayError>
                 <FormContainer>
                     <Input type="password" placeholder="Enter New Password" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" onChange={handleChange} name="password" required />
                     <Input type="password" placeholder="Confirm Password" patter="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" onChange={handleChange} name="confirmPassword" required />

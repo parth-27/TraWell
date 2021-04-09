@@ -5,6 +5,7 @@ import {
     FormContainer,
     Input,
     SubmitButton,
+    DisplayError
 } from "../../../styles/style";
 import { AccountContext } from "./context";
 import axios from 'axios';
@@ -18,14 +19,6 @@ export function Signup(props) {
 
     const navLinkStyle = {
         color: 'rgba(170, 170, 170, 1)',
-        fontSize: '15px',
-        fontWeight: '500',
-        margin: '10px 0',
-        textDecoration: 'none',
-    }
-
-    const errorStyle = {
-        color: '#c2372d',
         fontSize: '15px',
         fontWeight: '500',
         margin: '10px 0',
@@ -133,11 +126,15 @@ export function Signup(props) {
             email: userInfo.email,
             password: userInfo.password,
             phone_no: userInfo.phoneNumber,
-            address:userInfo.address1+userInfo.address2+userInfo.city+userInfo.pincode,
+            address: userInfo.address1 + "," + userInfo.address2,
+            pincode: userInfo.pincode,
+            city:userInfo.city,
         }
+        console.log(payload)
         axios.post("http://localhost:8000/user/userverifymail", payload).then((res) => {
             if (res.status == 200)
             {
+                console.log(payload)
                 history.push({
                     pathname: "/user/accountConfirmation",
                     state: { payload: payload }
@@ -149,8 +146,7 @@ export function Signup(props) {
                     error: true,
                     statement: "Please try again to signup"
                 })
-                window.alert('Error please try again!!');
-                window.location.href='/user/signup';
+                history.push("/user/signup")
             }
         });
     }
@@ -162,7 +158,7 @@ export function Signup(props) {
 
     return (
         <BoxContainer>
-            <p style={errorStyle}>{errorState.error && errorState.statement}</p>
+            <DisplayError>{errorState.error && errorState.statement}</DisplayError>
             <FormContainer >
                 <Input ref={inputRef} placeholder="Full Name" onChange={ handleChange } name="fullName" required/>
                 <Input type="email" placeholder="Email" onChange={handleChange} name="email" required/>
@@ -178,10 +174,7 @@ export function Signup(props) {
             <Marginer direction="vertical" margin="1em" />
             <Marginer direction="vertical" margin={5} />
             <Link to="/user/signin" onClick={switchToSignin} style={navLinkStyle}>
-                Already have an account?
-            <Link to="/user/signin" onClick={switchToSignin} style={boldLink}>
-                    Log In
-            </Link>
+                Already have an account?<span style={boldLink}>Log In</span>
             </Link>
         </BoxContainer>
     );

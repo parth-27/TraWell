@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useReducer, } from 'react';
 import './App.css';
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -14,18 +14,15 @@ import { AccountConfirmation } from './components/pages/Auth/AccountConfirmation
 import { Profile } from './components/pages/Profile/Profile';
 
 import { userReducer, initialUserState } from './components/reducer';
-import { userContext } from './components/context';
+import { GlobalState } from './components/context';
 
 function App() {
 
-	const [user, userDispatch] = useReducer(userReducer, initialUserState);
+	const [user, dispatch] = useReducer(userReducer, initialUserState);
 
 	return (
 		<>
-			<userContext.Provider value={{
-				currentUser: user,
-				userDispatch: userDispatch
-			}}>
+			<GlobalState.Provider value={[user, dispatch]}>
 				<Router>
 					<Navbar />
 					<Switch>
@@ -40,7 +37,7 @@ function App() {
 						<Route path='/user/profile' exact render={(props) => <Profile {...props} />} />
 					</Switch>
 				</Router>
-			</userContext.Provider>
+			</GlobalState.Provider>
 		</>
 	);
 }
