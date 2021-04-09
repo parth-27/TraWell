@@ -82,7 +82,9 @@ function Navbar() {
                         email: res.data.email,
                         fullName: res.data.name,
                         phoneNumber: res.data.phone_no,
-                        address:res.data.address
+                        address: res.data.address,
+                        city: res.data.city,
+                        pincode:res.data.pincode,
                     }
                 })
                 history.push("/user/profile");
