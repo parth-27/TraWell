@@ -24,7 +24,9 @@ module.exports.create = async function (req, res) {
         email: req.body.email,
         password: hashpwd,
         phone_no: req.body.phone_no,
-        address: req.body.email,
+        address: req.body.address,
+        pincode: req.body.pincode,
+        city: req.body.city
       });
       User.create(user_add, function (err) {
         if (err) {
