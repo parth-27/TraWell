@@ -40,7 +40,7 @@ function App() {
 						<Route path='/user/forgotPassword' exact render={() => <ForgotPassword />} />
 						<Route path='/user/resetPassword' exact render={(props) => <NewPassword {...props} />} />
 						<Route path='/user/accountConfirmation' exact render={(props) => <AccountConfirmation {...props} />} />
-						<Route path='/user/profile' exact render={(props) => <Profile {...props} />} />
+						<Route path='/user/profile' exact render={() => <Profile />} />
 						<Route path='/aboutUs' exact render={() => <AboutUs />} />
 						<Route path='/lendcar' exact render={() => <LendCar />} />
 					</Switch>
