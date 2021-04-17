@@ -4,7 +4,8 @@ export const initialUserState = {
     phoneNumber: "",
     address: "",
     city: "",
-    pincode:"",
+    pincode: "",
+    count: 0,
 }
 
 export const userReducer = (state, action) => {
@@ -18,17 +19,19 @@ export const userReducer = (state, action) => {
                 phoneNumber: payload.phoneNumber,
                 address: payload.address,
                 city: payload.city,
-                pincode:payload.pincode,
+                pincode: payload.pincode,
+            })
+        case "CLEAR_USER":
+            return initialUserState
+        case "OTP_FAILED":
+            return ({
+                ...state,
+                count:state.count+1,
             })
         case "LOGIN_SUCESS":
             return ({
                 ...state,
                 userEmail: payload.email,
-            });
-        case "CLEAR_USER":
-            return ({
-                ...state,
-                userEmail: "",
             });
         default:
             return state;

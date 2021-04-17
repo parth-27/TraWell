@@ -1,5 +1,5 @@
 import React from 'react';
-import Information from '../../components/ProfileComponents/Information/Information';
+import {Information} from '../../components/ProfileComponents/Information/Information';
 import {UserTabs} from '../../components/ProfileComponents/Tabs/UserTabs';
 import './Profile.css';
 
