@@ -6,16 +6,16 @@ import CardList from "../../assets/CarCard/CardList";
 import SkeletonCard from "../../assets/CarCard/SkeletonCarCard";
 
 const Main = () => {
-  const [videos, setVideos] = useState([]);
+  const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(false);
 
   // Load this effect on mount
   useEffect(() => {
     setLoading(true);
     const timer = setTimeout(() => {
-      setVideos(dummyData);
+      setCars(dummyData);
       setLoading(false);
-    }, 5000);
+    }, 2000);
     // Cancel the timer while unmounting
     return () => clearTimeout(timer);
   }, []);
@@ -24,15 +24,12 @@ const Main = () => {
     <div className="Main">
       {loading && <SkeletonCard />}
       {!loading &&
-        videos.map((list, index) => {
-          return (
-            <section key={index}>
-              <h2 className="section-title">{list.section}</h2>
-              <CardList list={list} />
-              <hr />
-            </section>
-          );
-        })}
+          (<section key="0">
+            <h2 className="section-title">Cars Available in Ahmedabad</h2>
+            <CardList list={cars} />
+            <hr />
+          </section>
+        )}
     </div>
   );
 };

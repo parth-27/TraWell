@@ -111,7 +111,7 @@ function Navbar() {
                         </li>
                         <li className='nav-item'>
                             <Link
-                                to='/lendcar'
+                                to='/user/lendCar'
                                 className='nav-links'
                                 onClick={closeMobileMenu}
                             >
