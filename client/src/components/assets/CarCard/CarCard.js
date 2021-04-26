@@ -1,25 +1,22 @@
 import React from "react";
 
-const CarCard = ({ item, channel }) => {
+const CarCard = ({ item }) => {
     return (
-      <li className="car-card">
-        <a
-          href={`https://www.youtube.com/watch?v=${item.id}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="card-link"
-        >
-          <img src={item.image} alt={item.title} className="card-image" />
-          <img src={item.image} alt={item.title} className="channel-image" />
-          <h4 className="card-title">{item.title}</h4>
-          <p className="card-channel">
-            <i>{channel}</i>
-          </p>
-          <div className="card-metrics">
-            {item.views} &bull; {item.published}
-          </div>
-        </a>
-      </li>
+      <div className="card-design">
+        <div className="card-image-div">
+          <img src={item.picture} alt={item.modl} className="card-image"/>
+        </div>
+        <div className="lender-image-div">
+          <img src={item.picture} alt={item.modl}  className="lender-image"/>
+        </div>
+        <h4 className="card-title">{item.company + " " + item.modl}</h4>
+        <p className="card-channel">
+          <i>{item.rent}</i>
+        </p>
+        <div className="card-metrics">
+          {/* {item.views} &bull; {item.published} */}
+        </div>
+      </div>
     );
   };
 

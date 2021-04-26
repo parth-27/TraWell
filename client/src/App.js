@@ -42,7 +42,7 @@ function App() {
 						<Route path='/user/accountConfirmation' exact render={(props) => <AccountConfirmation {...props} />} />
 						<Route path='/user/profile' exact render={() => <Profile />} />
 						<Route path='/aboutUs' exact render={() => <AboutUs />} />
-						<Route path='/lendcar' exact render={() => <LendCar />} />
+						<Route path='/user/lendCar' exact render={() => <LendCar />} />
 					</Switch>
 				</Router>
 			</GlobalState.Provider>

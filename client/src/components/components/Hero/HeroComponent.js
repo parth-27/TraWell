@@ -235,7 +235,7 @@ class HeroComponent extends React.Component {
 						className='btns'
 						buttonStyle='btn--primary'
 						buttonSize='btn--large'
-						link="/rent"
+						link="/user/lendCar"
 					>
 						LEND YOUR CAR <i className='far fa-play-circle' />
 					</Button>

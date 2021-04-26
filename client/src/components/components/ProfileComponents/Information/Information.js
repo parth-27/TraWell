@@ -67,7 +67,7 @@ export const Information = () => {
         }
     };
 
-    const handleCropImage = () => {
+    const handleSubmit = (e) => {
         console.log(setEditorRef);
         debugger;
         if (setEditorRef) {
@@ -79,9 +79,6 @@ export const Information = () => {
         }
 
         debugger;
-    };
-
-    const handleSubmit = (e) => {
         e.preventDefault();
 
         // if (!validateForm()) {
@@ -151,7 +148,7 @@ export const Information = () => {
                             <Input placeholder="Pincode" value={userInfo.pincode} onChange={handleChange} name="pincode" />
                             <span style={{ display: "flex" }}>
                                 <SubmitButton onClick={() => {
-                                    handleCropImage();
+                                    //handleCropImage();
                                     handleSubmit();
                                 }} style={{ flex: 1 }} > Edit Profile </SubmitButton>
                                 <SubmitButton onClick={() => changePassword()} style={{ flex: 1 }} > Change Password </SubmitButton>
