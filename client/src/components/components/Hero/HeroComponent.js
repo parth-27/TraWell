@@ -3,7 +3,6 @@ import '../../../App.css';
 import { Button } from './../../assets/Button/Button';
 import './HeroComponent.css';
 import $ from 'jquery';
-//import { Modal } from './../../assets/Modal/Modal';
 import Modal from 'react-awesome-modal'
 
 class HeroComponent extends React.Component {
@@ -199,27 +198,6 @@ class HeroComponent extends React.Component {
 					</div>
 				</Modal>
 
-				{/*
-				<Modal show={this.state.show} 
-					handleClose={this.hideModal} 
-					title="Rental"
-					tagLine="Safe Car Rentals in India">
-					<label htmlFor="city">Choose a city:</label>
-					<select name="city" id="city">
-						<option value="ahmedabab">Ahmedabad</option>
-						<option value="bengaluru">Bengaluru</option>
-						<option value="chennai">Chennai</option>
-						<option value="delhi">Delhi</option>
-					</select>
-					<br />
-					<label htmlFor="start-time">Select a starting time:</label>
-					<input type="time" id="start-time" name="start-time" /> 
-					<br />
-					<label htmlFor="end-time">Select a ending time:</label>
-					<input type="time" id="end-time" name="end-time" /> 
-					<br />
-				</Modal>
-		*/}
 				<div className='hero-btns'>
 					<Button
 						className='btns'
