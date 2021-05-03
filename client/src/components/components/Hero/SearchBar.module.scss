@@ -1,0 +1,179 @@
+@mixin tablet() {
+  @media screen and (min-width: 768px) {
+    @content;
+  }
+}
+
+@mixin desktop() {
+  @media screen and (min-width: 992px) {
+    @content;
+  }
+}
+
+@mixin large() {
+  @media screen and (min-width: 1200px) {
+    @content;
+  }
+}
+
+@mixin primaryFont() {
+  font-family: "Yeseva One", cursive;
+}
+
+@mixin secondaryFont() {
+  font-family: "Roboto", sans-serif;
+}
+
+.mainContainer {
+  position: relative;
+}
+
+.cont {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  color: var(--content-color);
+}
+
+.contWide {
+  @extend .cont;
+  @include tablet {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.unitCont {
+}
+
+.unitContWide {
+  @include tablet {
+    width: 45%;
+  }
+}
+
+.label {
+  text-align: left;
+  height: 35%;
+  padding: 0 15px;
+}
+
+.label p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--test-color);
+}
+
+.dateTimeCont {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: relative;
+}
+
+.date,
+.time {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  border: var(--border);
+  color: var(--test-color);
+  border-radius: 5px;
+  margin-top: 5px;
+  cursor: pointer;
+  height: 3rem;
+}
+
+.date p,
+.time p {
+  color: var(--test-color);
+}
+
+.date {
+  width: 58%;
+  position: relative;
+}
+
+.timeCont {
+  width: 38%;
+  position: relative;
+}
+
+.cont > :last-child {
+  margin-top: 15px;
+}
+
+.contWide > :last-child {
+  @include tablet {
+    margin-top: 0;
+  }
+}
+.arrowCont {
+  display: none;
+  color: var(--indigo);
+}
+
+.arrowContWide {
+  @extend .arrowCont;
+  @include tablet {
+    display: inline-block;
+    margin-top: 27px;
+  }
+}
+
+.calendar {
+  height: 100%;
+}
+
+.calendarCont {
+  position: absolute;
+  display: inline-block;
+  background-color: white;
+  border-radius: 5px;
+  left: 55px;
+  top: -5px;
+  margin: 0 auto;
+  z-index: -20;
+}
+
+.calendarContEnd {
+  @extend .calendarCont;
+}
+
+.timeDropdown {
+  position: fixed;
+  z-index: 14;
+  top: 16rem;
+  width: 120px;
+  height: 300px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  overflow-y: scroll;
+}
+
+.timeDropdownWide {
+  @extend .timeDropdown;
+  @include tablet {
+    position: absolute;
+    left: 5px;
+    top: 50px;
+  }
+}
+
+.timeValue {
+  cursor: pointer;
+  padding: 10px 0;
+  margin: 0 10px;
+  border-radius: 5px;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+  &:active {
+    background-color: var(--indigo);
+    color: white;
+  }
+}

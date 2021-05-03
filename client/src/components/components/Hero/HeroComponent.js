@@ -3,7 +3,8 @@ import '../../../App.css';
 import { Button } from './../../assets/Button/Button';
 import './HeroComponent.css';
 import $ from 'jquery';
-import Modal from 'react-awesome-modal'
+import Modal from 'react-awesome-modal';
+import SearchBar from './SearchBar';
 
 class HeroComponent extends React.Component {
 
@@ -168,32 +169,18 @@ class HeroComponent extends React.Component {
 				</div>
 				{/* <p>What are you waiting for?</p> */}
 
-				<Modal visible={this.state.visible} width="600" height="450" effect="fadeInUp" onClickAway={() => this.hideModal()}>
-					<div className="modal-container">
-						<div className="modal-header">
-							<h1>Car Rental</h1>
-							<p>Safe Car Rentals in India</p>
-							<a href="javascript:void(0);" onClick={() => this.hideModal()}>Close</a>
-							<hr />
-						</div>
-						<div className="modal-content">
-							<form className="CarSearchForm" action="">
-								<label htmlFor="city">Choose a city:</label>
-								<select name="city" id="city">
-									<option value="ahmedabab">Ahmedabad</option>
-									<option value="bengaluru">Bengaluru</option>
-									<option value="chennai">Chennai</option>
-									<option value="delhi">Delhi</option>
-								</select>
-								<br />
-								<label htmlFor="start-time">Select a starting time:</label>
-								<input type="time" id="start-time" name="start-time" />
-								<br />
-								<label htmlFor="end-time">Select a ending time:</label>
-								<input type="time" id="end-time" name="end-time" />
-								<br />
-								<button type="submit" onClick="">Search Cars</button>
-							</form>
+				<Modal visible={this.state.visible} width="600" effect="fadeInUp" onClickAway={() => this.hideModal()}>
+					<div className="container">
+						<SearchBar />
+						<div className="buttonContainer">
+							{' '}
+							<Button
+								className='btns'
+								buttonStyle='btn--primary'
+								buttonSize='btn--large'
+								link="/user/lendCar">
+								Search for cars
+							</Button>
 						</div>
 					</div>
 				</Modal>
