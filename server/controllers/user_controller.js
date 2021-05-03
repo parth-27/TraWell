@@ -1,3 +1,4 @@
+require('dotenv').config()
 const User = require("../models/user");
 const Otp = require("../models/otp");
 const jwt = require("jsonwebtoken");
@@ -112,14 +113,19 @@ module.exports.userverifymail = async function (req, res) {
         email: req.body.email,
       });
       newCode.save();
-      const data = {
-        from: '"Shreyansh Shah" <shreyansh_shah@yahoo.com>',
-        to: req.body.email,
-        subject: "TraWell: Verify OTP",
-        text: secretCode,
-        html: `<b>Your OTP: ${secretCode}</b>`,
-      };
-      await emailservice.sendMail(data);
+      // const data = {
+      //   from: '"Shreyansh Shah" <shreyansh_shah@yahoo.com>',
+      //   to: req.body.email,
+      //   subject: "Your TraWell Verification OTP",
+      //   text: secretCode,
+      //   html: `<b>Your OTP: ${secretCode}</b>`,
+      // };
+      // await emailservice.sendMail(data);
+      await emailservice.sendEmail(process.env.EMAIL, secretCode, (err, result) => {
+        if (err) {
+          console.error({ err });
+        }
+      });
       res.status(200).json({ message: secretCode });
     });
   } catch (err) {
@@ -130,7 +136,25 @@ module.exports.userverifymail = async function (req, res) {
 
 module.exports.resetpassmail = async function (req, res) {
   try {
-    console.log(req.body);
+    if (req.body.changePassword === "changePassword")
+    {
+      const secretCode = cryptoRandomString({
+        length: 6,
+      });
+      const newCode = new Otp({
+        code: secretCode,
+        email: req.body.email,
+      });
+      newCode.save();
+      await emailservice.sendEmail(process.env.EMAIL, secretCode, (err, result) => {
+        if (err) {
+          console.error({ err });
+        }
+      });
+      res.status(200).json({ message: secretCode });
+    }
+    else {
+      console.log(req.body);
       User.findOne({email:req.body.email},async function(err,user){
           if(err || !user){
               res.status(404).json({message:'Please enter valid email'});
@@ -149,16 +173,22 @@ module.exports.resetpassmail = async function (req, res) {
             email: req.body.email,
           });
           newCode.save();
-          const data = {
-            from: '"Shreyansh Shah" <shreyansh_shah@yahoo.com>',
-            to: req.body.email,
-            subject: "TraWell: Verify OTP",
-            text: secretCode,
-            html: `<b>Your OTP: ${secretCode}</b>`,
-          };
-          await emailservice.sendMail(data);
+          // const data = {
+          //   from: '"Shreyansh Shah" <shreyansh_shah@yahoo.com>',
+          //   to: req.body.email,
+          //   subject: "TraWell: Verify OTP",
+          //   text: secretCode,
+          //   html: `<b>Your OTP: ${secretCode}</b>`,
+          // };
+          // await emailservice.sendMail(data);
+        await emailservice.sendEmail(process.env.EMAIL, secretCode, (err, result) => {
+            if (err) {
+              console.error({ err });
+            }
+          });
           res.status(200).json({ message: secretCode });    
       })
+    }
   } catch (err) {
     console.log(err);
     res.status(404).json({ message: "Error in catch block" });
@@ -166,7 +196,8 @@ module.exports.resetpassmail = async function (req, res) {
 };
 
 module.exports.verifyotp = async function(req,res){
-    try{
+  try {
+        console.log(req.body.email);
         Otp.findOne({email:req.body.email},async function(err,otp){
             if(err || !otp){
                 return res.status(404).json({message:'Error in finding user'});
