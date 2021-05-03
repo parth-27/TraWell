@@ -1,8 +1,8 @@
-import React, { useState, useEffect,useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Button } from '../../assets/Button/Button';
-import { Link,useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import AuthService from "../../../services/auth";
-import {authHeader} from "../../../services/authHeader";
+import { authHeader } from "../../../services/authHeader";
 import './Navbar.css';
 import styled from "styled-components";
 import axios from 'axios';
@@ -45,8 +45,8 @@ function Navbar() {
     const closeMobileMenu = () => setClick(false);
     const history = useHistory();
 
-    const [user,dispatch] = useContext(GlobalState);
-        
+    const [user, dispatch] = useContext(GlobalState);
+
     const showButton = () => {
         if (window.innerWidth <= 960) {
             setButton(false);
@@ -57,21 +57,21 @@ function Navbar() {
 
     useEffect(() => {
         showButton();
-    },[]);
+    }, []);
 
 
     window.addEventListener('resize', showButton);
 
-    const changeBackground = () =>{
-        if(window.scrollY >= 80){
+    const changeBackground = () => {
+        if (window.scrollY >= 80) {
             setNavbar(true);
-        }else{
+        } else {
             setNavbar(false);
         }
     }
 
     window.addEventListener('scroll', changeBackground);
-    
+
     const fetchUserProfile = () => {
         axios.get("http://localhost:8000/user/profile", { headers: authHeader() }).then((res) => {
             if (res.status == 200) {
@@ -84,7 +84,7 @@ function Navbar() {
                         phoneNumber: res.data.phone_no,
                         address: res.data.address,
                         city: res.data.city,
-                        pincode:res.data.pincode,
+                        pincode: res.data.pincode,
                     }
                 })
                 history.push("/user/profile");
@@ -111,7 +111,7 @@ function Navbar() {
                         </li>
                         <li className='nav-item'>
                             <Link
-                                to='/user/lendCar'
+                                to='/user/lendcar'
                                 className='nav-links'
                                 onClick={closeMobileMenu}
                             >
@@ -139,7 +139,7 @@ function Navbar() {
 
                         {
                             !(AuthService.getCurrentUser() && AuthService.getCurrentUser().accessToken)
-                                ? 
+                                ?
                                 <li>
                                     <Link
                                         to='/user/signin'
@@ -148,7 +148,7 @@ function Navbar() {
                                     >
                                         Log In
                                     </Link>
-                                </li> 
+                                </li>
                                 :
                                 <div>
                                     <li
@@ -180,7 +180,7 @@ function Navbar() {
                                         </Link>
                                     </li>
                                 </div>
-                                
+
                         }
                     </ul>
                     {
@@ -195,7 +195,7 @@ function Navbar() {
                                     button
                                     &&
                                     <>
-                                        <LoginButton onClick={() => {fetchUserProfile()}} >My Profile</LoginButton>
+                                        <LoginButton onClick={() => { fetchUserProfile() }} >My Profile</LoginButton>
                                         &nbsp; &nbsp;
                                         <LoginButton onClick={() => { AuthService.logout() }}>LogOut</LoginButton>
                                         {/* <Button buttonStyle='btn--outline' style={{ marginRight: '2vw' }} link="/" onClick={()=>logout}>LogOut</Button> */}

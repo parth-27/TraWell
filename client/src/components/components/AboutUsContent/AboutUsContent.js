@@ -1,7 +1,7 @@
 import React from 'react'
 import './AboutUsContent.css';
 
-export default function AboutUsContent() {
+function AboutUsContent() {
     return (
         <div className="about-us-content">
             <div className="content-image">
@@ -13,3 +13,5 @@ export default function AboutUsContent() {
         </div>
     )
 }
+
+export default React.memo(AboutUsContent);

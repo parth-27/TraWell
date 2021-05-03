@@ -6,6 +6,7 @@ export const initialUserState = {
     city: "",
     pincode: "",
     count: 0,
+    imageUrl:"",
 }
 
 export const userReducer = (state, action) => {
@@ -33,6 +34,13 @@ export const userReducer = (state, action) => {
                 ...state,
                 userEmail: payload.email,
             });
+        case "SET_IMAGE":
+            console.log(payload);
+            debugger;
+            return ({
+                ...state,
+                imageUrl:payload.imageUrl
+            })
         default:
             return state;
     }

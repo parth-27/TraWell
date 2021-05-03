@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function TeamMember({name, imgsrc, position, github, linkedin, email, twitter}) {
+function TeamMember({name, imgsrc, position, github, linkedin, email, twitter}) {
     return (
          <li class="team-member">
             <div class="our-team" data-aos="zoom-in" data-aos-duration="3000ms">
@@ -21,3 +21,5 @@ export default function TeamMember({name, imgsrc, position, github, linkedin, em
         </li>   
     )
 }
+
+export default React.memo(TeamMember);

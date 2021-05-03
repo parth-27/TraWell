@@ -20,4 +20,4 @@ const CarCard = ({ item }) => {
     );
   };
 
-  export default CarCard;
+  export default React.memo(CarCard);
