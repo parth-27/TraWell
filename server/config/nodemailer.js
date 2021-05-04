@@ -14,7 +14,7 @@ exports.sendEmail = function (email, secretCode ,callback) {
         from: String('Account Confirmation OTP ' + process.env.EMAIL),
         to: email,
         subject: "Your TraWell Verification OTP",
-        text: `Please Enter this ${secretCode} on TraWell Site`
+        text: `This is your One Time Password(OTP)  '${secretCode}'  only valid for 5 mins`
     };
     nodemailerTransporter.sendMail(options, (error, info) => {
         if (error) {

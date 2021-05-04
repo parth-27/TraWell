@@ -121,7 +121,7 @@ module.exports.userverifymail = async function (req, res) {
       //   html: `<b>Your OTP: ${secretCode}</b>`,
       // };
       // await emailservice.sendMail(data);
-      await emailservice.sendEmail(process.env.EMAIL, secretCode, (err, result) => {
+      await emailservice.sendEmail(req.body.email, secretCode, (err, result) => {
         if (err) {
           console.error({ err });
         }
@@ -163,7 +163,7 @@ module.exports.resetpassmail = async function (req, res) {
       //   html: `<b>Your OTP: ${secretCode}</b>`,
       // };
       // await emailservice.sendMail(data);
-      await emailservice.sendEmail(process.env.EMAIL, secretCode, (err, result) => {
+      await emailservice.sendEmail(req.body.email, secretCode, (err, result) => {
         if (err) {
           console.error({ err });
         }
@@ -178,12 +178,13 @@ module.exports.resetpassmail = async function (req, res) {
 
 module.exports.verifyotp = async function (req, res) {
   try {
-    console.log(req.body.email);
+    // console.log(req.body.email);
     Otp.findOne({ email: req.body.email }, async function (err, otp) {
       if (err || !otp) {
         return res.status(404).json({ message: 'Error in finding user' });
       }
       if (req.body.otp.otp != otp.code) {
+        console.log(req.body.email);
         return res.status(400).json({ message: 'wrong otp' });
       }
       res.status(200).json({ message: 'OTP verified' });
