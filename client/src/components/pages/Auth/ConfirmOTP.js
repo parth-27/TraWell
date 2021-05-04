@@ -1,8 +1,9 @@
-import React,{useState} from 'react';
+import React,{useState,useContext} from 'react';
 import styled from "styled-components";
 import { BoxContainer, FormContainer, Input, SubmitButton,DisplayError } from "../../../styles/style";
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
+import { GlobalState } from '../../context/index';
 
 const Container = styled.div`
         margin-left:auto;
@@ -60,7 +61,7 @@ const SmallText = styled.h5`
         line-height: 14.24;
     `;
 
-export const ConfirmOTP = (props) => {
+export const ConfirmOTP = () => {
 
     const [otp, setOTP] = useState(0);
     const history = useHistory();
@@ -69,7 +70,9 @@ export const ConfirmOTP = (props) => {
         error: false,
         statement: ""
     });
-    const email = props.location.state.email;
+
+    const [user, dispatch] = useContext(GlobalState);
+    const email = user.userEmail;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -91,25 +94,41 @@ export const ConfirmOTP = (props) => {
             otp: otp,
             email:email,
         }
-        
-        axios.post("http://localhost:8000/user/verifyotp", payload).then((res) => {
-            
-            if (res.status == 200) {
-                history.push({
-                    pathname: "/user/resetPassword",
-                    state: { email: payload.email }
-                });
-                
-            } else {
 
-                setErrorState({
-                    error: true,
-                    statement: "Something went wrong :( Please Try again"
-                })
-                history.push("/user/confirmOTP")
-            
-            }
-        });
+        if (user.count === 3)
+        {
+            setErrorState({
+                error: true,
+                statement: "To Many Attemps Failed Please Try Again"
+            });
+            dispatch({
+                type: "CLEAR_USER",
+            });
+            history.push("/user/forgotPassword");
+        }
+        else
+        {
+
+            axios.post("http://localhost:8000/user/verifyotp", payload).then((res) => {
+                
+                if (res.status == 200) {
+                    history.push({
+                        pathname: "/user/resetPassword",
+                    });
+                    
+                } else {
+                    console.log(res)
+                    setErrorState({
+                        error: true,
+                        statement: "Something went wrong :( Please Try again"
+                    });
+                    dispatch({
+                        type: "OTP_FAILED",
+                    });
+                    history.push("/user/confirmOTP")
+                }
+            });
+        }
     }
 
     return (

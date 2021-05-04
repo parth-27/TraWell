@@ -6,7 +6,8 @@ export const initialUserState = {
     city: "",
     pincode: "",
     count: 0,
-    imageUrl:"",
+    imageUrl: "",
+    password:"",
 }
 
 export const userReducer = (state, action) => {
@@ -21,6 +22,17 @@ export const userReducer = (state, action) => {
                 address: payload.address,
                 city: payload.city,
                 pincode: payload.pincode,
+            })
+        case "TEMP_DETAILS":
+            return ({
+                ...state,
+                userEmail: payload.email,
+                fullName: payload.fullName,
+                phoneNumber: payload.phoneNumber,
+                address: payload.address,
+                city: payload.city,
+                pincode: payload.pincode,
+                password:payload.password,
             })
         case "CLEAR_USER":
             return initialUserState

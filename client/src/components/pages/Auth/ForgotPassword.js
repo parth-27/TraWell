@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import styled from "styled-components";
 import { BoxContainer, FormContainer, Input, SubmitButton,DisplayError } from "../../../styles/style";
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
+import { GlobalState } from '../../context/index';
 
 const Container = styled.div`
         margin-left:auto;
@@ -70,6 +71,8 @@ export const ForgotPassword = () => {
         statement: ""
     });
 
+    const [user, dispatch] = useContext(GlobalState);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setEmail((prevState) => ({
@@ -103,9 +106,14 @@ export const ForgotPassword = () => {
         
         axios.post("http://localhost:8000/user/resetpassmail", payload).then((res) => {
             if (res.status == 200) {
+                dispatch({
+                    type: "LOGIN_SUCESS",
+                    payload: {
+                        email: payload.email,
+                    }
+                });
                 history.push({
                     pathname: "/user/confirmOTP",
-                    state: { email: payload.email }
                 });
             } else {
                 setErrorState({

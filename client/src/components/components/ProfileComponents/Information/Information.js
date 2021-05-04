@@ -6,7 +6,7 @@ import Modal from 'react-awesome-modal';
 import { FormContainer, SubmitButton, Input } from '../../../../styles/style';
 import { useHistory } from 'react-router-dom';
 import AvatarEditor from 'react-avatar-editor';
-
+import axios from 'axios';
 
 
 export const Information = () => {
@@ -90,7 +90,18 @@ export const Information = () => {
     };
 
     const changePassword = () => {
-        history.push("/user/forgotPassword")
+
+        const payload = {
+            email: userInfo.email,
+        }
+
+        axios.post("http://localhost:8000/user/resetpassmail", payload).then((res) => {
+            if (res.status == 200) {
+                history.push("/user/confirmOTP",);
+            } else {
+                history.push("/user/profile");
+            }
+        });
     }
 
     return (
