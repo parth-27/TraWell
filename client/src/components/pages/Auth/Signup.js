@@ -10,6 +10,7 @@ import {
 import { AccountContext } from "./context";
 import axios from 'axios';
 import { Link, useHistory } from 'react-router-dom';
+import { GlobalState } from '../../context/index';
 
 export function Signup(props) {
 
@@ -34,6 +35,7 @@ export function Signup(props) {
     }
 
     const { switchToSignin } = useContext(AccountContext);
+    const [user, dispatch] = useContext(GlobalState);
 
     const [userInfo, setUserInfo] = useState({
         fullName:"",
@@ -130,14 +132,24 @@ export function Signup(props) {
             pincode: userInfo.pincode,
             city:userInfo.city,
         }
-        console.log(payload)
+
         axios.post("http://localhost:8000/user/userverifymail", payload).then((res) => {
             if (res.status == 200)
             {
-                console.log(payload)
+                dispatch({
+                    type: "TEMP_DETAILS",
+                    payload: {
+                        email: userInfo.email,
+                        fullName: userInfo.fullName,
+                        phoneNumber: userInfo.phoneNumber,
+                        address: userInfo.address1 + "," + userInfo.address2,
+                        city: userInfo.city,
+                        pincode: userInfo.pincode,
+                        password : userInfo.password,
+                    }
+                })
                 history.push({
                     pathname: "/user/accountConfirmation",
-                    state: { payload: payload }
                 });
             }
             else
