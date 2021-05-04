@@ -35,10 +35,10 @@ function App() {
 						<Route path='/' exact render={() => <Home />} />
 						<Route path='/user/signup' exact render={(props) => <Authenticate {...props} signup={true} />} />
 						<Route path='/user/signin' exact render={() => <Authenticate />} />
-						<Route path='/user/confirmOTP' exact render={(props) => <ConfirmOTP {...props} />} />
+						<Route path='/user/confirmOTP' exact render={() => <ConfirmOTP />} />
 						<Route path='/user/forgotPassword' exact render={() => <ForgotPassword />} />
-						<Route path='/user/resetPassword' exact render={(props) => <NewPassword {...props} />} />
-						<Route path='/user/accountConfirmation' exact render={(props) => <AccountConfirmation {...props} />} />
+						<Route path='/user/resetPassword' exact render={() => <NewPassword />} />
+						<Route path='/user/accountConfirmation' exact render={() => <AccountConfirmation />} />
 						<Route path='/rent' exact render={() => <CardDeck />} />
 						<Route path='/user/profile' exact render={() => <Profile />} />
 						<Route path='/user/lendCar' exact render={() => <LendCar />} />
