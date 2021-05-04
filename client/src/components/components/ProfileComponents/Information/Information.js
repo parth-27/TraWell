@@ -92,7 +92,7 @@ export const Information = () => {
     const changePassword = () => {
 
         const payload = {
-            changePassword : "changePassword",
+            email: userInfo.email,
         }
 
         axios.post("http://localhost:8000/user/resetpassmail", payload).then((res) => {
