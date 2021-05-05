@@ -268,13 +268,14 @@
 
 .left-panel {
   width: 60%;
-  margin: 1%;
+  margin: 0.5%;
   padding: 0 2%;
 }
 
 .right-panel {
   width: 40%;
-  margin: 1%;
+  margin-top: 0.5%;
+  margin-right: 2.5%;
   padding: 0 2%;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
