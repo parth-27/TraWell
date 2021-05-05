@@ -1,9 +1,7 @@
 .lend-form {
-  padding-left: 3%;
-  padding-top: 3%;
-  padding-bottom: 3%;
+  padding: 5%;
   background-color: rgb(255, 255, 255);
-  width: 40%;
+  width: 45%;
   margin-left: auto;
   margin-right: auto;
   box-shadow: #4a4a4a;
@@ -13,6 +11,123 @@
 .lend-label {
   display: block;
   padding-top: 30px;
+}
+/* 
+.dropdown-inputs{
+  width: 100%;
+  margin: 3vh auto;
+  font-size: 16px;
+  padding: 5px;
+  font-family: 'Roboto';
+  color: #001c5c;
+  border : 1px rgb(29, 29, 29) solid;
+} */
+
+.journeyRow{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin:3%;
+}
+
+.journeyFrom, .journeyTo, .toImage{
+  flex:1;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.fromDate, .toDate{
+  font-size: 3.5vh;
+  padding-left: 4%;
+  padding-right: auto;
+}
+
+#registration, #rent, #dep, #refund-dep, #pickup-add{
+  width: 96%;
+  border: 0;
+  padding: 2%;
+  margin: 3% 2% 0% 2%;
+  opacity: 1;
+}
+
+#category-display, #seats-display, #registration, #rent, #dep, #refund-dep, #pickup-add{
+  border-bottom: solid 1px #01374b;
+  font-size: 3vh;
+  color: #01374b;
+}
+
+#category-display, #seats-display{
+  flex:1;
+  padding: 2% 2% 7% 2%;
+  margin: 2%;
+  opacity: 0.5;
+}
+
+.errorLogs{
+  color : red;
+  font-size: 10px;
+  padding-left: 5%;
+  padding-right: auto;
+  margin-bottom: 1%;
+}
+
+.selectDiv {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+  float: left;
+  width: 100%;
+  font-family: "Roboto";
+  font-size: 1vh;
+  margin: 3% auto;
+  cursor: pointer;
+}
+
+.selectDiv:after {
+    content: '\f078';
+    font: normal normal normal 17px/1 FontAwesome;
+    color: #01374b;
+    right: 15px;
+    top: 6px;
+    height: 100%;
+    padding: 15px 0px 0px 15px;
+    position: absolute;
+    cursor: pointer;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+  display: none;
+}
+
+.selectDiv select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  display: block;
+  width: 100%;
+  height: 50px;
+  margin: 5px 0px;
+  padding: 0px 24px;
+  font-size: 3vh;
+  line-height: 1.75;
+  color: #01374b;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #01374b;
+  border-radius: 50px;
+  -ms-word-break: normal;
+  word-break: normal;
+  cursor: pointer;
+}
+
+.selectDiv select:disabled {
+  cursor:default;
+}
+
+.dropdown-inputs:disabled{
+  opacity: 0.6;
 }
 
 .label-text {
@@ -91,5 +206,4 @@
 .lend-submit{
   margin-left: auto;
   margin-right: auto;
-
 }
