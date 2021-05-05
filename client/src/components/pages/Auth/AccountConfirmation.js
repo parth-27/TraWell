@@ -122,7 +122,7 @@ export const AccountConfirmation = (props) => {
                     });
                     history.push("/user/signin")
                 }
-                else if (res.status == 400)
+                else if (res.status == 404)
                 {
                     setErrorState({
                         error: true,
