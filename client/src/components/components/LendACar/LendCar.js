@@ -3,8 +3,11 @@ import { dummyCarData, colorz, fuel, engine } from './CarsData'
 import './LendCar.css'
 import AvatarEditor from 'react-avatar-editor';
 import { Icon, Avatar } from '@material-ui/core';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { FormContainer, SubmitButton, Input } from '../../../styles/style'
 import axios from 'axios';
+import { AddCircle } from '@material-ui/icons';
 
 class LendCar extends React.Component {
   constructor(props) {
@@ -22,7 +25,7 @@ class LendCar extends React.Component {
       picture: "",
       croppedpicture: "",
       rentAmount: 0,
-      features: [],
+      features: [""],
       error: false,
       errorState: [{ error: false, statement: "" }]
     };
@@ -55,14 +58,16 @@ class LendCar extends React.Component {
     dropfuel.selectedIndex = null;
     dropeng.disabled = false;
     dropeng.selectedIndex = null;
-    labelcat.innerHTML = "-";
-    labelseat.innerHTML = "-";
+    labelcat.innerHTML = "Category Name";
+    labelseat.innerHTML = "Seats";
+    labelcat.style.opacity = "0.5";
+    labelseat.style.opacity = "0.5";
     inputRent.value = "";
     //console.log(this.state.company)
   }
 
   setModelandOthers = (e) => {
-    this.state.model = e.target.value
+    this.state.model = e.target.value;
     this.setState({});
     console.log(this.state.model);
     this.setCategorySeats(e);
@@ -84,6 +89,9 @@ class LendCar extends React.Component {
             //console.log(this.state.category)
             labl.innerHTML = this.state.category;
             labl2.innerHTML = this.state.seats;
+
+            labl.style.opacity = "1";
+            labl2.style.opacity = "1";
           }
         })
       }
@@ -95,7 +103,7 @@ class LendCar extends React.Component {
     this.setState({})
   }
 
-  setEngine =(e) =>{
+  setEngine = (e) => {
     this.state.eng_type = e.target.value;
     this.setState({})
   }
@@ -105,21 +113,21 @@ class LendCar extends React.Component {
     this.setState({})
   }
 
-  setRegNum =(e) =>{
+  setRegNum = (e) => {
     let ele = document.getElementById('registration');
     let errorele = document.getElementById('error-regnum');
     errorele.style.visibility = 'hidden';
     let val = ele.value;
     //console.log(val)
-    if (val.match(/^-?\d+$/)){
-      if (val.length == 12){
+    if (val.match(/^-?\d+$/)) {
+      if (val.length == 12) {
         this.state.registration = parseInt(val);
         this.setState({})
-      }else{
+      } else {
         errorele.innerHTML = "Registration number should have exactly 12 digits !!"
         errorele.style.visibility = 'visible';
       }
-    }else{
+    } else {
       errorele.innerHTML = "Please enter digits only !!"
       errorele.style.visibility = 'visible';
     }
@@ -135,16 +143,16 @@ class LendCar extends React.Component {
     errorele.style.visibility = 'hidden';
     let val = ele.value;
     //console.log(val)
-    if (val.match(/^-?\d+$/)){
+    if (val.match(/^-?\d+$/)) {
       let intval = parseInt(val)
-      if (intval >= 500 && intval <= 15000){
+      if (intval >= 500 && intval <= 15000) {
         this.state.rentAmount = parseInt(val);
         this.setState({})
-      }else{
+      } else {
         errorele.innerHTML = "Rent should be between 499 to 15001 Rs. only"
         errorele.style.visibility = 'visible';
       }
-    }else{
+    } else {
       errorele.innerHTML = "Please enter digits only !!"
       errorele.style.visibility = 'visible';
     }
@@ -168,24 +176,40 @@ class LendCar extends React.Component {
     this.setState({ features });
   }
 
-  setCroppedImage = (e) => {
-    console.log(this.editor);
-    
-    if (this.editor) {
-      this.editor.getImageScaledToCanvas().toBlob(blob => {
-        let imageUrl = URL.createObjectURL(blob);
-        console.log(imageUrl);
-        this.state.croppedpicture = imageUrl;
-        this.setState({});
-      });
-    }
-    e.preventDefault();
+  setTo(){
+
   }
 
-  sendToServer = (e) => {
+  setFrom(){
 
-    this.setCroppedImage(e);  
-    
+  }
+
+  setDep(){
+
+  }
+
+  setRefDep(){
+
+  }
+
+  sendToServer = (event) => {
+    event.preventDefault();
+    // console.log(this.editor);
+    let imageUrl = "asnjkebfhd";
+    if (this.editor) {
+      this.editor.getImageScaledToCanvas().toBlob(blob => {
+        imageUrl = URL.createObjectURL(blob);
+        console.log("+++++++++++++++++++++++++++++")
+        console.log(imageUrl);
+      });
+    }
+
+    setTimeout([], 100);
+    console.log("1111111111111111111111");
+    console.log(imageUrl);
+    this.state.croppedpicture = imageUrl;
+    this.setState({});
+    console.log(this.state.croppedpicture);
     const payload = {
       company: this.state.company,
       model: this.state.model,
@@ -202,7 +226,9 @@ class LendCar extends React.Component {
     console.log("----------------------------------");
     console.log(payload);
     console.log("----------------------------------");
-    // axios.post("http://localhost:8000/user/lendCar", payload).then((res) => {
+
+    // axios.post("http://localhost:8000/user/lendCar", payload)
+    // .then((res) => {
     //   if (res.status == 200) {
     //     console.log(payload)
     //     this.history.push("/user/profile");
@@ -236,67 +262,67 @@ class LendCar extends React.Component {
     return (
       <div>
         <form className="lend-form">
-          <h2> Lend Car Form </h2>
-          <h5> Please fill the following form to lend your car on our website </h5>
-          <label className="lend-label"> Company Name </label>
-          <select required className="dropdown-inputs" id="company-selection" onChange={this.loadModels}>
-            <option disabled selected>Select a Car Company</option>
-            {dummyCarData.map((option) => (
-              <option>{option.company}</option>
-            ))}
-          </select>
+          <h1 style={{ textAlign: "left" }}> Lend Car Form </h1>
+          <h5 style={{ marginBottom: "6%" }}> Please fill the following form to lend your car on our website </h5>
+          <div className="selectDiv">
+            <select required className="dropdown-inputs" id="company-selection">
+              <option disabled selected>Car Company</option>
+              {dummyCarData.map((option) => (
+                <option onClick={this.loadModels}>{option.company}</option>
+              ))}
+            </select>
+          </div>
           <br />
-          <label className="lend-label"> Model Name </label>
-          <select required className="dropdown-inputs" id="model-selection" disabled onChange={this.setModelandOthers}>
-            <option disabled selected>Select a Car Model</option>
-            {dummyCarData.map((option) => {
-              if (option.company == this.state.company) {
-                //console.log(option.company);
-                return option.cars_by_company.map((models) => (
-                  <option>{models.model}</option>)
-                )
-              }
-            })}
-          </select>
+          <div className="selectDiv">
+            <select required className="dropdown-inputs" id="model-selection" disabled >
+              <option disabled selected>Car Model</option>
+              {dummyCarData.map((option) => {
+                if (option.company == this.state.company) {
+                  //console.log(option.company);
+                  return option.cars_by_company.map((models) => (
+                    <option onClick={this.setModelandOthers}>{models.model}</option>)
+                  )
+                }
+              })}
+            </select>
+          </div>
           <br />
-          <label className="lend-label"> Category Name </label>
-          <label id="category-display">- </label>
+          <div style={{ display: "flex", flexDirection: "row", width: "100%", height: "50px", margin: "3% auto" }}>
+            <label id="category-display"> Category Name </label>
+            <label id="seats-display"> Seats </label>
+          </div>
+
+
+          <input required id="registration" onChange={this.setRegNum} placeholder="Registration Number" />
+          <label id="error-regnum" className="errorLogs"></label>
+          <br />
+          <div className="selectDiv">
+            <select required className="dropdown-inputs" id="color-selection" disabled >
+              <option value="" disabled selected>Car Color</option>
+              {colorz.map((option) => (
+                <option onClick={this.setColor}>{option}</option>
+              ))}
+            </select>
+          </div>
+          <br />
+          <div className="selectDiv">
+            <select required className="dropdown-inputs" id="fuel-selection" disabled >
+              <option value="" disabled selected>Fuel Type</option>
+              {fuel.map((option) => (
+                <option onClick={this.setFuel}>{option}</option>
+              ))}
+            </select>
+          </div>
           <br />
 
-          <label className="lend-label"> No. of Seats </label>
-          <label id="seats-display"> - </label>
-          <br />
-
-          <label className="lend-label"> Registration Number </label>
-          <input required id="registration" onChange={this.setRegNum}/>
-          <label disabled id="error-regnum" className="errorLogs"></label>
-          <br />
-
-          <label className="lend-label"> Select Color </label>
-          <select required className="dropdown-inputs" id="color-selection" disabled onChange={this.setColor}>
-            <option value="" disabled selected>Select the Car Color</option>
-            {colorz.map((option) => (
-              <option>{option}</option>
-            ))}
-          </select>
-          <br />
-
-          <label className="lend-label"> Fuel Type </label>
-          <select required className="dropdown-inputs" id="fuel-selection" disabled onChange={this.setFuel}>
-            <option value="" disabled selected>Fuel Type</option>
-            {fuel.map((option) => (
-              <option>{option}</option>
-            ))}
-          </select>
-          <br />
-
-          <label className="lend-label"> Engine Type </label>
-          <select required className="dropdown-inputs" id="engine-selection" disabled onChange={this.setEngine}>
-            <option value="" disabled selected>Engine Type</option>
-            {engine.map((option) => (
-              <option>{option}</option>
-            ))}
-          </select>
+          <div className="selectDiv">
+            <select required className="dropdown-inputs" id="engine-selection" disabled >
+              <option value="" disabled selected>Engine Type</option>
+              {engine.map((option) => (
+                <option onClick={this.setEngine}>{option}</option>
+              ))}
+            </select>
+          </div>
           <br />
 
           <label className="lend-label">Add Features</label>
@@ -304,11 +330,11 @@ class LendCar extends React.Component {
           {this.state.features.map((el, i) => (
             <div key={i}>
               <input type="text" value={el.feature || ""} onChange={e => this.handleChange(i, e)} />
-              <input type="button" value="remove" onClick={() => this.removeClick(i)} />
+              <button onClick={() => this.removeClick(i)} style={{ borderRadius: "50px", border: "0", padding: "auto", marginLeft: "2%", cursor: "pointer", backgroundColor: "white" }}><HighlightOffIcon /> </button>
             </div>
           ))}
 
-          <input type="button" value="add more" onClick={() => this.addClick()} />
+          <button  style={{ borderRadius: "50px", border: "0", padding: "auto", marginLeft: "2%", cursor: "pointer", backgroundColor: "white" }} onClick={() => this.addClick()}> <AddCircleIcon/></button>
           <br />
 
           <label className="lend-label">Add Images</label>
@@ -333,11 +359,26 @@ class LendCar extends React.Component {
           />
           <br />
 
-          <label className="lend-label"> Rent </label>
-          <Input required id="rent" placeholder="eg. 5000" onChange={this.setRent} />
+          <input required id="dep" placeholder="Deposit Amount eg. 5000" onChange={this.setDep} />
+          <label id="error-dep" className="errorLogs"></label>
+
+          <input required id="rent" placeholder="Rent Amount eg. 5000" onChange={this.setRent} />
           <label id="error-rent" className="errorLogs"></label>
+
+          <input required id="refund-dep" placeholder="Refundable Deposit Amount eg. 5000" onChange={this.setRefDep} />
+          <label id="error-ref-dep" className="errorLogs"></label>
           <br />
-          <SubmitButton onClick={this.sendToServer}>Add Your Car</SubmitButton>
+        
+          <div className="journeyRow">
+            <div className="journeyFrom"> <input type="date" className="fromDate" required onChange={this.setFrom} /> </div>
+            <div className="toImage">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="30"><g fill="none"><g><g><g><g transform="translate(0 1)"><path stroke="#979797" d="M.5 15h40" stroke-linecap="square" /><circle cx="20" cy="16" r="13" fill="#9B9B9B" stroke="#F7F7F7" /><text fill="#fff" font-family="Helvetica" font-size="13" font-weight="bold"><tspan x="12" y="21">TO</tspan></text></g></g></g></g></g></svg>
+            </div>
+            <div className="journeyTo"><input type="date" className="toDate" required onChange={this.setTo} /></div>
+          </div>
+
+          {/*<input required id="pickup-add" placeholder="Enter Pickup Address" onChange={this.setPickAdd} />*/}
+          <SubmitButton onClick={this.sendToServer} style={{padding:"2% 1%", margin:"8% 2% 0% 2%"}}>Add Your Car</SubmitButton>
         </form>
       </div>
     )
