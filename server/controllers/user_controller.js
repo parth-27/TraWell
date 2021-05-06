@@ -5,8 +5,10 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const emailservice = require("../config/nodemailer");
 const cryptoRandomString = require("crypto-random-string");
+const date = require("date-and-time");
 const Car = require("../models/car");
-
+const ConfirmedBooking = require("../models/confirmedBooking");
+const RequestedBooking = require("../models/requestBooking");
 module.exports.create = function (req, res) {
   console.log(req.body);
   try {
@@ -66,7 +68,7 @@ module.exports.createSession = async function (req, res) {
       if (!validPass) {
         return res.status(404).json({ message: "Invalid Password" });
       }
-      var token = jwt.sign({ id: user._id }, "Trawell", {
+      var token = jwt.sign({ id: user._id, email: user.email }, "Trawell", {
         expiresIn: 86400, // expires in 24 hours
       });
       return res.status(200).json({ id: user._id, accessToken: token });
@@ -78,6 +80,8 @@ module.exports.createSession = async function (req, res) {
 };
 
 module.exports.profile = async function (req, res, next) {
+  console.log(req.userId);
+  console.log(req.email);
   try {
     User.findById(req.userId, async function (err, user) {
       if (!user || err) {
@@ -218,17 +222,136 @@ module.exports.setnewpass = async function (req, res) {
 
 module.exports.getaddedcar = async function (req, res) {
   try {
-    Car.find({ lender_email: req.body.email }, async function (err, car) {
+    Car.find({ lender_email: req.email }, async function (err, car) {
       if (err || !car) {
-        return res.status(400).json({ message: "You have not added any car" });
+        return res.status(400).json({ message: "Server Error" });
       }
       if (car.length == 0) {
         return res.status(200).json({ message: "You have not added any car" });
       } else {
         return res.status(200).json(car);
       }
-      console.log(car);
     });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ message: "Error in catch block" });
+  }
+};
+
+module.exports.getrentedcar = async function (req, res) {
+  try {
+    const pattern = date.compile("YYYY-MM-DD");
+    var d1 = date.format(new Date(), pattern);
+
+    ConfirmedBooking.find({ borrower_email: req.email }, function (err, car) {
+      if (err || !car) {
+        return res.status(400).json({ message: "Server Error" });
+      }
+      if (car.length == 0) {
+        return res.status(200).json({ message: "You have not rented any car" });
+      } else {
+        car.forEach(function (c, index) {
+          var fromd = date.format(new Date(c.from_date), pattern);
+          var tod = date.format(new Date(c.to_date), pattern);
+          if (tod < d1) {
+            c.trip_status = 0;
+          } else if (d1 < fromd) {
+            c.trip_status = 1;
+          } else {
+            c.trip_status = -1;
+          }
+        });
+        return res.status(200).json(car);
+      }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ message: "Error in catch block" });
+  }
+};
+
+module.exports.getlendedcar = async function (req, res) {
+  try {
+    const pattern = date.compile("YYYY-MM-DD");
+    var d1 = date.format(new Date(), pattern);
+    ConfirmedBooking.find({ lender_email: req.email }, function (err, car) {
+      if (err || !car) {
+        return res.status(400).json({ message: "Server Error" });
+      }
+      if (car.length == 0) {
+        return res.status(200).json({ message: "You have not lended any car" });
+      } else {
+        car.forEach(function (c, index) {
+          var fromd = date.format(new Date(c.from_date), pattern);
+          var tod = date.format(new Date(c.to_date), pattern);
+          if (tod < d1) {
+            c.trip_status = 0;
+          } else if (d1 < fromd) {
+            c.trip_status = 1;
+          } else {
+            c.trip_status = -1;
+          }
+        });
+        return res.status(200).json(car);
+      }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ message: "Error in catch block" });
+  }
+};
+
+module.exports.getrequestedcar = async function (req, res) {
+  try {
+    const pattern = date.compile("YYYY-MM-DD");
+    var d1 = date.format(new Date(), pattern);
+    let temp_lc;
+    let temp_bc;
+    await RequestedBooking.find(
+      { lender_email: req.email },
+      function (err, lender_car) {
+        if (err) {
+          return res.status(400).json({ message: "server error" });
+        }
+        lended_car.forEach(function (c, index) {
+          var fromd = date.format(new Date(c.from_date), pattern);
+          var tod = date.format(new Date(c.to_date), pattern);
+          if (tod < d1) {
+            c.trip_status = 0;
+          } else if (d1 < fromd) {
+            c.trip_status = 1;
+          } else {
+            c.trip_status = -1;
+          }
+        });
+        temp_lc = lender_car;
+      }
+    );
+    await RequestedBooking.find(
+      { borrower_email: req.email },
+      function (err, borrow_car) {
+        if (err) {
+          return res.status(400).json({ message: "Server Error" });
+        }
+        borrow_car.forEach(function (c, index) {
+          var fromd = date.format(new Date(c.from_date), pattern);
+          var tod = date.format(new Date(c.to_date), pattern);
+          if (tod < d1) {
+            c.trip_status = 0;
+          } else if (d1 < fromd) {
+            c.trip_status = 1;
+          } else {
+            c.trip_status = -1;
+          }
+        });
+        temp_bc = borrow_car;
+      }
+    );
+    const result = {
+      lendedby: [...temp_lc],
+      borrowby: [...temp_bc],
+    };
+    res.status(200).json(result);
   } catch (err) {
     console.log(err);
     res.status(404).json({ message: "Error in catch block" });
