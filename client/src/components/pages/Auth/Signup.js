@@ -177,10 +177,10 @@ export function Signup(props) {
                 <Input type="password" placeholder="Password with atleast one letter and one number" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" onChange={handleChange} name="password" required/>
                 <Input type="password" placeholder="Confirm Password" patter="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" onChange={handleChange} name="confirmPassword" required/>
                 <Input type="tel" placeholder="0123456789" pattern="[0-9]{10}" maxlength="10" onChange={handleChange} name="phoneNumber" required />
-                <Input placeholder="Address 1" onChange={handleChange} name="address1" />
-                <Input placeholder="Address 2" onChange={handleChange} name="address2" />
-                <Input placeholder="City" onChange={handleChange} name="city" />
-                <Input placeholder="Pincode" onChange={handleChange} name="pincode" />
+                <Input placeholder="Address 1" onChange={handleChange} name="address1" required/>
+                <Input placeholder="Address 2" onChange={handleChange} name="address2" required/>
+                <Input placeholder="City" onChange={handleChange} name="city" required/>
+                <Input placeholder="Pincode" onChange={handleChange} name="pincode" required/>
                 <SubmitButton onClick={handleSubmit} >Signup</SubmitButton>
             </FormContainer>
             <Marginer direction="vertical" margin="1em" />

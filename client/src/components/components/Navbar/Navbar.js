@@ -109,15 +109,29 @@ function Navbar() {
                                 Home
                             </Link>
                         </li>
-                        <li className='nav-item'>
-                            <Link
-                                to='/user/lendcar'
-                                className='nav-links'
-                                onClick={closeMobileMenu}
-                            >
-                                Lend Your Car
-                            </Link>
-                        </li>
+                        {
+                            !(AuthService.getCurrentUser() && AuthService.getCurrentUser().accessToken)
+                                ?
+                                <li className='nav-item'>
+                                    <Link
+                                        to='/user/signin'
+                                        className='nav-links'
+                                        onClick={closeMobileMenu}
+                                    >
+                                        Lend Your Car
+                                    </Link>
+                                </li>
+                                :
+                                <li className='nav-item'>
+                                    <Link
+                                        to='/user/lendcar'
+                                        className='nav-links'
+                                        onClick={closeMobileMenu}
+                                    >
+                                        Lend Your Car
+                                    </Link>
+                                </li>
+                        }
                         <li className='nav-item'>
                             <Link
                                 to='/rent'

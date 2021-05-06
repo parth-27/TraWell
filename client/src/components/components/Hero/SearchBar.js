@@ -87,28 +87,6 @@ const SearchBar = ({ mobile }) => {
                                 <p>{`${month.start}/${day.start}/${year.start}`} </p>
                                 <DateIcon />
                             </div>
-
-                            {/* <div className={styles.timeCont}>
-                                <div
-                                    className={styles.time}
-                                    onClick={() => setIsFromOpen(true)}>
-                                    <p>{selectedPickupTime}</p>
-                                    <TimeIcon />
-                                </div>
-                                {isFromOpen && (
-                                    <div className={timeDropdownStyle}>
-                                        {availableTimes.map((time) => {
-                                            return (
-                                                <p
-                                                    className={styles.timeValue}
-                                                    onClick={() => handleDropdownSelection('from', time)}>
-                                                    {time}
-                                                </p>
-                                            );
-                                        })}
-                                    </div>
-                                )}
-                            </div> */}
                         </div>
                     </div>
 
@@ -139,30 +117,6 @@ const SearchBar = ({ mobile }) => {
                                 <p>{`${month.end}/${day.end}/${year.end}`}</p>
                                 <DateIcon />
                             </div>
-
-                            {/* <div className={styles.timeCont}>
-                                <div
-                                    className={styles.time}
-                                    onClick={() => setIsUntilOpen(true)}>
-                                    <p>{selectedDropoffTime}</p>
-                                    <TimeIcon />
-                                </div>
-                                {isUntilOpen && (
-                                    <div className={timeDropdownStyle}>
-                                        {availableTimes.map((time) => {
-                                            return (
-                                                <p
-                                                    className={styles.timeValue}
-                                                    onClick={() =>
-                                                        handleDropdownSelection('until', time)
-                                                    }>
-                                                    {time}
-                                                </p>
-                                            );
-                                        })}
-                                    </div>
-                                )}
-                            </div> */}
                         </div>
                     </div>
                 </div>
