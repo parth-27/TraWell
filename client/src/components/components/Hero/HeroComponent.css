@@ -89,7 +89,10 @@ video {
 }
 
 .buttonContainer {
-    margin-top: 15px;
+    margin: 5% auto;
+    display: flex;
+    flex-direction: row;
+    width: 80%;
 }
 
 .button {
