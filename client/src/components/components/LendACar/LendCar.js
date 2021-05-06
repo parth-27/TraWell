@@ -23,10 +23,9 @@ class LendCar extends React.Component {
 			eng_type: "",
 			color: "",
 			picture: "",
-			croppedpicture: "",
+			croppedImage: "",
 			rentAmount: 0,
 			depAmount: 0,
-			refDepAmount:0,
 			features: [],
 			error: false,
 			errorState: [{ error: false, statement: "" }],
@@ -48,7 +47,6 @@ class LendCar extends React.Component {
 		this.setTo = this.setTo.bind(this);
 		this.setFrom = this.setFrom.bind(this);
 		this.setDep = this.setDep.bind(this);
-		this.setRefDep = this.setRefDep.bind(this);
 		this.sendToServer = this.sendToServer.bind(this);
 		this.handleFile = this.handleFile.bind(this);
 	}
@@ -144,10 +142,6 @@ class LendCar extends React.Component {
 		}
 	}
 
-	setEditorRef = (editor) => {
-		this.editor = editor
-	}
-
 	setRent = (e) => {
 		let ele = document.getElementById('rent');
 		let errorele = document.getElementById('error-rent');
@@ -175,6 +169,7 @@ class LendCar extends React.Component {
 	}
 
 	addClick(e) {
+		e.preventDefault();
 		this.setState(prevState => ({
 			features: [...prevState.features, { feature: null }]
 		}), () => { console.log("new state", this.state) });
@@ -214,44 +209,9 @@ class LendCar extends React.Component {
 		}
 	}
 
-	setRefDep(e) {
-		let ele = document.getElementById('refund-dep');
-		let errorele = document.getElementById('error-ref-dep');
-		errorele.style.visibility = 'hidden';
-		let val = ele.value;
-
-		if (val.match(/^-?\d+$/)) {
-			let intval = parseInt(val)
-			if (intval >= 5000 && intval <= 15000) {
-				this.setState({ refDepAmount: parseInt(val) }, () => { console.log("new state", this.state) });
-			} else {
-				errorele.innerHTML = "Refund Deposit should be between 5000 to 15001 Rs. only"
-				errorele.style.visibility = 'visible';
-			}
-		} else {
-			errorele.innerHTML = "Please enter digits only !!"
-			errorele.style.visibility = 'visible';
-		}
-	}
-
 	sendToServer = (event) => {
 		event.preventDefault();
 		
-		let imageUrl = "asnjkebfhd";
-		if (this.editor) {
-			this.editor.getImageScaledToCanvas().toBlob(blob => {
-				imageUrl = URL.createObjectURL(blob);
-				console.log("+++++++++++++++++++++++++++++")
-				console.log(imageUrl);
-			});
-		}
-
-		setTimeout([], 100);
-		console.log("1111111111111111111111");
-		console.log(imageUrl);
-		this.state.croppedpicture = imageUrl;
-		this.setState({});
-		console.log(this.state.croppedpicture);
 		const payload = {
 			company: this.state.company,
 			model: this.state.model,
@@ -261,30 +221,46 @@ class LendCar extends React.Component {
 			seats: this.state.seats,
 			fuel: this.state.fuel_type,
 			eng: this.state.eng_type,
+			deposit: this.state.depAmount,
 			rent: this.state.rentAmount,
-			croppedpicture: this.state.croppedpicture,
+			croppedImage: this.state.croppedImage,
 			features: this.state.features,
+			to: this.state.to,
+			from: this.state.to,
 		}
-		console.log("----------------------------------");
+		
 		console.log(payload);
 		console.log("----------------------------------");
 
-		// axios.post("http://localhost:8000/user/lendCar", payload)
-		// .then((res) => {
-		//   if (res.status == 200) {
-		//     console.log(payload)
-		//     this.history.push("/user/profile");
-		//   }
-		//   else {
-		//     this.state.error = {
-		//       error: true,
-		//       statement: "Apologies.. due to server fault, we could not store your information!!"
-		//     }
-		//     this.setState({});
-		//     this.history.push("/user/profile");
-		//   }
-		// });
+		axios.post("http://localhost:8000/cars/addcar", payload)
+		.then((res) => {
+		  if (res.status == 200) {
+		    console.log(payload)
+		    this.history.push("/home");
+		  }
+		  else {
+		    this.state.error = {
+		      error: true,
+		      statement: "Apologies.. due to server fault, we could not store your information!!"
+		    }
+		    this.setState({});
+		    this.history.push("/user/lendcar");
+		  }
+		});
 	}
+
+	handleCropImage = () => {
+		if (this.avatarEditor) {
+			this.avatarEditor.getImageScaledToCanvas().toBlob(blob => {
+				let imageUrl = URL.createObjectURL(blob);
+				this.setState({
+					croppedImage: imageUrl,
+					blob
+				});
+			});
+		}
+		console.log(this.setState);
+	};
 
 	handleFile = (event) => {
 		const file = event.target.files[0];
@@ -293,11 +269,12 @@ class LendCar extends React.Component {
 		if (file) {
 			reader.readAsDataURL(file);
 			reader.addEventListener("load", () => {
-				this.state.picture = reader.result;
-				this.setState({});
-				
+				console.log(reader.result);
+				this.setState({ picture: reader.result });
 			});
 		}
+
+		console.log(this.setState);
 	};
 
 	render() {
@@ -382,9 +359,9 @@ class LendCar extends React.Component {
 					<br />
 
 					<label className="lend-label">Add Images</label>
-					{/* {this.state.picture &&
+					{this.state.picture &&
 						<AvatarEditor
-							ref={this.setEditorRef}
+							ref={node => (this.avatarEditor = node)}
 							image={this.state.picture}
 							width={300}
 							height={300}
@@ -393,7 +370,7 @@ class LendCar extends React.Component {
 							scale={1.2}
 							rotate={0}
 						/>
-					} */}
+					}
 					<Input
 						onChange={e => this.handleFile(e)}
 						fluid
@@ -401,6 +378,8 @@ class LendCar extends React.Component {
 						label="Car Image"
 						name="previewImage"
 					/>
+
+					<SubmitButton onClick={this.handleCropImage} style={{ padding: "2% 1%", margin: "8% 2% 0% 2%" }}>Crop</SubmitButton>
 					<br />
 
 					<input required id="dep" placeholder="Deposit Amount eg. 5000" onChange={e => this.setDep(e)} />
@@ -408,10 +387,6 @@ class LendCar extends React.Component {
 
 					<input required id="rent" placeholder="Rent Amount eg. 5000" onChange={e => this.setRent(e)} />
 					<label id="error-rent" className="errorLogs"></label>
-
-					<input required id="refund-dep" placeholder="Refundable Deposit Amount eg. 5000" onChange={e => this.setRefDep(e)} />
-					<label id="error-ref-dep" className="errorLogs"></label>
-					<br />
 
 					<div className="journeyRow">
 						<div className="journeyFrom"> <input type="date" className="fromDate" required onChange={e => this.setFrom(e)} /> </div>

@@ -5,7 +5,7 @@ const carSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    // pictures:[{type:Buffer,required:true}],
+    pictures:{type:Buffer,required:true},
     // registration_no:{
     //     type:String,
     //     required:true,
@@ -47,14 +47,14 @@ const carSchema = new mongoose.Schema({
     //     type:Number,
     //     default:60
     // },
-    city:{
-        type:String,
-        required:true
-    },
-    lender_email:{
-        type:String,
-        required:true
-    }
+    // city:{
+    //     type:String,
+    //     required:true
+    // },
+    // lender_email:{
+    //     type:String,
+    //     required:true
+    // }
 });
 
 const Car = mongoose.model('Car',carSchema);

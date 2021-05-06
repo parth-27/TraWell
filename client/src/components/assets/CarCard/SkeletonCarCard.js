@@ -5,7 +5,7 @@ const SkeletonCarCard = () => {
     return (
       <section>
         <h2 className="section-title">
-          <Skeleton duration={1} height={30} width={300} />
+          <Skeleton duration={1} height={30} width="100%" />
         </h2>
   
         <ul className="list">
