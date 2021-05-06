@@ -1,0 +1,9 @@
+.filters {
+	margin-left: 2%;
+  	width: 22%;
+  	background-color: rgb(255, 255, 255);
+}
+
+.larger {
+    transform: scale(2);
+}
