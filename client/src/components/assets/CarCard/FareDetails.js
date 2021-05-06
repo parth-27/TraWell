@@ -60,11 +60,11 @@ const FareDetails = (props) => {
                 <DisplayError>{errorState.error && errorState.statement}</DisplayError>
                 <FormContainer style={{boxShadow:"0 0 0"}}>
                     <div style={{display:"flex",flexDirection:"row"}}>
-                        <Input type="checkbox" id="first" name="first" style={{ marginRight: "4%", height: "20px", width: "28%", float: "left", boxShadow: "0 0 0" }} required />
+                        <Input type="checkbox" id="first" name="first" style={{ marginRight: "1%", height: "20px", width: "28%", float: "left", boxShadow: "0 0 0" }} required />
                         <label htmlFor="first">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dui ante, volutpat non interdum quis, gravida vitae metus. Praesent maximus lorem varius ipsum auctor semper. </label>
                     </div>
                     <div style={{ display: "flex", flexDirection: "row", marginTop: "10%" }}>
-                        <Input type="checkbox" id="second" name="second" style={{ marginRight: "4%", height: "20px", width: "28%", boxShadow: "0 0 0" }} required />
+                        <Input type="checkbox" id="second" name="second" style={{ marginRight: "1%", height: "20px", width: "28%", boxShadow: "0 0 0" }} required />
                         <label htmlFor="second">Nam non erat facilisis, gravida quam at, pellentesque ex. Mauris vel felis sed magna vulputate fermentum. In hac habitasse platea dictumst. Curabitur in enim rutrum,</label>
                     </div>
                     {
