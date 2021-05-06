@@ -15,8 +15,9 @@ module.exports.addcar = function (req, res) {
     // console.log(carid);
     const newcar = new cars({
       carid: carid,
-      city: req.body.city,
-      lender_email: req.body.lender_email,
+      pictures: fs.readFileSync(req.file.path),
+      // city: req.body.city,
+      // lender_email: req.body.lender_email,
     });
     newcar.save(function (err) {
       if (err) {

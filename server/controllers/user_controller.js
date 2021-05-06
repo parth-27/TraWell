@@ -1,13 +1,14 @@
-require('dotenv').config()
+require("dotenv").config();
 const User = require("../models/user");
 const Otp = require("../models/otp");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const emailservice = require("../config/nodemailer");
 const cryptoRandomString = require("crypto-random-string");
+const Car = require("../models/car");
 
-module.exports.create = async function (req, res) {
-  //   console.log(req.body);
+module.exports.create = function (req, res) {
+  console.log(req.body);
   try {
     Otp.findOne({ email: req.body.email }, async function (err, otp) {
       if (!otp) {
@@ -15,10 +16,17 @@ module.exports.create = async function (req, res) {
         return res.status(404).json({ message: "server error" });
       }
       if (req.body.otp.otp != otp.code) {
-        return res.status(404).json({ message: "Wrong OTP" });
+        console.log("wrong otp");
+        return res.status(302).json({ message: "Wrong OTP" });
       }
-      const salt = await bcrypt.genSalt(10);
-      const hashpwd = await bcrypt.hash(req.body.password, salt);
+      var salt;
+      var hashpwd;
+      try {
+        salt = await bcrypt.genSalt(10);
+        hashpwd = await bcrypt.hash(req.body.password, salt);
+      } catch (error) {
+        console.log(error);
+      }
       console.log(hashpwd);
       const user_add = new User({
         name: req.body.name,
@@ -27,9 +35,9 @@ module.exports.create = async function (req, res) {
         phone_no: req.body.phone_no,
         address: req.body.address,
         pincode: req.body.pincode,
-        city: req.body.city
+        city: req.body.city,
       });
-      User.create(user_add, function (err) {
+      User.create(user_add, async function (err) {
         if (err) {
           console.log(`Error in adding the user to database`);
           console.log(err);
@@ -113,19 +121,15 @@ module.exports.userverifymail = async function (req, res) {
         email: req.body.email,
       });
       newCode.save();
-      // const data = {
-      //   from: '"Shreyansh Shah" <shreyansh_shah@yahoo.com>',
-      //   to: req.body.email,
-      //   subject: "Your TraWell Verification OTP",
-      //   text: secretCode,
-      //   html: `<b>Your OTP: ${secretCode}</b>`,
-      // };
-      // await emailservice.sendMail(data);
-      await emailservice.sendEmail(req.body.email, secretCode, (err, result) => {
-        if (err) {
-          console.error({ err });
+      await emailservice.sendEmail(
+        req.body.email,
+        secretCode,
+        (err, result) => {
+          if (err) {
+            console.error({ err });
+          }
         }
-      });
+      );
       res.status(200).json({ message: secretCode });
     });
   } catch (err) {
@@ -139,7 +143,7 @@ module.exports.resetpassmail = async function (req, res) {
     console.log(req.body);
     User.findOne({ email: req.body.email }, async function (err, user) {
       if (err || !user) {
-        res.status(404).json({ message: 'Please enter valid email' });
+        res.status(404).json({ message: "Please enter valid email" });
       }
       Otp.deleteMany({ email: req.body.email }, async function (err) {
         if (err) {
@@ -155,21 +159,17 @@ module.exports.resetpassmail = async function (req, res) {
         email: req.body.email,
       });
       newCode.save();
-      // const data = {
-      //   from: '"Shreyansh Shah" <shreyansh_shah@yahoo.com>',
-      //   to: req.body.email,
-      //   subject: "TraWell: Verify OTP",
-      //   text: secretCode,
-      //   html: `<b>Your OTP: ${secretCode}</b>`,
-      // };
-      // await emailservice.sendMail(data);
-      await emailservice.sendEmail(req.body.email, secretCode, (err, result) => {
-        if (err) {
-          console.error({ err });
+      await emailservice.sendEmail(
+        req.body.email,
+        secretCode,
+        (err, result) => {
+          if (err) {
+            console.error({ err });
+          }
         }
-      });
+      );
       res.status(200).json({ message: secretCode });
-    })
+    });
   } catch (err) {
     console.log(err);
     res.status(404).json({ message: "Error in catch block" });
@@ -178,22 +178,21 @@ module.exports.resetpassmail = async function (req, res) {
 
 module.exports.verifyotp = async function (req, res) {
   try {
-    // console.log(req.body.email);
     Otp.findOne({ email: req.body.email }, async function (err, otp) {
       if (err || !otp) {
-        return res.status(404).json({ message: 'Error in finding user' });
+        return res.status(404).json({ message: "Error in finding user" });
       }
       if (req.body.otp.otp != otp.code) {
         console.log(req.body.email);
-        return res.status(400).json({ message: 'wrong otp' });
+        return res.status(400).json({ message: "wrong otp" });
       }
-      res.status(200).json({ message: 'OTP verified' });
-    })
+      res.status(200).json({ message: "OTP verified" });
+    });
   } catch (err) {
     console.log(err);
-    res.status.json({ message: 'Error in catch block' });
+    res.status.json({ message: "Error in catch block" });
   }
-}
+};
 
 module.exports.setnewpass = async function (req, res) {
   try {
@@ -206,13 +205,32 @@ module.exports.setnewpass = async function (req, res) {
       user.password = hashpwd;
       user.save(function (err) {
         if (err) {
-          res.status(400).json({ message: 'Error in updating the password' });
+          res.status(400).json({ message: "Error in updating the password" });
         }
-      })
-      res.status(200).json({ message: 'Password changed successfully' });
-    })
+      });
+      res.status(200).json({ message: "Password changed successfully" });
+    });
   } catch (err) {
     console.log(err);
-    res.status(404).json({ message: 'Error in catch block' });
+    res.status(404).json({ message: "Error in catch block" });
   }
-}
+};
+
+module.exports.getaddedcar = async function (req, res) {
+  try {
+    Car.find({ lender_email: req.body.email }, async function (err, car) {
+      if (err || !car) {
+        return res.status(400).json({ message: "You have not added any car" });
+      }
+      if (car.length == 0) {
+        return res.status(200).json({ message: "You have not added any car" });
+      } else {
+        return res.status(200).json(car);
+      }
+      console.log(car);
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ message: "Error in catch block" });
+  }
+};

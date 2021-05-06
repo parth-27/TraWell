@@ -155,7 +155,7 @@ export const AccountConfirmation = (props) => {
             <BoxContainer>
                 <DisplayError>{errorState.error && errorState.statement}</DisplayError>
                 <FormContainer>
-                    <Input type="text" placeholder="Enter your OTP" name="otp" onChange={handleChange} required />
+                    <Input type="password" placeholder="Enter your OTP" name="otp" onChange={handleChange} required />
                     <SubmitButton onClick={handleSubmit} >Verify</SubmitButton>
                 </FormContainer>
             </BoxContainer>
