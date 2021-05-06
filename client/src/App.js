@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./components/pages/Home/Home";
 import Navbar from "./components/components/Navbar/Navbar";
 import { Authenticate } from "./components/pages/Auth/index.js";
-import CardDeck from "./components/components/CardDeck/CardDeck";
+import { RentCar } from "./components/pages/RentCar/RentCar";
 import { ForgotPassword } from './components/pages/Auth/ForgotPassword';
 import { ConfirmOTP } from './components/pages/Auth/ConfirmOTP';
 import { NewPassword } from './components/pages/Auth/NewPassword';
@@ -35,14 +35,14 @@ function App() {
 						<Route path='/' exact render={() => <Home />} />
 						<Route path='/user/signup' exact render={(props) => <Authenticate {...props} signup={true} />} />
 						<Route path='/user/signin' exact render={() => <Authenticate />} />
-						<Route path='/rent' exact render={() => <CardDeck />} />
-						<Route path='/user/confirmOTP' exact render={(props) => <ConfirmOTP {...props} />} />
+						<Route path='/user/confirmOTP' exact render={() => <ConfirmOTP />} />
 						<Route path='/user/forgotPassword' exact render={() => <ForgotPassword />} />
-						<Route path='/user/resetPassword' exact render={(props) => <NewPassword {...props} />} />
-						<Route path='/user/accountConfirmation' exact render={(props) => <AccountConfirmation {...props} />} />
-						<Route path='/user/profile' exact render={(props) => <Profile {...props} />} />
+						<Route path='/user/resetPassword' exact render={() => <NewPassword />} />
+						<Route path='/user/accountConfirmation' exact render={() => <AccountConfirmation />} />
+						<Route path='/rent' exact render={() => <RentCar />} />
+						<Route path='/user/profile' exact render={() => <Profile />} />
+						<Route path='/user/lendCar' exact render={() => <LendCar />} />
 						<Route path='/aboutUs' exact render={() => <AboutUs />} />
-						<Route path='/lendcar' exact render={() => <LendCar />} />
 					</Switch>
 				</Router>
 			</GlobalState.Provider>

@@ -117,4 +117,4 @@ function Team(){
     )
 }
 
-export default Team;
+export default React.memo(Team);

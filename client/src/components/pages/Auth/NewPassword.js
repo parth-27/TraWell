@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import styled from "styled-components";
 import { BoxContainer, FormContainer, Input,DisplayError } from "../../../styles/style";
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { GlobalState } from '../../context/index';
 
 const Container = styled.div`
         margin-left:auto;
@@ -101,9 +102,10 @@ const SubmitButton = styled.button`
         }
     `;
 
-export const NewPassword = (props) => {
+export const NewPassword = () => {
     
-    const email1 = props.location.state.email;
+    const [user, dispatch] = useContext(GlobalState);
+    const email1 = user.userEmail;
     const history = useHistory();
     // error state
     const [errorState, setErrorState] = useState({
@@ -153,7 +155,9 @@ export const NewPassword = (props) => {
         axios.post("http://localhost:8000/user/setnewpass", payload).then((res) => {
             if (res.status == 200) {
                 history.push("/user/signin")
-                // window.location.href = '/user/signin';
+                dispatch({
+                    type: "CLEAR_USER",
+                });
             } else {
                 setErrorState({
                     error: true,

@@ -10,6 +10,7 @@ import {
 import { AccountContext } from "./context";
 import axios from 'axios';
 import { Link, useHistory } from 'react-router-dom';
+import { GlobalState } from '../../context/index';
 
 export function Signup(props) {
 
@@ -34,6 +35,7 @@ export function Signup(props) {
     }
 
     const { switchToSignin } = useContext(AccountContext);
+    const [user, dispatch] = useContext(GlobalState);
 
     const [userInfo, setUserInfo] = useState({
         fullName:"",
@@ -130,14 +132,24 @@ export function Signup(props) {
             pincode: userInfo.pincode,
             city:userInfo.city,
         }
-        console.log(payload)
+
         axios.post("http://localhost:8000/user/userverifymail", payload).then((res) => {
             if (res.status == 200)
             {
-                console.log(payload)
+                dispatch({
+                    type: "TEMP_DETAILS",
+                    payload: {
+                        email: userInfo.email,
+                        fullName: userInfo.fullName,
+                        phoneNumber: userInfo.phoneNumber,
+                        address: userInfo.address1 + "," + userInfo.address2,
+                        city: userInfo.city,
+                        pincode: userInfo.pincode,
+                        password : userInfo.password,
+                    }
+                })
                 history.push({
                     pathname: "/user/accountConfirmation",
-                    state: { payload: payload }
                 });
             }
             else
@@ -165,10 +177,10 @@ export function Signup(props) {
                 <Input type="password" placeholder="Password with atleast one letter and one number" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" onChange={handleChange} name="password" required/>
                 <Input type="password" placeholder="Confirm Password" patter="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" onChange={handleChange} name="confirmPassword" required/>
                 <Input type="tel" placeholder="0123456789" pattern="[0-9]{10}" maxlength="10" onChange={handleChange} name="phoneNumber" required />
-                <Input placeholder="Address 1" onChange={handleChange} name="address1" />
-                <Input placeholder="Address 2" onChange={handleChange} name="address2" />
-                <Input placeholder="City" onChange={handleChange} name="city" />
-                <Input placeholder="Pincode" onChange={handleChange} name="pincode" />
+                <Input placeholder="Address 1" onChange={handleChange} name="address1" required/>
+                <Input placeholder="Address 2" onChange={handleChange} name="address2" required/>
+                <Input placeholder="City" onChange={handleChange} name="city" required/>
+                <Input placeholder="Pincode" onChange={handleChange} name="pincode" required/>
                 <SubmitButton onClick={handleSubmit} >Signup</SubmitButton>
             </FormContainer>
             <Marginer direction="vertical" margin="1em" />

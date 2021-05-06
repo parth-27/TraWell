@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import styled from "styled-components";
 import { BoxContainer, FormContainer, Input, SubmitButton,DisplayError } from "../../../styles/style";
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { GlobalState } from '../../context/index';
 
 const Container = styled.div`
         margin-left:auto;
@@ -70,7 +71,16 @@ export const AccountConfirmation = (props) => {
     });
     const history = useHistory();
 
-    var payload = props.location.state.payload;
+    const [user, dispatch] = useContext(GlobalState);
+    var payload = {
+        name: user.fullName,
+        email: user.userEmail,
+        password: user.password,
+        phone_no: user.phoneNumber,
+        address: user.address,
+        pincode: user.pincode,
+        city: user.city,
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -92,17 +102,46 @@ export const AccountConfirmation = (props) => {
             otp:otp
         }
 
-        axios.post("http://localhost:8000/user/create", payload).then((res) => {
-            if (res.status == 200) {
-                history.push("/user/signin")
-            } else {
-                setErrorState({
-                    error: true,
-                    statement:"Something went wrong :( Please Try again"
-                })
-                history.push("/user/accountConfirmation")
-            }
-        });
+        if (user.count == 3)
+        {
+            setErrorState({
+                error: true,
+                statement: "To Many Attemps Failed Please Try Again"
+            });
+            dispatch({
+                type: "CLEAR_USER",
+            });
+            history.push("/user/signup");
+        }
+        else
+        {
+            axios.post("http://localhost:8000/user/create", payload).then((res) => {
+                if (res.status == 200) {
+                    dispatch({
+                        type: "CLEAR_USER",
+                    });
+                    history.push("/user/signin")
+                }
+                else if (res.status == 404)
+                {
+                    setErrorState({
+                        error: true,
+                        statement: "Please Enter Correct OTP!!"
+                    })
+                    dispatch({
+                        type: "OTP_FAILED",
+                    });
+                    history.push("/user/accountConfirmation")
+                }
+                else {
+                    setErrorState({
+                        error: true,
+                        statement:"Something went wrong :( Please Try again"
+                    })
+                    history.push("/user/accountConfirmation")
+                }
+            });
+        }
     }
 
     return (

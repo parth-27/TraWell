@@ -4,7 +4,10 @@ export const initialUserState = {
     phoneNumber: "",
     address: "",
     city: "",
-    pincode:"",
+    pincode: "",
+    count: 0,
+    imageUrl: "",
+    password:"",
 }
 
 export const userReducer = (state, action) => {
@@ -18,18 +21,38 @@ export const userReducer = (state, action) => {
                 phoneNumber: payload.phoneNumber,
                 address: payload.address,
                 city: payload.city,
-                pincode:payload.pincode,
+                pincode: payload.pincode,
+            })
+        case "TEMP_DETAILS":
+            return ({
+                ...state,
+                userEmail: payload.email,
+                fullName: payload.fullName,
+                phoneNumber: payload.phoneNumber,
+                address: payload.address,
+                city: payload.city,
+                pincode: payload.pincode,
+                password:payload.password,
+            })
+        case "CLEAR_USER":
+            return initialUserState
+        case "OTP_FAILED":
+            return ({
+                ...state,
+                count:state.count+1,
             })
         case "LOGIN_SUCESS":
             return ({
                 ...state,
                 userEmail: payload.email,
             });
-        case "CLEAR_USER":
+        case "SET_IMAGE":
+            console.log(payload);
+            debugger;
             return ({
                 ...state,
-                userEmail: "",
-            });
+                imageUrl:payload.imageUrl
+            })
         default:
             return state;
     }

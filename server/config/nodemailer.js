@@ -1,13 +1,25 @@
 const nodemailer = require('nodemailer');
 
-const emailservice = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
-    secure:false,
+let nodemailerTransporter = nodemailer.createTransport({
+    service: 'Gmail',
     auth: {
-        user: 'rosa97@ethereal.email',
-        pass: '2dx2JPStaPKUnXgses'
+        user: String(process.env.EMAIL),
+        pass: String(process.env.APPLICATION_PASSWORD)
     }
 });
 
-module.exports=emailservice;
+
+exports.sendEmail = function (email, secretCode ,callback) {
+    let options = {
+        from: String('Account Confirmation OTP ' + process.env.EMAIL),
+        to: email,
+        subject: "Your TraWell Verification OTP",
+        text: `This is your One Time Password(OTP)  '${secretCode}'  only valid for 5 mins`
+    };
+    nodemailerTransporter.sendMail(options, (error, info) => {
+        if (error) {
+            return callback(error);
+        }
+        callback(error, info);
+    });
+};
