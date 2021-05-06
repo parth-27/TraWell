@@ -11,4 +11,5 @@ router.post('/userverifymail',usercontroller.userverifymail);
 router.post('/resetpassmail',usercontroller.resetpassmail);
 router.post('/setnewpass',usercontroller.setnewpass);
 router.post('/verifyotp',usercontroller.verifyotp);
+router.get('/getaddedcar',usercontroller.getaddedcar);
 module.exports=router;
