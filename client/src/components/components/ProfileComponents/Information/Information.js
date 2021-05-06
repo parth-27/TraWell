@@ -25,6 +25,15 @@ export const Information = () => {
         pincode: "",
     });
 
+    const [userInfoUpdated, setUserInfoUpdated] = useState({
+        updatedFullName: "",
+        updatedPhoneNumber: "",
+        updatedAddress1: "",
+        updatedAddress2: "",
+        updatedCity: "",
+        updatedPincode: "",
+    });
+
     const [image, setImage] = useState("");
     const [croppedImage, setCroppedImage] = useState("");
 
@@ -37,6 +46,13 @@ export const Information = () => {
             city: user.city,
             pincode: user.pincode,
         })
+        setUserInfoUpdated({
+            updatedFullName: user.fullName,
+            updatedPhoneNumber: user.phoneNumber,
+            updatedAddress1: user.address,
+            updatedCity: user.city,
+            updatedPincode: user.pincode,
+        })
         inputRef.current.focus()
         document.title = "Edit Details"
     }, [open])
@@ -48,7 +64,7 @@ export const Information = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setUserInfo((prevState) => ({
+        setUserInfoUpdated((prevState) => ({
             ...prevState,
             [name]: value,
         }));
@@ -68,29 +84,71 @@ export const Information = () => {
     };
 
     const handleSubmit = (e) => {
-        console.log(setEditorRef);
-        debugger;
-        if (setEditorRef) {
-            setEditorRef.getImageScaledToCanvas().toBlob(blob => {
-                let imageUrl = URL.createObjectURL(blob);
-                console.log(imageUrl);
-                setCroppedImage(imageUrl);
-            });
+        e.preventDefault();
+        // if (setEditorRef) {
+        //     setEditorRef.getImageScaledToCanvas().toBlob(blob => {
+        //         let imageUrl = URL.createObjectURL(blob);
+        //         console.log(imageUrl);
+        //         setCroppedImage(imageUrl);
+        //     });
+        // }
+
+        var payload = {
+            fullName: user.fullName,
+            email: user.userEmail,
+            phoneNumber: user.phoneNumber,
+            address: user.address,
+            city: user.city,
+            pincode: user.pincode,
         }
 
-        debugger;
-        e.preventDefault();
+        if (userInfoUpdated.updatedFullName !== userInfo.fullName)
+        {
+            payload = {
+                ...payload,
+                fullName:userInfoUpdated.updatedFullName
+            }
+        }
 
-        // if (!validateForm()) {
-        //     return;
-        // }
-        // else {
-        //     sendToServer();
-        // }
+        if (userInfoUpdated.updatedPhoneNumber !== userInfo.phoneNumber) {
+            payload = {
+                ...payload,
+                phoneNumber: userInfoUpdated.updatedPhoneNumber
+            }
+        }
+
+        if (userInfoUpdated.updatedCity !== userInfo.city) {
+            payload = {
+                ...payload,
+                phoneNumber: userInfoUpdated.updatedCity
+            }
+        }
+
+        if ((userInfoUpdated.updatedAddress1 + ',' + userInfoUpdated.updatedAddress2) !== userInfo.address) {
+            payload = {
+                ...payload,
+                phoneNumber: (userInfoUpdated.updatedAddress1 + ',' + userInfoUpdated.updatedAddress2)
+            }
+        }
+
+        if (userInfoUpdated.updatedPincode !== userInfo.pincode) {
+            payload = {
+                ...payload,
+                phoneNumber: userInfoUpdated.updatedPincode
+            }
+        }
+
+        console.log(payload);
+
+        // axios.post("http://localhost:8000/user/updateprofile", payload).then((res) => {
+        //     if (res.status == 200) {
+        //         history.push("/user/profile");
+        //     }
+        // });
     };
 
-    const changePassword = () => {
-
+    const changePassword = (e) => {
+        e.preventDefault();
         const payload = {
             email: userInfo.email,
         }
@@ -148,21 +206,16 @@ export const Information = () => {
                             name="previewImage"
                         />
                         <FormContainer >
-                            <Input ref={inputRef} placeholder="Full Name" value={userInfo.fullName} onChange={handleChange} name="fullName" required />
+                            <Input ref={inputRef} placeholder="Full Name" value={userInfoUpdated.updatedFullName} onChange={handleChange} name="updatedFullName" required />
                             <Input type="text" placeholder="Email" value={userInfo.email} name="email" disabled />
-                            {/* <Input type="password" placeholder="Password with atleast one letter and one number" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" onChange={handleChange} name="password" required /> */}
-                            {/* <Input type="password" placeholder="Confirm Password" patter="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" onChange={handleChange} name="confirmPassword" required /> */}
-                            <Input type="tel" placeholder="0123456789" value={userInfo.phoneNumber} pattern="[0-9]{10}" maxlength="10" onChange={handleChange} name="phoneNumber" required />
-                            <Input placeholder="Address 1" onChange={handleChange} name="address1" />
-                            <Input placeholder="Address 2" onChange={handleChange} name="address2" />
-                            <Input placeholder="City" value={userInfo.city} onChange={handleChange} name="city" />
-                            <Input placeholder="Pincode" value={userInfo.pincode} onChange={handleChange} name="pincode" />
+                            <Input type="tel" placeholder="0123456789" value={userInfoUpdated.updatedPhoneNumber} pattern="[0-9]{10}" maxlength="10" onChange={handleChange} name="updatedPhoneNumber" required />
+                            <Input placeholder="Address 1" onChange={handleChange} name="updatedAddress1" />
+                            <Input placeholder="Address 2" onChange={handleChange} name="updatedAddress2" />
+                            <Input placeholder="City" value={userInfoUpdated.updatedCity} onChange={handleChange} name="updatedCity" />
+                            <Input placeholder="Pincode" value={userInfoUpdated.updatedPincode} onChange={handleChange} name="updatedPincode" />
                             <span style={{ display: "flex" }}>
-                                <SubmitButton onClick={() => {
-                                    //handleCropImage();
-                                    handleSubmit();
-                                }} style={{ flex: 1 }} > Edit Profile </SubmitButton>
-                                <SubmitButton onClick={() => changePassword()} style={{ flex: 1 }} > Change Password </SubmitButton>
+                                <SubmitButton onClick={(e) => {handleSubmit(e);}} style={{ flex: 1 }} > Edit Profile </SubmitButton>
+                                <SubmitButton onClick={(e) => changePassword(e)} style={{ flex: 1 }} > Change Password </SubmitButton>
                             </span>
                         </FormContainer>
                     </div>
