@@ -3,10 +3,11 @@ import '../../../App.css';
 import { Button } from './../../assets/Button/Button';
 import './HeroComponent.css';
 import $ from 'jquery';
-import Modal from 'react-awesome-modal';
+import "./../LendACar/LendCar.css"
 import SearchBar from './SearchBar';
 import { SubmitButton } from '../../../styles/style';
 import AuthService from "../../../services/auth";
+import { Dialog, DialogContent, DialogActions } from '@material-ui/core';
 
 class HeroComponent extends React.Component {
 
@@ -171,7 +172,7 @@ class HeroComponent extends React.Component {
 				</div>
 				{/* <p>What are you waiting for?</p> */}
 
-				<Modal visible={this.state.visible} width="700" height="40%" effect="fadeInUp" onClickAway={() => this.hideModal()}>
+				{/* <Modal visible={this.state.visible} width="700" height="40%" effect="fadeInUp" onClickAway={() => this.hideModal()}>
 					<div className="container">
 						<SearchBar />
 						<div className="buttonContainer">
@@ -181,7 +182,23 @@ class HeroComponent extends React.Component {
 							</SubmitButton>
 						</div>
 					</div>
-				</Modal>
+				</Modal> */}
+				<Dialog open={this.state.visible} aria-labelledby="form-dialog-title" fullWidth="true" maxWidth="xs" >
+					<DialogContent>
+						<SearchBar />
+					</DialogContent>
+					<div className="buttonContainer">
+						<SubmitButton style={{padding:"2%", marginRight:"5%"}}>
+							Search for cars
+						</SubmitButton>
+						<SubmitButton style={{padding:"2%", marginLeft:"5%"}}>
+							Cancel Search
+						</SubmitButton>
+					</div>
+					{/* <DialogActions>
+						<Button> ok </Button>
+					</DialogActions> */}
+				</Dialog>
 
 				<div className='hero-btns'>
 					<Button

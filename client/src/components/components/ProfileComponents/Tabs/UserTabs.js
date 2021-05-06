@@ -9,7 +9,6 @@ export const UserTabs = () => {
             <TabList>
                 <Tab>Rented Cars</Tab>
                 <Tab>Lended Cars</Tab>
-                <Tab>History</Tab>
                 <Tab>Requested Cars</Tab>
             </TabList>
 
