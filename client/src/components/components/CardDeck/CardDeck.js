@@ -5,7 +5,7 @@ import dummyData from "../../../data";
 import CardList from "../../assets/CarCard/CardList";
 import SkeletonCard from "../../assets/CarCard/SkeletonCarCard";
 
-const Main = () => {
+const Main = (city, startDate, toDate) => {
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -25,7 +25,7 @@ const Main = () => {
       {loading && <SkeletonCard />}
       {!loading &&
           (<section key="0">
-            <h2 className="section-title">Cars Available in Ahmedabad</h2>
+            <hr className="hr-text2" data-content={"Cars in "+city+" for Rent"}/>
             <CardList list={cars} />
             <hr />
           </section>
