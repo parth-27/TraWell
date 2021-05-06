@@ -357,3 +357,27 @@ module.exports.getrequestedcar = async function (req, res) {
     res.status(404).json({ message: "Error in catch block" });
   }
 };
+
+module.exports.updateprofile = function (req, res) {
+  try {
+    console.log(req.body);
+    User.findOne({ email: req.email }, async function (err, user) {
+      if (err || !user) {
+        console.log(err);
+        return res.status(400).json({ message: "server error" });
+      }
+      user.name = req.body.name;
+      user.phone_no = req.body.phone_no;
+      user.address = req.body.address;
+      user.city = req.body.city;
+      user.pincode = req.body.pincode;
+      await user.save();
+      return res
+        .status(200)
+        .json({ message: "User profile updated successfully" });
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ message: "Error in catch block" });
+  }
+};
