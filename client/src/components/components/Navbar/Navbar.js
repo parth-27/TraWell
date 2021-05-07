@@ -89,6 +89,8 @@ function Navbar() {
                 })
                 history.push("/user/profile");
             }
+        }).catch((err) => {
+            console.log(err);
         });
     }
 

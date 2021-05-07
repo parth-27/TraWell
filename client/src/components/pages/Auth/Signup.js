@@ -160,6 +160,8 @@ export function Signup(props) {
                 })
                 history.push("/user/signup")
             }
+        }).catch((err) => {
+            console.log(err);
         });
     }
 

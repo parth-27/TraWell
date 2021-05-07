@@ -122,6 +122,8 @@ export const ForgotPassword = () => {
                 })
                 history.push("/user/forgotPassword");
             }
+        }).catch((err) => {
+            console.log(err);
         });
     }
 

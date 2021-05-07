@@ -134,6 +134,8 @@ export function Login(props) {
                 })
                 history.push("/user/signin");
             }
+        }).catch((err) => {
+            console.log(err);
         });
     }
 

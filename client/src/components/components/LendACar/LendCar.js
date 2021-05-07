@@ -233,7 +233,12 @@ class LendCar extends React.Component {
 		console.log(payload);
 		console.log("----------------------------------");
 
-		axios.post("http://localhost:8000/car/addcar", { headers: authHeader(),payload	 })
+		axios({
+			method:'post',
+			url: "http://localhost:8000/car/addcar",
+			headers: authHeader(),
+			data:payload,
+		})
 		.then((res) => {
 		  if (res.status == 200) {
 		    console.log(payload)
@@ -246,6 +251,8 @@ class LendCar extends React.Component {
 			});
 		    this.history.push("/user/lendcar");
 		  }
+		}).catch((err) => {
+			console.log(err);
 		});
 	}
 
@@ -276,7 +283,7 @@ class LendCar extends React.Component {
 	render() {
 		return (
 			<>
-				<form className="lend-form">
+				<form className="lend-form" onSubmit={e => this.sendToServer(e)} >
 					
 					<h1 style={{ textAlign: "left" }}> Lend Car Form </h1>
 					<h5 style={{ marginBottom: "6%" }}> Please fill the following form to lend your car on our website </h5>
@@ -370,6 +377,7 @@ class LendCar extends React.Component {
 						/>
 					}
 					<Input
+						required
 						className="add-image"
 						onChange={e => this.handleFile(e)}
 						type="file"
@@ -397,7 +405,7 @@ class LendCar extends React.Component {
 					</div>
 
 					{/*<input required id="pickup-add" placeholder="Enter Pickup Address" onChange={this.setPickAdd} />*/}
-					<SubmitButton onClick={e => this.sendToServer(e)} style={{ padding: "2% 1%", margin: "8% 2% 0% 2%" }}>Add Your Car</SubmitButton>
+					<SubmitButton type="submit" style={{ padding: "2% 1%", margin: "8% 2% 0% 2%" }}>Add Your Car</SubmitButton>
 				</form>
 			</>
 		)

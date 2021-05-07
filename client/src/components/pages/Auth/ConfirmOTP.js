@@ -127,6 +127,8 @@ export const ConfirmOTP = () => {
                     });
                     history.push("/user/confirmOTP")
                 }
+            }).catch((err) => {
+                console.log(err);
             });
         }
     }

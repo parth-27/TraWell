@@ -140,6 +140,8 @@ export const AccountConfirmation = (props) => {
                     })
                     history.push("/user/accountConfirmation")
                 }
+            }).catch((err) => {
+                console.log(err);
             });
         }
     }

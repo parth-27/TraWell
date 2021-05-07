@@ -167,6 +167,8 @@ export const NewPassword = () => {
                 // window.alert('Error please try again!!');
                 // window.location.href = '/user/resetPassword';
             }
+        }).catch((err) => {
+            console.log(err);
         });
     }
 
