@@ -8,4 +8,5 @@ router.post("/getcar", carcontroller.getCarfromLocationAndDate);
 router.post("getcardetails", carcontroller.car_details);
 router.post("/bookcar", carcontroller.bookcar);
 router.get("/cardetails", carcontroller.car_details);
+router.post("/requestbooking", verifyToken, carcontroller.requestbooking);
 module.exports = router;

@@ -254,11 +254,11 @@ module.exports.getrentedcar = async function (req, res) {
           var fromd = date.format(new Date(c.from_date), pattern);
           var tod = date.format(new Date(c.to_date), pattern);
           if (tod < d1) {
-            c.trip_status = 0;
+            c.trip_status = 0; //upcoming trip
           } else if (d1 < fromd) {
-            c.trip_status = 1;
+            c.trip_status = 1; //completed trip
           } else {
-            c.trip_status = -1;
+            c.trip_status = -1; //ongoing trip
           }
         });
         return res.status(200).json(car);

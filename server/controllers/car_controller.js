@@ -8,7 +8,6 @@ module.exports.addcar = function (req, res) {
     var count;
     var carid;
     let finalcity;
-    console.log(req.email)
     user.find({ email: req.email }, function (err, user) {
       if (err || !user) {
         return res.status(400).json({ message: "Server Error" });
@@ -19,10 +18,6 @@ module.exports.addcar = function (req, res) {
       count = results.length;
       count = count + 1;
       carid = "C" + count.toString();
-      console.log(req.body.features);
-      console.log(req.body.rent);
-      console.log(req.body.deposit);
-      console.log(req.body.croppedImage);
       const newcar = new cars({
         carid: carid,
         pictures: req.body.croppedImage,
@@ -42,8 +37,7 @@ module.exports.addcar = function (req, res) {
         city: finalcity,
         lender_email: req.email,
       });
-      console.log(newcar.carid);
-      cars.create(newcar,function (err) {
+      cars.create(newcar, function (err) {
         if (err) {
           console.log("Error in adding the car to database");
           console.log(err);
@@ -92,7 +86,7 @@ module.exports.getCarfromLocationAndDate = function (req, res) {
             $and: [{ from_date: { $lt: fromd } }, { to_date: { $gt: fromd } }],
           },
           { $and: [{ from_date: { $lt: tod } }, { to_date: { $gt: tod } }] },
-          { $and: [{ from_date: { $gt: fromd } }, { to_date: { $lt: tod } }] }
+          { $and: [{ from_date: { $gt: fromd } }, { to_date: { $lt: tod } }] },
         ],
       },
       function (err, bookings) {
@@ -107,33 +101,77 @@ module.exports.getCarfromLocationAndDate = function (req, res) {
         datecarobj = Object.assign({}, dcars);
         // console.log(datecarobj);
         cars.find(
-          { 
+          {
             $and: [
-              {city: req.body.city},
-              { $and: [{ from_date: { $lt: fromd } }, { to_date: { $gt: tod }}] }
-            ] 
-        }, function (err, carwcity) {
-          if (err) {
-            console.log(err);
-            res.status(400).end();
-          }
-          carwcity.forEach(function (item, index) {
-            ccar.push(item);
-          });
-          citycarobj = Object.assign({}, ccar);
-          console.log(dcars);
-          console.log(ccar);
-          ccar.forEach(function (item, index) {
-            if (dcars.includes(item)) {
-            } else {
-              fcar.push(item);
+              { city: req.body.city },
+              {
+                $and: [
+                  { from_date: { $lt: fromd } },
+                  { to_date: { $gt: tod } },
+                ],
+              },
+            ],
+          },
+          function (err, carwcity) {
+            if (err) {
+              console.log(err);
+              res.status(400).end();
             }
-          });
-          console.log(fcar);
-          return res.status(200).json(fcar);
-        });
+            carwcity.forEach(function (item, index) {
+              ccar.push(item);
+            });
+            citycarobj = Object.assign({}, ccar);
+            console.log(dcars);
+            console.log(ccar);
+            ccar.forEach(function (item, index) {
+              if (dcars.includes(item)) {
+              } else {
+                fcar.push(item);
+              }
+            });
+            console.log(fcar);
+            return res.status(200).json(fcar);
+          }
+        );
       }
     );
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ message: "Error in catch block" });
+  }
+};
+
+module.exports.requestbooking = async function (req, res) {
+  try {
+    await requestbookings.find({}, function (err, rb) {
+      if(err){
+        return res.status(400).json({message:"Server error"});
+      }
+      var bookingcount = bookings.length + 1;
+      var bookingid = "B" + bookingcount.toString();
+      const pattern = date.compile("YYYY-MM-DD");
+      var d1 = date.format(new Date(req.body.to_date), pattern);
+      var d2 = date.format(new Date(req.body.from_date), pattern);
+      const days = date.subtract(d1,d2).toDays();
+      const finalrent = days*req.body.rent;
+      const newrequestedbooking = requestbookings({
+        bookingid: bookingid,
+        lender_email: req.body.lender_email,
+        borrower_email: req.email,
+        carID: req.body.carid,
+        from_date: d2,
+        to_date: d1,
+        rent:finalrent,
+        booking_status=-1,  //-1: request pending, 1:request accepted, 0:request rejected
+      });
+      await newrequestedbooking.save(function(e){
+        if(e){
+          console.log(`Error in processing request booking`);
+          return res.status(404).json({message:"Error in processing request booking"});
+        }
+        res.status(200).json({message:"Successfully processed booking request"});
+      });
+    });
   } catch (err) {
     console.log(err);
     res.status(404).json({ message: "Error in catch block" });
