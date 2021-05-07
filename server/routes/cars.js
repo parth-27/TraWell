@@ -14,4 +14,5 @@ router.post(
   verifyToken,
   carcontroller.cancelrequestbooking
 );
+router.get("/filter", carcontroller.filter);
 module.exports = router;

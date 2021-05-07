@@ -35,6 +35,11 @@ const ConfirmedBookingSchema = new mongoose.Schema({
     default: 0,
     required: true,
   },
+  cancel: {
+    type: Number,
+    default: 0,
+    required: true,
+  },
 });
 
 const ConfirmedBooking = mongoose.model(
