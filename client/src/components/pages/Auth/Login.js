@@ -75,7 +75,7 @@ export function Login(props) {
             {
                 setErrorState({
                     error: true,
-                    statement: "Please Enter Password in given format",
+                    statement: "Please Enter Password having atleast 8 characters and one letter",
                 });
             }
             else

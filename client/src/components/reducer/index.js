@@ -7,7 +7,10 @@ export const initialUserState = {
     pincode: "",
     count: 0,
     imageUrl: "",
-    password:"",
+    password: "",
+    toDate: "",
+    fromDate: "",
+    rentCity:"",
 }
 
 export const userReducer = (state, action) => {
@@ -52,6 +55,12 @@ export const userReducer = (state, action) => {
             return ({
                 ...state,
                 imageUrl:payload.imageUrl
+            })
+        case "SEARCH_CAR":
+            return ({
+                toDate: payload.toDate,
+                fromDate: payload.fromDate,
+                rentCity:payload.rentCity,
             })
         default:
             return state;

@@ -173,14 +173,13 @@ class HeroComponent extends React.Component {
 			seats: [],
 		}
 		
-
 		console.log(payload);
 		console.log("----------------------------------");
 
 		axios.post("http://localhost:8000/car/filter",payload)
 			.then((res) => {
 				if (res.status == 200) {
-					console.log(payload)
+					console.log(res);
 					this.props.history.push("/rent");
 				}
 				else {

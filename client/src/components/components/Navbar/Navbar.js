@@ -126,8 +126,8 @@ function Navbar() {
         event.preventDefault();
 
         const payload = {
-            to: to,
-            from: from,
+            to: to.to,
+            from: from.from,
             city: city,
             categories: [],
             brand: [],
@@ -139,14 +139,26 @@ function Navbar() {
 
         console.log(payload);
         console.log("----------------------------------");
+        debugger;
+
+        dispatch({
+            type: "SEARCH_CAR",
+            payload: {
+                toDate: payload.to,
+                fromDate: payload.from,
+                rentCity:payload.city,
+            }
+        })
 
         axios.post("http://localhost:8000/car/filter", payload)
             .then((res) => {
                 if (res.status == 200) {
-                    console.log(payload)
+                    console.log(res)
+                    hideModal();
                     history.push("/rent");
                 }
                 else {
+                    hideModal();
                     history.push("/");
                 }
             }).catch((err) => {
