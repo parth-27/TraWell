@@ -8,22 +8,42 @@ module.exports.addcar = function (req, res) {
     var count;
     var carid;
     let finalcity;
+    console.log(req.email)
     user.find({ email: req.email }, function (err, user) {
       if (err || !user) {
         return res.status(400).json({ message: "Server Error" });
       }
-      finalcity = user.city;
+      finalcity = user[0].city;
     });
     cars.find({}, function (err, results) {
       count = results.length;
       count = count + 1;
       carid = "C" + count.toString();
+      console.log(req.body.features);
+      console.log(req.body.rent);
+      console.log(req.body.deposit);
+      console.log(req.body.croppedImage);
       const newcar = new cars({
         carid: carid,
+        pictures: req.body.croppedImage,
+        registration_no: req.body.registration,
+        rent: req.body.rent,
+        deposite: req.body.deposit,
+        company: req.body.company,
+        modl: req.body.model,
+        category: req.body.category,
+        fuel_type: req.body.fuel,
+        no_of_passengers: req.body.seats,
+        color: req.body.color,
+        engine_type: req.body.eng,
+        features: req.body.features,
+        to_date: req.body.to,
+        from_date: req.body.from,
         city: finalcity,
         lender_email: req.email,
       });
-      newcar.save(function (err) {
+      console.log(newcar.carid);
+      cars.create(newcar,function (err) {
         if (err) {
           console.log("Error in adding the car to database");
           console.log(err);

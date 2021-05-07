@@ -1,3 +1,4 @@
+import {withRouter} from 'react-router-dom';
 import React from 'react'
 import { dummyCarData, colorz, fuel, engine } from './CarsData'
 import './LendCar.css';
@@ -242,14 +243,14 @@ class LendCar extends React.Component {
 		.then((res) => {
 		  if (res.status == 200) {
 		    console.log(payload)
-		    this.history.push("/");
+		    this.props.history.push("/");
 		  }
 		  else {
 			this.setState({
 				error: true,
 				statement: "Apologies.. due to server fault, we could not store your information!!"
 			});
-		    this.history.push("/user/lendcar");
+		    this.props.history.push("/user/lendcar");
 		  }
 		}).catch((err) => {
 			console.log(err);
@@ -412,4 +413,4 @@ class LendCar extends React.Component {
 	}
 }
 
-export default LendCar;
+export default withRouter(LendCar);

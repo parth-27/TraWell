@@ -5,48 +5,50 @@ const carSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    // pictures:[{type:Buffer,required:true}],
-    // registration_no:{
-    //     type:String,
-    //     required:true,
-    // },
-    //     rent:{
-    //     type:Number,
-    //     required: true
-    // },
-    // rating:{
-    //     type: Number,
-    //     default: 0
-    // },
-    // company:{
-    //     type:String,
-    //     required: true
-    // },
-    // modl:{
-    //     type:String,
-    //     required: true
-    // },
-    // category:[{
-    //     type:String,
-    // }],
-    // fuel_type:{
-    //     type:String,
-    //     required: true
-    // },
-    // no_of_passengers:{
-    //     type:Number,
-    //     required:true
-    // },
-    // color:{
-    //     type:String,
-    // },
-    // features:[{
-    //     type:String,
-    // }],
-    // plan:{
-    //     type:Number,
-    //     default:60
-    // },
+    pictures:{
+        type:String,
+        required:true,
+    },
+    registration_no:{
+        type:String,
+        required:true,
+    },
+    rent:{
+        type:Number,
+        required: true
+    },
+    deposite:{
+        type:Number,
+        required: true
+    },
+    company:{
+        type:String,
+        required: true
+    },
+    modl:{
+        type:String,
+        required: true
+    },
+    category:{
+        type:String,
+    },
+    fuel_type:{
+        type:String,
+        required: true
+    },
+    no_of_passengers:{
+        type:Number,
+        required:true
+    },
+    color:{
+        type:String,
+    },
+    engine_type:{
+        type:String,
+    },
+    features:[{
+        feature: String,
+    }],
     city:{
         type:String,
         required:true
@@ -54,7 +56,15 @@ const carSchema = new mongoose.Schema({
     lender_email:{
         type:String,
         required:true
-    }
+    },
+    from_date: {
+        type: Date,
+        required: true,
+    },
+    to_date: {
+        type: Date,
+        required: true,
+    },
 });
 
 const Car = mongoose.model('Car',carSchema);
