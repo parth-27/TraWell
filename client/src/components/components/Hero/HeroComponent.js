@@ -7,9 +7,9 @@ import "./../LendACar/LendCar.css"
 import SearchBar from './SearchBar';
 import { SubmitButton } from '../../../styles/style';
 import AuthService from "../../../services/auth";
-import { Dialog, DialogContent, DialogActions } from '@material-ui/core';
-import { authHeader } from "../../../services/authHeader";
+import { Dialog, DialogContent } from '@material-ui/core';
 import axios from 'axios';
+import { withRouter } from 'react-router-dom';
 
 class HeroComponent extends React.Component {
 
@@ -160,7 +160,6 @@ class HeroComponent extends React.Component {
 	}
 
 	sendToServer = (event) => {
-		console.log("fukkkkkkk");
 		event.preventDefault();
 
 		const payload = {
@@ -178,11 +177,7 @@ class HeroComponent extends React.Component {
 		console.log(payload);
 		console.log("----------------------------------");
 
-		axios({
-			method: 'get',
-			url: "http://localhost:8000/car/filter",
-			data: payload,
-		})
+		axios.post("http://localhost:8000/car/filter",payload)
 			.then((res) => {
 				if (res.status == 200) {
 					console.log(payload)
@@ -297,4 +292,4 @@ class HeroComponent extends React.Component {
 	}
 }
 
-export default React.memo(HeroComponent);
+export default withRouter(HeroComponent);
