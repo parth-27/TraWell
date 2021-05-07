@@ -70,6 +70,77 @@ module.exports.car_details = function (req, res) {
   }
 };
 
+// module.exports.getCarfromLocationAndDate = function (req, res) {
+//   try {
+//     const pattern = date.compile("YYYY-MM-DD");
+//     var tod = date.format(new Date(req.body.to_date), pattern);
+//     var fromd = date.format(new Date(req.body.from_date), pattern);
+//     var dcars = [];
+//     var ccar = [];
+//     var fcar = [];
+//     // confirmedbookings.find({fron_date:{'$gq':new Date()}})
+//     confirmedbookings.find(
+//       {
+//         $or: [
+//           {
+//             $and: [{ from_date: { $lt: fromd } }, { to_date: { $gt: fromd } }],
+//           },
+//           { $and: [{ from_date: { $lt: tod } }, { to_date: { $gt: tod } }] },
+//           { $and: [{ from_date: { $gt: fromd } }, { to_date: { $lt: tod } }] },
+//         ],
+//       },
+//       function (err, bookings) {
+//         if (err) {
+//           console.log(err);
+//           res.status(400).end();
+//         }
+//         bookings.forEach(function (item, index) {
+//           dcars.push(item);
+//         });
+//         // console.log(dcars);
+//         datecarobj = Object.assign({}, dcars);
+//         // console.log(datecarobj);
+//         cars.find(
+//           {
+//             $and: [
+//               { city: req.body.city },
+//               {
+//                 $and: [
+//                   { from_date: { $lt: fromd } },
+//                   { to_date: { $gt: tod } },
+//                 ],
+//               },
+//             ],
+//           },
+//           function (err, carwcity) {
+//             if (err) {
+//               console.log(err);
+//               res.status(400).end();
+//             }
+//             carwcity.forEach(function (item, index) {
+//               ccar.push(item);
+//             });
+//             citycarobj = Object.assign({}, ccar);
+//             console.log(dcars);
+//             console.log(ccar);
+//             ccar.forEach(function (item, index) {
+//               if (dcars.includes(item)) {
+//               } else {
+//                 fcar.push(item);
+//               }
+//             });
+//             console.log(fcar);
+//             return res.status(200).json(fcar);
+//           }
+//         );
+//       }
+//     );
+//   } catch (err) {
+//     console.log(err);
+//     res.status(404).json({ message: "Error in catch block" });
+//   }
+// };
+
 module.exports.getCarfromLocationAndDate = function (req, res) {
   try {
     const pattern = date.compile("YYYY-MM-DD");
@@ -81,12 +152,27 @@ module.exports.getCarfromLocationAndDate = function (req, res) {
     // confirmedbookings.find({fron_date:{'$gq':new Date()}})
     confirmedbookings.find(
       {
-        $or: [
+        $and: [
           {
-            $and: [{ from_date: { $lt: fromd } }, { to_date: { $gt: fromd } }],
+            $or: [
+              {
+                $and: [
+                  { from_date: { $lt: fromd } },
+                  { to_date: { $gt: fromd } },
+                ],
+              },
+              {
+                $and: [{ from_date: { $lt: tod } }, { to_date: { $gt: tod } }],
+              },
+              {
+                $and: [
+                  { from_date: { $gt: fromd } },
+                  { to_date: { $lt: tod } },
+                ],
+              },
+            ],
           },
-          { $and: [{ from_date: { $lt: tod } }, { to_date: { $gt: tod } }] },
-          { $and: [{ from_date: { $gt: fromd } }, { to_date: { $lt: tod } }] },
+          { cancel: 0 },
         ],
       },
       function (err, bookings) {
@@ -135,6 +221,212 @@ module.exports.getCarfromLocationAndDate = function (req, res) {
         );
       }
     );
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ message: "Error in catch block" });
+  }
+};
+
+module.exports.filter = function (req, res) {
+  try {
+    const pattern = date.compile("YYYY-MM-DD");
+    var tod = date.format(new Date(req.body.to_date), pattern);
+    var fromd = date.format(new Date(req.body.from_date), pattern);
+    var dcars = [];
+    var ccar = [];
+    var fcar = [];
+    if (req.body.categories.length == 0) {
+      req.body.categories = ["Hatchback", "Sedan", "SUV", "MUV"];
+    }
+    if (req.body.brand.length == 0) {
+      req.body.brand = ["Hyundai", "Maruti Suzuki", "Mahindra", "Jeep", "Kia"];
+    }
+    if (req.body.fuel.length == 0) {
+      req.body.fuel = ["Petrol", "Diesel", "Petrol + CNG", "Diesel + CNG"];
+    }
+    if (req.body.eng.length == 0) {
+      req.body.eng = ["Manual", "Auto"];
+    }
+    if (req.body.seats.length == 0) {
+      req.body.seats = [7, 5];
+    }
+    // confirmedbookings.find({fron_date:{'$gq':new Date()}})
+    confirmedbookings.find(
+      {
+        $and: [
+          {
+            $or: [
+              {
+                $and: [
+                  { from_date: { $lt: fromd } },
+                  { to_date: { $gt: fromd } },
+                ],
+              },
+              {
+                $and: [{ from_date: { $lt: tod } }, { to_date: { $gt: tod } }],
+              },
+              {
+                $and: [
+                  { from_date: { $gt: fromd } },
+                  { to_date: { $lt: tod } },
+                ],
+              },
+            ],
+          },
+          { cancel: 0 },
+        ],
+      },
+      function (err, bookings) {
+        if (err) {
+          console.log(err);
+          res.status(400).end();
+        }
+        bookings.forEach(function (item, index) {
+          dcars.push(item);
+        });
+        // console.log(dcars);
+        datecarobj = Object.assign({}, dcars);
+        // console.log(datecarobj);
+        cars.find(
+          {
+            $and: [
+              { city: req.body.city },
+              {
+                $and: [
+                  { from_date: { $lt: fromd } },
+                  { to_date: { $gt: tod } },
+                ],
+              },
+              { category: { $in: req.body.categories } },
+              { company: { $in: req.body.brand } },
+              { fuel_type: { $in: req.body.fuel } },
+              { engine_type: { $in: req.body.eng } },
+              { no_of_passengers: { $in: req.body.seats } },
+            ],
+          },
+          function (err, carwcity) {
+            if (err) {
+              console.log(err);
+              res.status(400).end();
+            }
+            carwcity.forEach(function (item, index) {
+              ccar.push(item);
+            });
+            citycarobj = Object.assign({}, ccar);
+            console.log(dcars);
+            console.log(ccar);
+            ccar.forEach(function (item, index) {
+              if (dcars.includes(item)) {
+              } else {
+                fcar.push(item);
+              }
+            });
+            console.log(fcar);
+            return res.status(200).json(fcar);
+          }
+        );
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ message: "Error in catch block" });
+  }
+};
+
+module.exports.cancelconfirmedbooking = async function (req, res) {
+  try {
+    await confirmedbookings.findOne(
+      { bookingid: req.body.bookingid },
+      async function (err, cb) {
+        if (err || !cb) {
+          return res.status(400).json({ message: "Server Error" });
+        }
+        console.log(cb);
+        cb.status = 1;
+        await cb.save(function (e) {
+          if (e) {
+            console.log(`Error in processing cancel booking request`);
+            return res
+              .status(400)
+              .json({ message: "Error in processing request" });
+          }
+          res.status(200).json({ message: "Successfully cancelled booking" });
+        });
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ message: "Error in catch block" });
+  }
+};
+
+module.exports.acceptrequestbooking = async function (req, res) {
+  try {
+    const pattern = date.compile("YYYY-MM-DD");
+    var d1;
+    var d2;
+
+    await requestbookings.findOne(
+      { bookingID: req.body.bookingid },
+      async function (error, rb) {
+        if (err || !rb) {
+          return res.status(400).json({ message: "Server error" });
+        }
+        rb.booking_status = 1;
+        d1 = date.format(new Date(rb.to_date), pattern);
+        d2 = date.format(new Date(rb.from_date), pattern);
+        await rb.save(function (e) {
+          if (e) {
+            console.log("Error in processing cancel booking request");
+            return res
+              .status(400)
+              .json({ message: "Error in processing cancel booking request" });
+          }
+        });
+        const cb = new confirmedbookings({
+          bookingid: rb.bookingID,
+          lender_email: rb.lender_email,
+          borrower_email: rb.borrower_email,
+          carid: rb.carID,
+          from_date: rb.from_date,
+          to_date: rb.to_date,
+          rent: rb.rent,
+          trip_status: 0,
+          cancel: 0,
+        });
+        await cb.save(function (e) {
+          if (e) {
+            console.log(`Error in processing cancel booking request`);
+            return res
+              .status(400)
+              .json({ message: "Error in processing request" });
+          }
+        });
+      }
+    );
+    await requestbookings.find({ carID: req.body.carid }, function (err, rb) {
+      if (err || !rb) {
+        return res.status(400).json({ message: "Error in processing request" });
+      }
+      rb.forEach(function (item, index) {
+        if (item.booking_status == -1) {
+          var d3 = date.format(new Date(item.to_date), pattern);
+          var d4 = date.format(new Date(item.from_date), pattern);
+          if (d2 <= d3 <= d1 || d2 <= d4 <= d1 || d4 <= d2 <= d1 <= d3) {
+            item.booking_status = 0;
+          }
+        }
+      });
+      await rb.save(function(e){
+        if(e){
+            console.log(`Error in processing cancel booking request`);
+            return res
+              .status(400)
+              .json({ message: "Error in processing request" });
+        }
+        return res.status(200).json({message:"Booking request accepted"});
+      });
+    });
   } catch (err) {
     console.log(err);
     res.status(404).json({ message: "Error in catch block" });
