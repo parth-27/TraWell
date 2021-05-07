@@ -92,6 +92,7 @@ module.exports.getCarfromLocationAndDate = function (req, res) {
             $and: [{ from_date: { $lt: fromd } }, { to_date: { $gt: fromd } }],
           },
           { $and: [{ from_date: { $lt: tod } }, { to_date: { $gt: tod } }] },
+          { $and: [{ from_date: { $gt: fromd } }, { to_date: { $lt: tod } }] }
         ],
       },
       function (err, bookings) {
@@ -100,18 +101,24 @@ module.exports.getCarfromLocationAndDate = function (req, res) {
           res.status(400).end();
         }
         bookings.forEach(function (item, index) {
-          dcars.push(item.carid);
+          dcars.push(item);
         });
         // console.log(dcars);
         datecarobj = Object.assign({}, dcars);
         // console.log(datecarobj);
-        cars.find({ city: req.body.city }, function (err, carwcity) {
+        cars.find(
+          { 
+            $and: [
+              {city: req.body.city},
+              { $and: [{ from_date: { $lt: fromd } }, { to_date: { $gt: tod }}] }
+            ] 
+        }, function (err, carwcity) {
           if (err) {
             console.log(err);
             res.status(400).end();
           }
           carwcity.forEach(function (item, index) {
-            ccar.push(item.carid);
+            ccar.push(item);
           });
           citycarobj = Object.assign({}, ccar);
           console.log(dcars);
@@ -123,6 +130,7 @@ module.exports.getCarfromLocationAndDate = function (req, res) {
             }
           });
           console.log(fcar);
+          return res.status(200).json(fcar);
         });
       }
     );
