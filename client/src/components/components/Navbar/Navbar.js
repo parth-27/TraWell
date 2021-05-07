@@ -7,6 +7,9 @@ import './Navbar.css';
 import styled from "styled-components";
 import axios from 'axios';
 import { GlobalState } from '../../context/index';
+import { Dialog, DialogContent } from '@material-ui/core';
+import SearchBar from '../Hero/SearchBar';
+import { SubmitButton } from '../../../styles/style';
 
 const LoginButton = styled.button`
     :root{
@@ -40,6 +43,11 @@ function Navbar() {
     const [click, setClick] = useState(false);
     const [button, setButton] = useState(true);
     const [navbar, setNavbar] = useState(false);
+
+    const [visible, setVisible] = useState(false);
+    const [city, setCity] = useState("");
+    const [to, setToDate] = useState("");
+    const [from, setFromDate] = useState("");
 
     const handleClick = () => setClick(!click);
     const closeMobileMenu = () => setClick(false);
@@ -94,8 +102,80 @@ function Navbar() {
         });
     }
 
+    const handleChange = (e) => {
+        setCity(e.target.value);
+    }
+
+    const setTo = (to) => {
+        setToDate({ to });
+    }
+
+    const setFrom = (from) => {
+        setFromDate({ from });
+    }
+
+    const showModal = () => {
+        setVisible(true);
+    };
+
+    const hideModal = () => {
+        setVisible(false);
+    };
+
+    const sendToServer = (event) => {
+        event.preventDefault();
+
+        const payload = {
+            to: to,
+            from: from,
+            city: city,
+            categories: [],
+            brand: [],
+            fuel: [],
+            eng: [],
+            seats: [],
+        }
+
+
+        console.log(payload);
+        console.log("----------------------------------");
+
+        axios.post("http://localhost:8000/car/filter", payload)
+            .then((res) => {
+                if (res.status == 200) {
+                    console.log(payload)
+                    history.push("/rent");
+                }
+                else {
+                    history.push("/");
+                }
+            }).catch((err) => {
+                console.log(err);
+            });
+    }
+
     return (
         <>
+            <Dialog open={visible} aria-labelledby="form-dialog-title" fullWidth="true" maxWidth="xs" >
+                <DialogContent>
+                    <SearchBar
+                        onChange={handleChange}
+                        setTo={setTo}
+                        setFrom={setFrom}
+                    />
+                </DialogContent>
+                <div className="buttonContainer">
+                    <SubmitButton
+                        style={{ padding: "2%", marginRight: "5%" }}
+                        onClick={(e) => sendToServer(e)}
+                    >
+                        Search for cars
+					</SubmitButton>
+                    <SubmitButton onClick={e => hideModal(e)} style={{ padding: "2%", marginLeft: "5%" }}>
+                        Cancel Search
+					</SubmitButton>
+                </div>
+            </Dialog>
             <nav className='navbar active'>
                 <div className='navbar-container'>
                     <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
@@ -134,11 +214,15 @@ function Navbar() {
                                     </Link>
                                 </li>
                         }
+                        
                         <li className='nav-item'>
                             <Link
-                                to='/rent'
+                                // to='/rent'
                                 className='nav-links'
-                                onClick={closeMobileMenu}
+                                onClick={() => {
+                                    closeMobileMenu();
+                                    showModal();
+                                }}
                             >
                                 Rent a Car
                             </Link>
