@@ -13,26 +13,27 @@ const RequestBookingSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // carID:{
-  //     type:String,
-  //     required:true,
-  // },
-  // from_date:{
-  //     type:Date,
-  //     required: true
-  // },
-  // to_date:{
-  //     type:Date,
-  //     required: true
-  // },
-  // rent:{
-  //     type:Number,
-  //     required: true
-  // },
-  // booking_status:{
-  //     type:Number,
-  //     default:0
-  // },
+  carID: {
+    type: String,
+    required: true,
+  },
+  from_date: {
+    type: Date,
+    required: true,
+  },
+  to_date: {
+    type: Date,
+    required: true,
+  },
+  rent: {
+    type: Number,
+    required: true,
+  },
+  booking_status: {
+    type: Number,
+    default: -1,
+    required: true,
+  },
 });
 
 const RequestBooking = mongoose.model("RequestBooking", RequestBookingSchema);
