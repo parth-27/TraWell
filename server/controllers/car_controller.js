@@ -7,7 +7,7 @@ module.exports.addcar = function (req, res) {
   try {
     var count;
     var carid;
-    let finalcity;
+    var finalcity;
     user.find({ email: req.email }, function (err, user) {
       if (err || !user) {
         return res.status(400).json({ message: "Server Error" });
@@ -404,7 +404,7 @@ module.exports.acceptrequestbooking = async function (req, res) {
         });
       }
     );
-    await requestbookings.find({ carID: req.body.carid }, function (err, rb) {
+    await requestbookings.find({ carID: req.body.carid }, async function (err, rb) {
       if (err || !rb) {
         return res.status(400).json({ message: "Error in processing request" });
       }
