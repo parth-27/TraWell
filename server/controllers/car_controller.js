@@ -230,8 +230,8 @@ module.exports.getCarfromLocationAndDate = function (req, res) {
 module.exports.filter = function (req, res) {
   try {
     const pattern = date.compile("YYYY-MM-DD");
-    var tod = date.format(new Date(req.body.to_date), pattern);
-    var fromd = date.format(new Date(req.body.from_date), pattern);
+    var tod = date.format(new Date(req.body.to), pattern);
+    var fromd = date.format(new Date(req.body.from), pattern);
     var dcars = [];
     var ccar = [];
     var fcar = [];
@@ -404,29 +404,34 @@ module.exports.acceptrequestbooking = async function (req, res) {
         });
       }
     );
-    await requestbookings.find({ carID: req.body.carid }, async function (err, rb) {
-      if (err || !rb) {
-        return res.status(400).json({ message: "Error in processing request" });
-      }
-      rb.forEach(function (item, index) {
-        if (item.booking_status == -1) {
-          var d3 = date.format(new Date(item.to_date), pattern);
-          var d4 = date.format(new Date(item.from_date), pattern);
-          if (d2 <= d3 <= d1 || d2 <= d4 <= d1 || d4 <= d2 <= d1 <= d3) {
-            item.booking_status = 0;
-          }
+    await requestbookings.find(
+      { carID: req.body.carid },
+      async function (err, rb) {
+        if (err || !rb) {
+          return res
+            .status(400)
+            .json({ message: "Error in processing request" });
         }
-      });
-      await rb.save(function(e){
-        if(e){
+        rb.forEach(function (item, index) {
+          if (item.booking_status == -1) {
+            var d3 = date.format(new Date(item.to_date), pattern);
+            var d4 = date.format(new Date(item.from_date), pattern);
+            if (d2 <= d3 <= d1 || d2 <= d4 <= d1 || d4 <= d2 <= d1 <= d3) {
+              item.booking_status = 0;
+            }
+          }
+        });
+        await rb.save(function (e) {
+          if (e) {
             console.log(`Error in processing cancel booking request`);
             return res
               .status(400)
               .json({ message: "Error in processing request" });
-        }
-        return res.status(200).json({message:"Booking request accepted"});
-      });
-    });
+          }
+          return res.status(200).json({ message: "Booking request accepted" });
+        });
+      }
+    );
   } catch (err) {
     console.log(err);
     res.status(404).json({ message: "Error in catch block" });
