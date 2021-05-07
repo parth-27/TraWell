@@ -1,13 +1,12 @@
 import React from 'react'
 import { dummyCarData, colorz, fuel, engine } from './CarsData'
-import './LendCar.css'
+import './LendCar.css';
 import AvatarEditor from 'react-avatar-editor';
-import { Icon, Avatar } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import { FormContainer, SubmitButton, Input } from '../../../styles/style'
+import { SubmitButton, Input } from '../../../styles/style';
+import { authHeader } from "../../../services/authHeader";
 import axios from 'axios';
-import { AddCircle } from '@material-ui/icons';
 
 class LendCar extends React.Component {
 	constructor(props) {
@@ -30,7 +29,8 @@ class LendCar extends React.Component {
 			error: false,
 			errorState: [{ error: false, statement: "" }],
 			to: "",
-			from:"",
+			from: "",
+			image_blob:"",
 		};
 
 		this.loadModels = this.loadModels.bind(this);
@@ -227,23 +227,23 @@ class LendCar extends React.Component {
 			features: this.state.features,
 			to: this.state.to,
 			from: this.state.to,
+			blob:this.state.image_blob,
 		}
 		
 		console.log(payload);
 		console.log("----------------------------------");
 
-		axios.post("http://localhost:8000/cars/addcar", payload)
+		axios.post("http://localhost:8000/car/addcar", { headers: authHeader(),payload	 })
 		.then((res) => {
 		  if (res.status == 200) {
 		    console.log(payload)
-		    this.history.push("/home");
+		    this.history.push("/");
 		  }
 		  else {
-		    this.state.error = {
-		      error: true,
-		      statement: "Apologies.. due to server fault, we could not store your information!!"
-		    }
-		    this.setState({});
+			this.setState({
+				error: true,
+				statement: "Apologies.. due to server fault, we could not store your information!!"
+			});
 		    this.history.push("/user/lendcar");
 		  }
 		});
@@ -255,11 +255,10 @@ class LendCar extends React.Component {
 				let imageUrl = URL.createObjectURL(blob);
 				this.setState({
 					croppedImage: imageUrl,
-					blob
-				});
+					image_blob:blob,
+				},()=>console.log("new state",this.state));
 			});
 		}
-		console.log(this.setState);
 	};
 
 	handleFile = (event) => {
@@ -269,12 +268,9 @@ class LendCar extends React.Component {
 		if (file) {
 			reader.readAsDataURL(file);
 			reader.addEventListener("load", () => {
-				console.log(reader.result);
 				this.setState({ picture: reader.result });
 			});
 		}
-
-		console.log(this.setState);
 	};
 
 	render() {
@@ -345,20 +341,22 @@ class LendCar extends React.Component {
 						</select>
 					</div>
 					<br />
+					<br />
 
-					<label className="lend-label">Add Features</label>
+					<h3 >Add Features</h3>
 
 					{this.state.features.map((el, i) => (
 						<div key={i}>
-							<input type="text" value={el.feature || ""} onChange={e => this.handleChange(i, e)} />
+							<input type="text" style={{width:"90%",fontSize:"3.5vh",marginTop:"3%"}} value={el.feature || ""} onChange={e => this.handleChange(i, e)} />
 							<button onClick={() => this.removeClick(i)} style={{ borderRadius: "50px", border: "0", padding: "auto", marginLeft: "2%", cursor: "pointer", backgroundColor: "white" }}><HighlightOffIcon /> </button>
 						</div>
 					))}
 
 					<button style={{ borderRadius: "50px", border: "0", padding: "auto", marginLeft: "2%", cursor: "pointer", backgroundColor: "white" }} onClick={(e) => this.addClick(e)}> <AddCircleIcon /></button>
 					<br />
+					<br />
 
-					<label className="lend-label">Add Images</label>
+					<h3 >Add Images</h3>
 					{this.state.picture &&
 						<AvatarEditor
 							ref={node => (this.avatarEditor = node)}
@@ -372,11 +370,13 @@ class LendCar extends React.Component {
 						/>
 					}
 					<Input
+						className="add-image"
 						onChange={e => this.handleFile(e)}
-						fluid
 						type="file"
+						accept=".png, .jpg, .jpeg"
 						label="Car Image"
 						name="previewImage"
+						style={{height:"42px"}}
 					/>
 
 					<SubmitButton onClick={this.handleCropImage} style={{ padding: "2% 1%", margin: "8% 2% 0% 2%" }}>Crop</SubmitButton>

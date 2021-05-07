@@ -27,7 +27,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin:3%;
+  margin-top: 8%;
+  margin-left: 4%;
 }
 
 .journeyFrom, .journeyTo, .toImage{
@@ -39,7 +40,9 @@
 
 .fromDate, .toDate{
   font-size: 3.5vh;
+  width: 85%;
   padding-left: 4%;
+  padding: 2% 0%;
   padding-right: auto;
 }
 
@@ -52,9 +55,9 @@
 }
 
 #category-display, #seats-display, #registration, #rent, #dep, #refund-dep, #pickup-add{
-  border-bottom: solid 1px #01374b;
+  border-bottom: solid 1px #151515;
   font-size: 3vh;
-  color: #01374b;
+  color: #151515;
 }
 
 #category-display, #seats-display{
@@ -86,7 +89,7 @@
 .selectDiv:after {
     content: '\f078';
     font: normal normal normal 17px/1 FontAwesome;
-    color: #01374b;
+    color: #151515;
     right: 15px;
     top: 6px;
     height: 100%;
@@ -112,11 +115,11 @@ select::-ms-expand {
   padding: 0px 24px;
   font-size: 3vh;
   line-height: 1.75;
-  color: #01374b;
+  color: #151515;
   background-color: #ffffff;
   background-image: none;
-  border: 1px solid #01374b;
-  border-radius: 50px;
+  border: 1px solid #151515;
+  border-radius: 5px;
   -ms-word-break: normal;
   word-break: normal;
   cursor: pointer;
@@ -206,4 +209,8 @@ select::-ms-expand {
 .lend-submit{
   margin-left: auto;
   margin-right: auto;
+}
+
+.add-image{
+  margin-left: 2%;
 }
