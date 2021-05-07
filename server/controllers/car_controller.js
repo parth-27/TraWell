@@ -141,19 +141,48 @@ module.exports.getCarfromLocationAndDate = function (req, res) {
   }
 };
 
+module.exports.cancelrequestbooking = async function (req, res) {
+  try {
+    await requestbookings.findOne(
+      { bookingID: req.body.bookingid },
+      async function (err, rb) {
+        if (err || !rb) {
+          return res.status(400).json({ message: "Server error" });
+        }
+        console.log(rb);
+        rb.booking_status = 0;
+        await rb.save(function (e) {
+          if (e) {
+            console.log("Error in processing cancel booking request");
+            return res
+              .status(400)
+              .json({ message: "Error in processing cancel booking request" });
+          }
+          res
+            .status(200)
+            .json({ message: "Successfully cancelled booking request" });
+        });
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ message: "Error in catch block" });
+  }
+};
+
 module.exports.requestbooking = async function (req, res) {
   try {
-    await requestbookings.find({}, function (err, rb) {
-      if(err){
-        return res.status(400).json({message:"Server error"});
+    await requestbookings.find({}, async function (err, rb) {
+      if (err) {
+        return res.status(400).json({ message: "Server error" });
       }
       var bookingcount = bookings.length + 1;
       var bookingid = "B" + bookingcount.toString();
       const pattern = date.compile("YYYY-MM-DD");
       var d1 = date.format(new Date(req.body.to_date), pattern);
       var d2 = date.format(new Date(req.body.from_date), pattern);
-      const days = date.subtract(d1,d2).toDays();
-      const finalrent = days*req.body.rent;
+      const days = date.subtract(d1, d2).toDays();
+      const finalrent = days * req.body.rent;
       const newrequestedbooking = requestbookings({
         bookingid: bookingid,
         lender_email: req.body.lender_email,
@@ -161,15 +190,19 @@ module.exports.requestbooking = async function (req, res) {
         carID: req.body.carid,
         from_date: d2,
         to_date: d1,
-        rent:finalrent,
-        booking_status=-1,  //-1: request pending, 1:request accepted, 0:request rejected
+        rent: finalrent,
+        booking_status: -1, //-1: request pending, 1:request accepted, 0:request rejected
       });
-      await newrequestedbooking.save(function(e){
-        if(e){
+      await newrequestedbooking.save(function (e) {
+        if (e) {
           console.log(`Error in processing request booking`);
-          return res.status(404).json({message:"Error in processing request booking"});
+          return res
+            .status(404)
+            .json({ message: "Error in processing request booking" });
         }
-        res.status(200).json({message:"Successfully processed booking request"});
+        res
+          .status(200)
+          .json({ message: "Successfully processed booking request" });
       });
     });
   } catch (err) {
