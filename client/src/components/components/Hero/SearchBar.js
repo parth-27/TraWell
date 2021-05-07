@@ -5,25 +5,22 @@ import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
-import { TextField } from "@material-ui/core";
 
-export default function SearchBar() {
-    // The first commit of Material-UI
-    const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+export default function SearchBar(props) {
+    
+    const [from, setFrom] = React.useState(new Date().toString());
+    const [to, setTo] = React.useState(new Date().toString());
 
-    const handleDateChange = (date) => {
-        setSelectedDate(date);
-    };
-
-    const changeCityState = (event) =>{
-        console.log(event.target.value);
-    }
+    React.useEffect(() => {
+        props.setTo(to);
+        props.setFrom(from);
+    }, [to,from])
 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <div style={{ display: "flex", flexDirection: "column", width: "80%", margin: "auto" }}>
                 <div className="selectDiv" style={{marginBottom:"7%"}}>
-                    <select required className="dropdown-inputs" id="city-selection" style={{borderRadius:"10px"}} onChange={(e)=> changeCityState(e)}>
+                    <select required className="dropdown-inputs" name="city" id="city-selection" style={{borderRadius:"10px"}} onChange={props.onChange}>
                         <option disabled selected>City</option>
                         <option value="Ahmedabad">Ahemadabad</option>
                         <option value="Gandhinagar">Gandhinagar</option>
@@ -33,12 +30,14 @@ export default function SearchBar() {
                     </select>
                 </div>
                 <KeyboardDatePicker
+                    name="from"
                     margin="normal"
-                    id="date-picker-dialog"
+                    id="date-picker-dialog1"
                     label="From"
                     format="MM/dd/yyyy"
-                    value={selectedDate}
-                    onChange={handleDateChange}
+                    value={from}
+                    minDate={new Date().toString()}
+                    onChange={(date) => setFrom(date)}
                     KeyboardButtonProps={{
                         'aria-label': 'change date',
                     }}
@@ -46,12 +45,14 @@ export default function SearchBar() {
                 <div style={{ width: "100%", margin: "8% auto 0.75% auto", textAlign: "center" }}><img src="downarrow.png" width="5%" height="5%" /></div>
 
                 <KeyboardDatePicker
+                    name="to"
                     margin="normal"
-                    id="date-picker-dialog"
+                    id="date-picker-dialog2"
                     label="To"
                     format="MM/dd/yyyy"
-                    value={selectedDate}
-                    onChange={handleDateChange}
+                    value={to}
+                    minDate={from}
+                    onChange={(date) => setTo(date)}
                     KeyboardButtonProps={{
                         'aria-label': 'change date',
                     }}

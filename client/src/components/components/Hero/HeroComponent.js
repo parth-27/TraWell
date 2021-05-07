@@ -8,16 +8,25 @@ import SearchBar from './SearchBar';
 import { SubmitButton } from '../../../styles/style';
 import AuthService from "../../../services/auth";
 import { Dialog, DialogContent, DialogActions } from '@material-ui/core';
+import { authHeader } from "../../../services/authHeader";
+import axios from 'axios';
 
 class HeroComponent extends React.Component {
 
 	constructor() {
 		super();
 		this.state = {
-			visible: false
+			visible: false,
+			city: "",
+			to: "",
+			from:"",
 		};
 		this.showModal = this.showModal.bind(this);
 		this.hideModal = this.hideModal.bind(this);
+		this.handleChange = this.handleChange.bind(this);
+		this.sendToServer = this.sendToServer.bind(this);
+		this.setTo = this.setTo.bind(this);
+		this.setFrom = this.setFrom.bind(this);
 	}
 
 	showModal = () => {
@@ -31,6 +40,24 @@ class HeroComponent extends React.Component {
 	componentDidMount() {
 		this.numberDisplay();
 		this.typewritter();
+	}
+
+	handleChange = (e) => {
+		this.setState({
+			city: e.target.value,
+		});
+	}
+
+	setTo = (toDate) => {
+		this.setState({
+			to:toDate
+		})
+	}
+
+	setFrom = (fromDate) => {
+		this.setState({
+			from: fromDate
+		})
 	}
 
 	numberDisplay = () => {
@@ -132,6 +159,43 @@ class HeroComponent extends React.Component {
 		document.body.appendChild(css);
 	}
 
+	sendToServer = (event) => {
+		console.log("fukkkkkkk");
+		event.preventDefault();
+
+		const payload = {
+			to: this.state.to,
+			from: this.state.from,
+			city: this.state.city,
+			categories: [],
+			brand: [],
+			fuel: [],
+			eng: [],
+			seats: [],
+		}
+		
+
+		console.log(payload);
+		console.log("----------------------------------");
+
+		axios({
+			method: 'get',
+			url: "http://localhost:8000/car/filter",
+			data: payload,
+		})
+			.then((res) => {
+				if (res.status == 200) {
+					console.log(payload)
+					this.props.history.push("/rent");
+				}
+				else {
+					this.props.history.push("/");
+				}
+			}).catch((err) => {
+				console.log(err);
+			});
+	}
+
 	render() {
 		return (
 			<div className='hero-container'>
@@ -170,34 +234,28 @@ class HeroComponent extends React.Component {
 						<span className="nbr ltr">0</span>
 					</div>
 				</div>
-				{/* <p>What are you waiting for?</p> */}
-
-				{/* <Modal visible={this.state.visible} width="700" height="40%" effect="fadeInUp" onClickAway={() => this.hideModal()}>
-					<div className="container">
-						<SearchBar />
-						<div className="buttonContainer">
-							{' '}
-							<SubmitButton>
-								Search for cars
-							</SubmitButton>
-						</div>
-					</div>
-				</Modal> */}
 				<Dialog open={this.state.visible} aria-labelledby="form-dialog-title" fullWidth="true" maxWidth="xs" >
 					<DialogContent>
-						<SearchBar />
+						<SearchBar
+							onChange={this.handleChange}
+							setTo={this.setTo}
+							setFrom={this.setFrom}
+						/>
 					</DialogContent>
 					<div className="buttonContainer">
-						<SubmitButton style={{padding:"2%", marginRight:"5%"}}>
+						<SubmitButton
+							style={{ padding: "2%", marginRight: "5%" }}
+							onClick={(e) => {
+								console.log("hello");
+								this.sendToServer(e)
+							}}
+						>
 							Search for cars
 						</SubmitButton>
-						<SubmitButton style={{padding:"2%", marginLeft:"5%"}}>
+						<SubmitButton onClick={e => this.hideModal(e)} style={{padding:"2%", marginLeft:"5%"}}>
 							Cancel Search
 						</SubmitButton>
 					</div>
-					{/* <DialogActions>
-						<Button> ok </Button>
-					</DialogActions> */}
 				</Dialog>
 
 				<div className='hero-btns'>

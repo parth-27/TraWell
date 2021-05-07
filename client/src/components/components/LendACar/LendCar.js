@@ -8,6 +8,8 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { SubmitButton, Input } from '../../../styles/style';
 import { authHeader } from "../../../services/authHeader";
 import axios from 'axios';
+import DateFnsUtils from '@date-io/date-fns';
+import { KeyboardDatePicker, MuiPickersUtilsProvider, } from '@material-ui/pickers';
 
 class LendCar extends React.Component {
 	constructor(props) {
@@ -29,9 +31,10 @@ class LendCar extends React.Component {
 			features: [],
 			error: false,
 			errorState: [{ error: false, statement: "" }],
-			to: "",
-			from: "",
-			image_blob:"",
+			to: new Date().toString(),
+			from: new Date().toString(),
+			currenDate: new Date().toString(),
+			image_blob: "",
 		};
 
 		this.loadModels = this.loadModels.bind(this);
@@ -183,11 +186,11 @@ class LendCar extends React.Component {
 	}
 
 	setTo(e) {
-		this.setState({ to: e.target.value },() => console.log("new state",this.state));
+		this.setState({ to: e },() => console.log("new state",this.state));
 	}
 
 	setFrom(e) {
-		this.setState({ from: e.target.value }, () => console.log("new state", this.state));
+		this.setState({ from: e }, () => console.log("new state", this.state));
 	}
 
 	setDep(e) {
@@ -227,7 +230,7 @@ class LendCar extends React.Component {
 			croppedImage: this.state.croppedImage,
 			features: this.state.features,
 			to: this.state.to,
-			from: this.state.to,
+			from: this.state.from,
 			blob:this.state.image_blob,
 		}
 		
@@ -243,7 +246,7 @@ class LendCar extends React.Component {
 		.then((res) => {
 		  if (res.status == 200) {
 		    console.log(payload)
-		    this.props.history.push("/");
+		    this.props.history.push("/user/profile");
 		  }
 		  else {
 			this.setState({
@@ -398,11 +401,46 @@ class LendCar extends React.Component {
 					<label id="error-rent" className="errorLogs"></label>
 
 					<div className="journeyRow">
-						<div className="journeyFrom"> <input type="date" className="fromDate" required onChange={e => this.setFrom(e)} /> </div>
-						<div className="toImage">
-							<svg xmlns="http://www.w3.org/2000/svg" width="40" height="30"><g fill="none"><g><g><g><g transform="translate(0 1)"><path stroke="#979797" d="M.5 15h40" stroke-linecap="square" /><circle cx="20" cy="16" r="13" fill="#9B9B9B" stroke="#F7F7F7" /><text fill="#fff" font-family="Helvetica" font-size="13" font-weight="bold"><tspan x="12" y="21">TO</tspan></text></g></g></g></g></g></svg>
+						{/* <div className="journeyFrom"> <input type="date" min={this.state.currentDate} className="fromDate" required onChange={e => this.setFrom(e)} /> </div> */}
+						<MuiPickersUtilsProvider utils={DateFnsUtils}>
+
+							<KeyboardDatePicker
+								margin="normal"
+								id="date-picker-dialog"
+								label="From"
+								format="MM/dd/yyyy"
+								value={this.state.from}
+								minDate={this.state.currenDate}
+								onChange={(date) => this.setFrom(date)}
+								KeyboardButtonProps={{
+									'aria-label': 'change date',
+								}}
+							/>
+
+						</MuiPickersUtilsProvider>
+
+						<div style={{ width: "15%", margin: "8% auto 0.75% auto", textAlign: "center" }}>
+							<img src={"doublearrowside.png"} width="50" height="50" alt="arrow" />
 						</div>
-						<div className="journeyTo"><input type="date" min={this.state.from} className="toDate" required onChange={e => this.setTo(e)} /></div>
+						{/* <div className="toImage">
+							<svg xmlns="http://www.w3.org/2000/svg" width="40" height="30"><g fill="none"><g><g><g><g transform="translate(0 1)"><path stroke="#979797" d="M.5 15h40" stroke-linecap="square" /><circle cx="20" cy="16" r="13" fill="#9B9B9B" stroke="#F7F7F7" /><text fill="#fff" font-family="Helvetica" font-size="13" font-weight="bold"><tspan x="12" y="21">TO</tspan></text></g></g></g></g></g></svg>
+						</div> */}
+						{/* <div className="journeyTo"><input type="date" min={this.state.from} className="toDate" required onChange={e => this.setTo(e)} /></div> */}
+						<MuiPickersUtilsProvider utils={DateFnsUtils}>
+
+							<KeyboardDatePicker
+								margin="normal"
+								id="date-picker-dialog"
+								label="To"
+								format="MM/dd/yyyy"
+								value={this.state.to}
+								minDate={this.state.to}
+								onChange={(date) => this.setTo(date)}
+								KeyboardButtonProps={{
+									'aria-label': 'change date',
+								}}
+							/>
+						</MuiPickersUtilsProvider>
 					</div>
 
 					{/*<input required id="pickup-add" placeholder="Enter Pickup Address" onChange={this.setPickAdd} />*/}
