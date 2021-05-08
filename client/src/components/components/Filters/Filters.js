@@ -21,18 +21,18 @@ class Filters extends React.Component {
     componentDidUpdate() {
         const payload = {...this.state}
         console.log(payload);
-        axios.post("http://localhost:8000/car/filter", payload)
-            .then((res) => {
-                if (res.status == 200) {
-                    console.log(payload)
-                    this.props.history.push("/rent");
-                }
-                else {
-                    this.props.history.push("/");
-                }
-            }).catch((err) => {
-                console.log(err);
-            });
+        // axios.post("http://localhost:8000/car/filter", payload)
+        //     .then((res) => {
+        //         if (res.status == 200) {
+        //             console.log(payload)
+        //             this.props.history.push("/rent");
+        //         }
+        //         else {
+        //             this.props.history.push("/");
+        //         }
+        //     }).catch((err) => {
+        //         console.log(err);
+        //     });
     }
 
     eventHandler = (e) => {

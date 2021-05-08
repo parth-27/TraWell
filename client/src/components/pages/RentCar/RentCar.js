@@ -7,39 +7,42 @@ import { GlobalState } from '../../context/index';
 export const RentCar = () => {
 
     const [user, dispatch] = React.useContext(GlobalState);
-    const [res, setResponse] = React.useState();
+    const [response, setResponse] = React.useState([]);
+    const [city, setCity] = React.useState();
+    const [toDate, setToDate] = React.useState();
+    const [fromDate, setFromDate] = React.useState();
+    var data;
 
     React.useEffect(() => {
-        const payload = {
-            to: user.toDate,
-            from: user.fromDate,
-            city: user.rentCity,
-            categories: [],
-            brand: [],
-            fuel: [],
-            eng: [],
-            seats: [],
-        }
-        console.log(payload);
 
-        axios.post("http://localhost:8000/car/filter", payload)
+        console.log("fuckkkkkkkkkkkkkkkkkkkk");
+        const payload = JSON.parse(localStorage.getItem("location"));
+        setCity(payload.city);
+        setToDate(payload.to);
+        setFromDate(payload.from);
+        console.log(city, toDate, fromDate);    
+        axios.post("http://localhost:8000/car/filter", JSON.parse(localStorage.getItem("location")))
             .then((res) => {
                 if (res.status == 200) {
-                    console.log(res)
-                    setResponse({ res });
+                    console.log(res.data);
+                    data = res.data;
+                    setResponse(oldData => [...oldData,...data]);
                 }
                 else {
                 }
             }).catch((err) => {
                 console.log(err);
             });
-        
-        console.log(res);
     }, [])
     return (
         <div style={{display:"flex",flexDirection:"row"}}>
             <Filters />
-            <CarDeck />
+            <CarDeck
+                data={response}
+                city={city}
+                toDate={toDate}
+                fromDate={fromDate}
+            />
         </div>
     )
 }

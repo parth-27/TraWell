@@ -1,6 +1,6 @@
 const dummyData = [
     {
-        carid: "fDObf2AeAP4",
+        carid: "C1",
         picture: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2Fyc3xlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80",
         modl: "Baleno",
         company : "Maruti-Suzuki",
@@ -13,7 +13,7 @@ const dummyData = [
         penalty : 5000,
         features : ["bjhdbds", "kbahjbfhjdhjbd", "ajsjhbjsddg"],
         registration_no : 124235432131,
-        lender_id : "mfekngkj124352",
+        lender_email: "jeet.s3@ahduni.edu.in",
         lender_name : "Parth N. Patel",
         lender_add : "30/31, Hariyani Society, Opp. Neo Politian, Navsari, Gujarat, 396454",
         lender_phone : 8698567567,

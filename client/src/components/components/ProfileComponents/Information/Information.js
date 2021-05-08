@@ -7,6 +7,7 @@ import { FormContainer, SubmitButton, Input } from '../../../../styles/style';
 import { useHistory } from 'react-router-dom';
 import AvatarEditor from 'react-avatar-editor';
 import axios from 'axios';
+import { authHeader } from "../../../../services/authHeader";
 
 
 export const Information = () => {
@@ -120,31 +121,39 @@ export const Information = () => {
         if (userInfoUpdated.updatedCity !== userInfo.city) {
             payload = {
                 ...payload,
-                phoneNumber: userInfoUpdated.updatedCity
+                city: userInfoUpdated.updatedCity
             }
         }
 
         if ((userInfoUpdated.updatedAddress1 + ',' + userInfoUpdated.updatedAddress2) !== userInfo.address) {
             payload = {
                 ...payload,
-                phoneNumber: (userInfoUpdated.updatedAddress1 + ',' + userInfoUpdated.updatedAddress2)
+                address: (userInfoUpdated.updatedAddress1 + ',' + userInfoUpdated.updatedAddress2)
             }
         }
 
         if (userInfoUpdated.updatedPincode !== userInfo.pincode) {
             payload = {
                 ...payload,
-                phoneNumber: userInfoUpdated.updatedPincode
+                pincode: userInfoUpdated.updatedPincode
             }
         }
 
         console.log(payload);
 
-        // axios.post("http://localhost:8000/user/updateprofile", payload).then((res) => {
-        //     if (res.status == 200) {
-        //         history.push("/user/profile");
-        //     }
-        // });
+        axios({
+            method: "post",
+            url: "http://localhost:8000/user/updateprofile",
+            headers: authHeader(),
+            data: payload
+        }).then((res) => {
+            console.log(res);
+            if (res.status == 200) {
+                history.push("/");
+            }
+        }).catch = (err) => {
+            console.log(err);
+        };
     };
 
     const changePassword = (e) => {

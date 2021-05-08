@@ -3,6 +3,8 @@ import { BoxContainer, FormContainer,Input,SubmitButton,DisplayError } from '../
 import AuthService from "../../../services/auth";
 import { useHistory } from 'react-router-dom';
 import { CheckBox } from '../Checkbox/CheckBox';
+import axios from 'axios';
+import { authHeader } from "../../../services/authHeader";
 
 const FareDetails = (props) => {
 
@@ -14,17 +16,30 @@ const FareDetails = (props) => {
 
     const requestCar = (e) => {
         e.preventDefault();
-        if (document.getElementById('first').checked && document.getElementById('first').checked)
-        {
-            history.push("/")
+        
+        const payload = {
+            carid: props.carid,
+            lender_email: props.lender_email,
+            from_date: props.fromDate,
+            to_date: props.toDate,
+            rent:props.rent,
         }
-        else
-        {
-            setErrorState({
-                error: true,
-                statement: "Please Agree to all the Conditions"
-            });
-        }
+
+        console.log("--------------",payload);
+
+        axios({
+            method: "post",
+            url: "http://localhost:8000/car/requestbooking",
+            headers: authHeader(),
+            data: payload
+        }).then((res) => {
+            console.log(res);
+            if (res.status == 200) {
+                history.push("/");
+            }
+        }).catch = (err) => {
+            console.log(err);
+        };
 
     }
 

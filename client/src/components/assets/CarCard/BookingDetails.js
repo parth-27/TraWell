@@ -1,7 +1,13 @@
 import React from 'react';
 import { PhoneSharp, Schedule, LocationOn } from "@material-ui/icons";
+import date from 'date-and-time';
 
 const BookingDetails = (props) => {
+
+    const pattern = date.compile("YYYY-MM-DD");
+    var tod = date.format(new Date(props.toDate), pattern);
+    var fromd = date.format(new Date(props.fromDate), pattern);
+
     return (
         <div className="car-profile-details-container">
             <hr className="hr-text" data-content="Car & Booking Details" />
@@ -49,11 +55,11 @@ const BookingDetails = (props) => {
                         </div>
                     </div>
                     <div className="journey-row">
-                        <div className="journey-from"> <p> Wed, 28 Apr </p> </div>
+                        <div className="journey-from"> <p>{fromd}</p> </div>
                         <div className="to-image">
                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="30"><g fill="none"><g><g><g><g transform="translate(0 1)"><path stroke="#979797" d="M.5 15h40" stroke-linecap="square" /><circle cx="20" cy="16" r="13" fill="#9B9B9B" stroke="#F7F7F7" /><text fill="#fff" font-family="Helvetica" font-size="13" font-weight="bold"><tspan x="12" y="21">TO</tspan></text></g></g></g></g></g></svg>
                         </div>
-                        <div className="journey-to"><p> Wed, 28 May </p></div>
+                        <div className="journey-to"><p>{tod}</p></div>
                     </div>
                     <div className="journey-duration">
                         <Schedule style={{ float: "left" }} />

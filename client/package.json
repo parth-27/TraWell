@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^12.7.0",
     "aos": "^2.3.4",
     "axios": "^0.21.1",
+    "date-and-time": "^1.0.0",
     "date-fns": "^2.21.1",
     "formik": "^2.2.6",
     "framer-motion": "^3.3.0",

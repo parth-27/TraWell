@@ -6,7 +6,7 @@ import BookingDetails from "./BookingDetails";
 import GeneralInstructions from "./GeneralInstructions";
 import FareDetails from "./FareDetails";
 
-const CardList = ({ list }) => {
+const CardList = ({ list,toDate,fromDate }) => {
 
 	const [visible, setVisible] = useState(false);
 	const [car, setCar] = useState({
@@ -28,26 +28,22 @@ const CardList = ({ list }) => {
 	})
 
 	function openModal(item) {
-		console.log("*********")
-		// console.log(index)
-		// console.log(item)
 		setVisible(true);
 		setCar({
-			carId: item.carid,
-			carName: item.company + " " + item.modl,
-			seats: item.no_of_passengers,
-			rent: item.rent,
-			penalty: item.penalty,
-			engine: item.engine_type,
-			fuel: item.fuel_type,
-			features: item.features,
-			picture: item.picture,
-			plan: item.plan,
-			lender_id: item.lender_id,
-			lender_name: item.lender_name,
-			lender_add: item.lender_add,
-			lender_phone: item.lender_phone,
-			ref_deposit: item.ref_deposit,
+			carId: item.car_details ? item.car_details.carid : "",
+			carName: ( item.car_details ? item.car_details.company : "" ) + " " +( item.car_details ? item.car_details.modl : "" ),
+			seats: item.car_details ? item.car_details.no_of_passengers:"",
+			rent: item.car_details ? item.car_details.rent:"",
+			penalty: item.car_details ? item.car_details.penalty:"",
+			engine: item.car_details ? item.car_details.engine_type:"",
+			fuel: item.car_details ? item.car_details.fuel_type:"",
+			features: item.car_details ? item.car_details.features:"",
+			picture: item.car_details ? item.car_details.picture:"",
+			lender_id: item.car_details ? item.car_details.lender_email:"",
+			lender_name: item.lender_details ? item.lender_details.lender_name:"",
+			lender_add: item.lender_details ? item.lender_details.lender_add:"",
+			lender_phone: item.lender_details ? item.lender_details.lender_phone:"",
+			ref_deposit: item.lender_details ? item.lender_details.ref_deposit:"",
 		});
 	}
 
@@ -78,6 +74,8 @@ const CardList = ({ list }) => {
 							lender_name={car.lender_name}
 							lender_add={car.lender_add}
 							lender_phone={car.lender_phone}
+							toDate={toDate}
+							fromDate={fromDate}
 						/>
 
 						<div className="info-container">
@@ -85,6 +83,10 @@ const CardList = ({ list }) => {
 							<FareDetails
 								rent={car.rent}
 								ref_deposit={car.ref_deposit}
+								lender_email={car.lender_id}
+								carid={car.carId}
+								fromDate={fromDate}
+								toDate={toDate}
 							/>
 						</div>
 

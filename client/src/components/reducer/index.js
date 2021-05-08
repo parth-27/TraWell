@@ -51,12 +51,12 @@ export const userReducer = (state, action) => {
             });
         case "SET_IMAGE":
             console.log(payload);
-            debugger;
             return ({
                 ...state,
                 imageUrl:payload.imageUrl
             })
         case "SEARCH_CAR":
+            console.log(payload);
             return ({
                 toDate: payload.toDate,
                 fromDate: payload.fromDate,

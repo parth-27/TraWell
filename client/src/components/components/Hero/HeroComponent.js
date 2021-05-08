@@ -174,20 +174,23 @@ class HeroComponent extends React.Component {
 		}
 		
 		console.log(payload);
-		console.log("----------------------------------");
 
-		axios.post("http://localhost:8000/car/filter",payload)
-			.then((res) => {
-				if (res.status == 200) {
-					console.log(res);
-					this.props.history.push("/rent");
-				}
-				else {
-					this.props.history.push("/");
-				}
-			}).catch((err) => {
-				console.log(err);
-			});
+		localStorage.setItem("location", JSON.stringify(payload));
+
+		this.props.history.push("/rent");
+
+		// axios.post("http://localhost:8000/car/filter",payload)
+		// 	.then((res) => {
+		// 		if (res.status == 200) {
+		// 			console.log(res);
+		// 			this.props.history.push("/rent");
+		// 		}
+		// 		else {
+		// 			this.props.history.push("/");
+		// 		}
+		// 	}).catch((err) => {
+		// 		console.log(err);
+		// 	});
 	}
 
 	render() {

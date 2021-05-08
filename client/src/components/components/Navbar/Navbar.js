@@ -136,34 +136,37 @@ function Navbar() {
             seats: [],
         }
 
-
+        localStorage.setItem("location", JSON.stringify(payload));
+        
         console.log(payload);
-        console.log("----------------------------------");
-        debugger;
+        console.log("Navbar----------------------------------");
 
         dispatch({
             type: "SEARCH_CAR",
             payload: {
                 toDate: payload.to,
                 fromDate: payload.from,
-                rentCity:payload.city,
+                rentCity: payload.city,
             }
-        })
+        });
+        
+        hideModal();
+        history.push("/rent");
 
-        axios.post("http://localhost:8000/car/filter", payload)
-            .then((res) => {
-                if (res.status == 200) {
-                    console.log(res)
-                    hideModal();
-                    history.push("/rent");
-                }
-                else {
-                    hideModal();
-                    history.push("/");
-                }
-            }).catch((err) => {
-                console.log(err);
-            });
+        // axios.post("http://localhost:8000/car/filter", payload)
+        //     .then((res) => {
+        //         if (res.status == 200) {
+        //             console.log(res)
+        //             hideModal();
+        //             history.push("/rent");
+        //         }
+        //         else {
+        //             hideModal();
+        //             history.push("/");
+        //         }
+        //     }).catch((err) => {
+        //         console.log(err);
+        //     });
     }
 
     return (
