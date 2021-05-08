@@ -249,11 +249,13 @@ module.exports.userrequests = async function (req, res) {
 };
 
 module.exports.getaddedcar = async function (req, res) {
+  console.log(req.body);
   try {
-    Car.find({ lender_email: req.email }, async function (err, car) {
+    Car.find({ lender_email: req.body.email }, async function (err, car) {
       if (err || !car) {
         return res.status(400).json({ message: "Server Error" });
       }
+      console.log(car);
       if (car.length == 0) {
         return res.status(200).json({ message: "You have not added any car" });
       } else {
@@ -550,9 +552,9 @@ module.exports.updateprofile = function (req, res) {
         console.log(err);
         return res.status(400).json({ message: "server error" });
       }
-      user.name = req.body.name;
-      (user.proile_picture = req.body.croppedImage),
-        (user.phone_no = req.body.phone_no);
+      user.name = req.body.fullName;
+      // (user.proile_picture = req.body.croppedImage),
+      user.phone_no = req.body.phoneNumber;
       user.address = req.body.address;
       user.city = req.body.city;
       user.pincode = req.body.pincode;
