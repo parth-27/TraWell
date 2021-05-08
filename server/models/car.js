@@ -12,6 +12,7 @@ const carSchema = new mongoose.Schema({
   registration_no: {
     type: String,
     required: true,
+    unique: true,
   },
   rent: {
     type: Number,
