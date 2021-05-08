@@ -309,7 +309,7 @@ module.exports.filter = async function (req, res) {
               console.log(err);
               res.status(400).end();
             }
-            await asycnForEach(carwcity, function (item) {
+            await asyncForEach(carwcity, function (item) {
               ccar.push(item);
             });
             citycarobj = Object.assign({}, ccar);
@@ -317,7 +317,7 @@ module.exports.filter = async function (req, res) {
               if (dcars.includes(item)) {
               } else {
                 await user.findOne(
-                  { email: ccar.lender_email },
+                  { email: item.lender_email },
                   function (e, u) {
                     if (e || !u) {
                       return res
@@ -492,7 +492,7 @@ module.exports.requestbooking = async function (req, res) {
       const days = date.subtract(d1, d2).toDays();
       const finalrent = days * req.body.rent;
       const newrequestedbooking = new requestbookings({
-        bookingid: bookingid,
+        bookingID: bookingid,
         lender_email: req.body.lender_email,
         borrower_email: req.email,
         carID: req.body.carid,
