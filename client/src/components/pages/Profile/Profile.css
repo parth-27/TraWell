@@ -2,11 +2,7 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  margin: 0 150px;
-}
-
-#profile .user-tabs {
-  width: 75%;
+  margin: 0 3%;
 }
 
 @media (max-width: 1050px) {
@@ -19,7 +15,7 @@
   #profile {
     margin: 0 20px;
   }
-  #profile .user-tabs #filter-repo {
+  #profile #filter-repo {
     width: 80%;
   }
 }
