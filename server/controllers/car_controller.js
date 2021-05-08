@@ -3,6 +3,13 @@ const confirmedbookings = require("../models/confirmedBooking");
 const requestbookings = require("../models/requestBooking");
 const date = require("date-and-time");
 const user = require("../models/user");
+
+const asyncForEach = async (array, callback) => {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
+};
+
 module.exports.addcar = function (req, res) {
   try {
     var count;
@@ -227,8 +234,9 @@ module.exports.getCarfromLocationAndDate = function (req, res) {
   }
 };
 
-module.exports.filter = function (req, res) {
+module.exports.filter = async function (req, res) {
   try {
+    console.log(req.body);
     const pattern = date.compile("YYYY-MM-DD");
     var tod = date.format(new Date(req.body.to), pattern);
     var fromd = date.format(new Date(req.body.from), pattern);
@@ -250,8 +258,8 @@ module.exports.filter = function (req, res) {
     if (req.body.seats.length == 0) {
       req.body.seats = [7, 5];
     }
-    // confirmedbookings.find({fron_date:{'$gq':new Date()}})
-    confirmedbookings.find(
+
+    await confirmedbookings.find(
       {
         $and: [
           {
@@ -276,27 +284,19 @@ module.exports.filter = function (req, res) {
           { cancel: 0 },
         ],
       },
-      function (err, bookings) {
+      async function (err, bookings) {
         if (err) {
           console.log(err);
           res.status(400).end();
         }
-        bookings.forEach(function (item, index) {
+        await asyncForEach(bookings, function (item) {
           dcars.push(item);
         });
-        // console.log(dcars);
         datecarobj = Object.assign({}, dcars);
-        // console.log(datecarobj);
         cars.find(
           {
             $and: [
               { city: req.body.city },
-              {
-                $and: [
-                  { from_date: { $lt: fromd } },
-                  { to_date: { $gt: tod } },
-                ],
-              },
               { category: { $in: req.body.categories } },
               { company: { $in: req.body.brand } },
               { fuel_type: { $in: req.body.fuel } },
@@ -304,24 +304,35 @@ module.exports.filter = function (req, res) {
               { no_of_passengers: { $in: req.body.seats } },
             ],
           },
-          function (err, carwcity) {
+          async function (err, carwcity) {
             if (err) {
               console.log(err);
               res.status(400).end();
             }
-            carwcity.forEach(function (item, index) {
+            await asycnForEach(carwcity, function (item) {
               ccar.push(item);
             });
             citycarobj = Object.assign({}, ccar);
-            console.log(dcars);
-            console.log(ccar);
-            ccar.forEach(function (item, index) {
+            await asyncForEach(ccar, async function (item) {
               if (dcars.includes(item)) {
               } else {
-                fcar.push(item);
+                await user.findOne(
+                  { email: ccar.lender_email },
+                  function (e, u) {
+                    if (e || !u) {
+                      return res
+                        .status(404)
+                        .json({ message: "Error in processing user" });
+                    }
+                    const ans = {
+                      lender_details: u,
+                      car_details: item,
+                    };
+                    fcar.push(ans);
+                  }
+                );
               }
             });
-            console.log(fcar);
             return res.status(200).json(fcar);
           }
         );
@@ -473,14 +484,14 @@ module.exports.requestbooking = async function (req, res) {
       if (err) {
         return res.status(400).json({ message: "Server error" });
       }
-      var bookingcount = bookings.length + 1;
+      var bookingcount = rb.length + 1;
       var bookingid = "B" + bookingcount.toString();
       const pattern = date.compile("YYYY-MM-DD");
       var d1 = date.format(new Date(req.body.to_date), pattern);
       var d2 = date.format(new Date(req.body.from_date), pattern);
       const days = date.subtract(d1, d2).toDays();
       const finalrent = days * req.body.rent;
-      const newrequestedbooking = requestbookings({
+      const newrequestedbooking = new requestbookings({
         bookingid: bookingid,
         lender_email: req.body.lender_email,
         borrower_email: req.email,

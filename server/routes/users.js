@@ -11,7 +11,7 @@ router.post("/userverifymail", usercontroller.userverifymail);
 router.post("/resetpassmail", usercontroller.resetpassmail);
 router.post("/setnewpass", usercontroller.setnewpass);
 router.post("/verifyotp", usercontroller.verifyotp);
-router.get("/getaddedcar", verifyToken, usercontroller.getaddedcar);
+router.get("/getaddedcar", usercontroller.getaddedcar);
 router.get("/getrentedcar", verifyToken, usercontroller.getrentedcar);
 router.get("/getlendedcar", verifyToken, usercontroller.getlendedcar);
 router.get("/getrequestedcar", verifyToken, usercontroller.getrequestedcar);

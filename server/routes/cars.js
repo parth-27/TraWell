@@ -9,10 +9,6 @@ router.post("getcardetails", carcontroller.car_details);
 router.post("/bookcar", carcontroller.bookcar);
 router.get("/cardetails", carcontroller.car_details);
 router.post("/requestbooking", verifyToken, carcontroller.requestbooking);
-router.post(
-  "/cancelrequestbooking",
-  verifyToken,
-  carcontroller.cancelrequestbooking
-);
+router.post("/cancelrequestbooking",verifyToken,carcontroller.cancelrequestbooking);
 router.post("/filter", carcontroller.filter);
 module.exports = router;
