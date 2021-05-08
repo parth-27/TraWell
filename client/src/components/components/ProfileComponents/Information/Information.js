@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom';
 import AvatarEditor from 'react-avatar-editor';
 import axios from 'axios';
 import { authHeader } from "../../../../services/authHeader";
-
+import { LocationCity, LocationOn, Email } from '@material-ui/icons';
 
 export const Information = () => {
     const [user, dispatch] = React.useContext(GlobalState)
@@ -30,7 +30,6 @@ export const Information = () => {
         updatedFullName: "",
         updatedPhoneNumber: "",
         updatedAddress1: "",
-        updatedAddress2: "",
         updatedCity: "",
         updatedPincode: "",
     });
@@ -173,13 +172,13 @@ export const Information = () => {
 
     return (
         <div id="info">
-            <img src={"https://c4.wallpaperflare.com/wallpaper/291/744/20/anime-domestic-girlfriend-rui-tachibana-hd-wallpaper-preview.jpg"}
-                alt={"hellow"}
-            />
-            <h1>
-                <div className="fullName">{userInfo.fullName}</div>
-            </h1>
-            <br />
+            <div style={{ width: "75%", margin: "5% 12.5%" }}>
+                <img src={"https://betterstudio.com/wp-content/uploads/2019/05/1-1-instagram-1024x1024.jpg"}
+                    alt={"hellow"} className="profile-img" />
+            </div>
+            <div className="fullName">
+                <h1>{userInfo.fullName}</h1>
+            </div>
             <button
                 onClick={() => handleOpen()}
             >
@@ -219,7 +218,6 @@ export const Information = () => {
                             <Input type="text" placeholder="Email" value={userInfo.email} name="email" disabled />
                             <Input type="tel" placeholder="0123456789" value={userInfoUpdated.updatedPhoneNumber} pattern="[0-9]{10}" maxlength="10" onChange={handleChange} name="updatedPhoneNumber" required />
                             <Input placeholder="Address 1" onChange={handleChange} name="updatedAddress1" />
-                            <Input placeholder="Address 2" onChange={handleChange} name="updatedAddress2" />
                             <Input placeholder="City" value={userInfoUpdated.updatedCity} onChange={handleChange} name="updatedCity" />
                             <Input placeholder="Pincode" value={userInfoUpdated.updatedPincode} onChange={handleChange} name="updatedPincode" />
                             <span style={{ display: "flex" }}>
@@ -230,8 +228,13 @@ export const Information = () => {
                     </div>
                 </div>
             </Modal>
-            <div className="location">{userInfo.city}</div>
-            <div className="email">{userInfo.email}</div>
+            <div className="basic_details" style={{ width: "90%", margin: "8% auto 0% auto", }}>
+                <div className="address" style={{ height: "20px", lineHeight: "20px", display: "flex", flexDirection: "row", margin: "3%" }}>
+                    <LocationOn /><p>{userInfo.address}</p></div>
+                <div className="location" style={{ height: "20px", lineHeight: "20px", display: "flex", flexDirection: "row", margin: "3%" }}>
+                    <LocationCity /><p>{userInfo.city}</p></div>
+                <div className="email" style={{ height: "20px", lineHeight: "20px", display: "flex", flexDirection: "row", margin: "3%" }}> <Email /><p>{userInfo.email}</p></div>
+            </div>
         </div>
     )
 }

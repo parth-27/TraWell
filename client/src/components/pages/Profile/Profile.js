@@ -8,9 +8,7 @@ export const Profile = () => {
         <>
             <div id="profile">
                 <Information />
-                <div id="user-tabs">
-                    <UserTabs />
-                </div>
+                <UserTabs />
             </div>
         </>
     )
