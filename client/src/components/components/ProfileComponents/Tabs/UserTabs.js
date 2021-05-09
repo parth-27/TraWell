@@ -8,8 +8,10 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import UserCarCardList from '../../../assets/UserCarCard/UserCarCardList';
-//import 'react-tabs/style/react-tabs.css';
+import axios from 'axios';
+import { authHeader } from "../../../../services/authHeader";
 import './UserTabs.css';
+import { useHistory } from 'react-router-dom';
 
 
 function TabPanel(props) {
@@ -57,26 +59,78 @@ export const UserTabs = () => {
     const classes = useStyles();
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
+    const history = useHistory();
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
     const handleChangeIndex = (index) => {
+        console.log(index);
         setValue(index);
     };
 
     useEffect(() => {
         if (value == 0) {
-            
+            axios({
+                method: "get",
+                url: "http://localhost:8000/user/getaddedcar",
+                headers: authHeader(),
+            }).then((res) => {
+                if (res.status == 200) {
+                    console.log(res);
+                }
+            }).catch = (err) => {
+                console.log(err);
+            };
         } else if (value == 1) {
-            
+            axios({
+                method: "get",
+                url: "http://localhost:8000/user/getlendedcar",
+                headers: authHeader(),
+            }).then((res) => {
+                if (res.status == 200) {
+                    console.log(res);
+                }
+            }).catch = (err) => {
+                console.log(err);
+            };
         } else if (value == 2) {
-            
+            axios({
+                method: "get",
+                url: "http://localhost:8000/user/getaddedcar",
+                headers: authHeader(),
+            }).then((res) => {
+                if (res.status == 200) {
+                    console.log(res);
+                }
+            }).catch = (err) => {
+                console.log(err);
+            };
         } else if (value == 3) {
-            
+            axios({
+                method: "get",
+                url: "http://localhost:8000/user/getrequestedcar",
+                headers: authHeader(),
+            }).then((res) => {
+                if (res.status == 200) {
+                    console.log(res);
+                }
+            }).catch = (err) => {
+                console.log(err);
+            };
         } else {
-            
+            axios({
+                method: "get",
+                url: "http://localhost:8000/user/getrequestedcar",
+                headers: authHeader(),
+            }).then((res) => {
+                if (res.status == 200) {
+                    console.log(res);
+                }
+            }).catch = (err) => {
+                console.log(err);
+            };
         }
     }, [value])
 

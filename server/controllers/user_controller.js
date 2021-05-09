@@ -251,7 +251,7 @@ module.exports.userrequests = async function (req, res) {
 module.exports.getaddedcar = async function (req, res) {
   console.log(req.body);
   try {
-    Car.find({ lender_email: req.body.email }, async function (err, car) {
+    await Car.find({ lender_email: req.email }, async function (err, car) {
       if (err || !car) {
         return res.status(400).json({ message: "Server Error" });
       }
@@ -418,12 +418,12 @@ module.exports.getlendedcar = async function (req, res) {
 
 module.exports.getrequestedcar = async function (req, res) {
   try {
-    let answer1 = [];
+    var answer1 = [];
     let answer2 = [];
     const pattern = date.compile("YYYY-MM-DD");
     var d1 = date.format(new Date(), pattern);
-    let temp_lc;
-    let temp_bc;
+    let temp_borrower;
+    let temp_lender;
     await RequestedBooking.find(
       { lender_email: req.email },
       async function (err, lender_car) {
@@ -441,7 +441,7 @@ module.exports.getrequestedcar = async function (req, res) {
             c.trip_status = -1;
           }
           console.log(c);
-          await Car.findOne({ carid: c.carid }, async function (e, tempcar) {
+          await Car.findOne({ carid: c.carID }, async function (e, tempcar) {
             if (e || !tempcar) {
               console.log(e);
               return res.status(404).json({ message: "Error in car 1" });
@@ -495,7 +495,7 @@ module.exports.getrequestedcar = async function (req, res) {
           } else {
             c.trip_status = -1;
           }
-          await Car.findOne({ carid: c.carid }, async function (e, tempcar) {
+          await Car.findOne({ carid: c.carID }, async function (e, tempcar) {
             if (e || !tempcar) {
               console.log(e);
               return res.status(404).json({ message: "Error in car 1" });
@@ -528,16 +528,20 @@ module.exports.getrequestedcar = async function (req, res) {
             borrower_details: temp_borrower,
             lender_details: temp_lender,
           };
-          answer1.push(temp_result);
+          console.log(temp_result);
+          answer2.push(temp_result);
+          console.log(answer2);
         });
         // temp_bc = borrow_car;
       }
     );
+    // await console.log(answer2);
     const result = {
       lendedby: answer1,
       borrowby: answer2,
     };
-    res.status(200).json(result);
+    console.log(result);
+    await res.status(200).json(result);
   } catch (err) {
     console.log(err);
     res.status(404).json({ message: "Error in catch block" });
