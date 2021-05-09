@@ -41,7 +41,7 @@ const BookingDetails = (props) => {
                 <div className="booking-details">
                     <div className="lender-details">
                         <div className="lender-name-profile" style={{ marginBottom: "2%" }}>
-                            <img src={props.picture} alt={props.modl} className="lender-image" />
+                            <img src='\account.png' alt={props.modl} className="lender-image" />
                             <p style={{ lineHeight: "40px", paddingTop: "auto", paddingBottom: "auto", marginLeft: "10%" }}> {props.lender_name} </p>
                         </div>
                         <div className="lender-address" style={{ marginBottom: "2%" }}>

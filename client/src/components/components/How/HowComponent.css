@@ -245,3 +245,8 @@ body {
 #timeline .demo-card--step5 .head::after {
   border-color: #453c3b;
 }
+
+.diag-imgs{
+  width:800px;
+  height:250px;
+}

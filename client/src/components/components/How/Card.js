@@ -16,7 +16,7 @@ function Card(props) {
                     <p>
                         {props.content}
                     </p>
-                    <img src={props.src} alt="Graphic" />
+                    <img src={props.src} alt="Graphic" className="diag-imgs"/>
                 </div>
             </div>
         </>

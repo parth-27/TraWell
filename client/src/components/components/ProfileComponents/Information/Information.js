@@ -173,7 +173,7 @@ export const Information = () => {
     return (
         <div id="info">
             <div style={{ width: "75%", margin: "5% 12.5%" }}>
-                <img src={"https://betterstudio.com/wp-content/uploads/2019/05/1-1-instagram-1024x1024.jpg"}
+                <img src="\acc.png"
                     alt={"hellow"} className="profile-img" />
             </div>
             <div className="fullName">

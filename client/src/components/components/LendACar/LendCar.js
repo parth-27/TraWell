@@ -420,7 +420,7 @@ class LendCar extends React.Component {
 						</MuiPickersUtilsProvider>
 
 						<div style={{ width: "15%", margin: "8% auto 0.75% auto", textAlign: "center" }}>
-							<img src={"doublearrowside.png"} width="50" height="50" alt="arrow" />
+							<img src='/doublearrowside.png' width="25" height="25" alt="arrow" />
 						</div>
 						{/* <div className="toImage">
 							<svg xmlns="http://www.w3.org/2000/svg" width="40" height="30"><g fill="none"><g><g><g><g transform="translate(0 1)"><path stroke="#979797" d="M.5 15h40" stroke-linecap="square" /><circle cx="20" cy="16" r="13" fill="#9B9B9B" stroke="#F7F7F7" /><text fill="#fff" font-family="Helvetica" font-size="13" font-weight="bold"><tspan x="12" y="21">TO</tspan></text></g></g></g></g></g></svg>

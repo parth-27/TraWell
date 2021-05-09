@@ -42,7 +42,7 @@ export default function SearchBar(props) {
                         'aria-label': 'change date',
                     }}
                 />
-                <div style={{ width: "100%", margin: "8% auto 0.75% auto", textAlign: "center" }}><img src="downarrow.png" width="5%" height="5%" /></div>
+                <div style={{ width: "100%", margin: "8% auto 0.75% auto", textAlign: "center" }}><img src="\downarrow.png" width="5%" height="5%" /></div>
 
                 <KeyboardDatePicker
                     name="to"
