@@ -14,7 +14,11 @@ const FareDetails = (props) => {
         statement: ""
     });
 
+    const [first, setFirstState] = useState(false);
+    const [second, setSecondState] = useState(false);
+
     const requestCar = (e) => {
+        console.log("fuck you btton");
         e.preventDefault();
         
         const payload = {
@@ -43,7 +47,15 @@ const FareDetails = (props) => {
 
     }
 
-    const eventHandler = data => console.log(data);
+    const firstCheckbox = (e) => {
+        console.log(e.target.className);
+        setFirstState(e.target.checked);
+    }
+
+    const secondCheckbox = (e) => {
+        console.log(e.target.className);
+        setSecondState(e.target.checked);
+    }
 
     return (
         <div className="right-panel">
@@ -78,19 +90,26 @@ const FareDetails = (props) => {
                 <DisplayError>{errorState.error && errorState.statement}</DisplayError>
                 <FormContainer style={{boxShadow:"0 0 0"}}>
                     <div style={{ display: "flex", flexDirection: "row" }}>
-                        <CheckBox values={false} onChange={eventHandler} labelFor="The vehicle will be at your sole risk from the date and time of receiving the vehicle until the vehicle is returned to the user. You undertake to return the vehicle in the same condition that you received it, fair wear and tear excepted." className="T&C" />
+                        <CheckBox values={first} onChange={firstCheckbox} labelFor="The vehicle will be at your sole risk from the date and time of receiving the vehicle until the vehicle is returned to the user. You undertake to return the vehicle in the same condition that you received it, fair wear and tear excepted." className="T&C1" />
                     </div>
                     <div style={{ display: "flex", flexDirection: "row" }}>
-                        <CheckBox values={false} onChange={eventHandler} className="T&C" labelFor="You will return the vehicle, on the expiry or termination of this agreement, at your expense to the owner at the collection address recorded in the agreement. You acknowledge that failure to return the vehicle in terms of this agreement will constitute a breach of the agreement and illegal possession by you, and the owner may report the vehicle as stolen and/or repossess the vehicle wherever same may be found and from whomsoever is in possession thereof" />
+                        <CheckBox values={second} onChange={secondCheckbox} className="T&C2" labelFor="You will return the vehicle, on the expiry or termination of this agreement, at your expense to the owner at the collection address recorded in the agreement. You acknowledge that failure to return the vehicle in terms of this agreement will constitute a breach of the agreement and illegal possession by you, and the owner may report the vehicle as stolen and/or repossess the vehicle wherever same may be found and from whomsoever is in possession thereof" />
                     </div>
                     {
                         !(AuthService.getCurrentUser() && AuthService.getCurrentUser().accessToken)
                             ?
                             <SubmitButton style={{ padding: "3%"}} onClick={()=>history.push("/user/signin")} >Request Car</SubmitButton>
-                            :    
+                            :
                             <SubmitButton
-                                style={{ padding: "3%"}} onClick={(event) => requestCar(event)}
-                            >Request Car</SubmitButton>
+                                style={{
+                                padding: "3%",
+                                opacity: (!first || !second) ? 0.25 : 1
+                                }}
+                                onClick={(event) => requestCar(event)}
+                                disabled={!first || !second}
+                            >
+                                Request Car
+                            </SubmitButton>
                     }
                 </FormContainer>
             </BoxContainer>
