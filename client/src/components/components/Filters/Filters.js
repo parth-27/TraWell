@@ -113,43 +113,43 @@ class Filters extends React.Component {
 
                 <div className="categories-filter">
                     <h3>Categories</h3>
-                    <CheckBox labelFor="Hatchback" className="categories" onChange={this.eventHandler} values={this.state} />
-                    <CheckBox labelFor="Sedan" className="categories" onChange={this.eventHandler} values={this.state} />
-                    <CheckBox labelFor="SUV" className="categories" onChange={this.eventHandler} values={this.state} />
-                    <CheckBox labelFor="MUV" className="categories" onChange={this.eventHandler} values={this.state} />
+                    <CheckBox labelFor="Hatchback" className="categories" onChange={this.eventHandler} values={false} />
+                    <CheckBox labelFor="Sedan" className="categories" onChange={this.eventHandler} values={false} />
+                    <CheckBox labelFor="SUV" className="categories" onChange={this.eventHandler} values={false} />
+                    <CheckBox labelFor="MUV" className="categories" onChange={this.eventHandler} values={false} />
                 </div>
 
 
                 <div className="brand-filter">
                     <h3>Brand</h3>
-                    <CheckBox labelFor="Hyundai" className="brand" onChange={this.eventHandler} values={this.state} />
-                    <CheckBox labelFor="Maruti Suzuki" className="brand" onChange={this.eventHandler} values={this.state} />
-                    <CheckBox labelFor="Mahindra" className="brand" onChange={this.eventHandler} values={this.state} />
-                    <CheckBox labelFor="Jeep" className="brand" onChange={this.eventHandler} values={this.state} />
-                    <CheckBox labelFor="Kia" className="brand" onChange={this.eventHandler} values={this.state} />
+                    <CheckBox labelFor="Hyundai" className="brand" onChange={this.eventHandler} values={false} />
+                    <CheckBox labelFor="Maruti Suzuki" className="brand" onChange={this.eventHandler} values={false} />
+                    <CheckBox labelFor="Mahindra" className="brand" onChange={this.eventHandler} values={false} />
+                    <CheckBox labelFor="Jeep" className="brand" onChange={this.eventHandler} values={false} />
+                    <CheckBox labelFor="Kia" className="brand" onChange={this.eventHandler} values={false} />
                 </div>
 
                 <div className="fuel-filter">
 
                     <h3>Fuel Type</h3>
-                    <CheckBox labelFor="Diesel Only" className="fuel" onChange={this.eventHandler} values={this.state} />
-                    <CheckBox labelFor="Petrol Only" className="fuel" onChange={this.eventHandler} values={this.state} />
-                    <CheckBox labelFor="Diesel + CNG" className="fuel" onChange={this.eventHandler} values={this.state} />
-                    <CheckBox labelFor="Petrol + CNG" className="fuel" onChange={this.eventHandler} values={this.state} />
+                    <CheckBox labelFor="Diesel Only" className="fuel" onChange={this.eventHandler} values={false} />
+                    <CheckBox labelFor="Petrol Only" className="fuel" onChange={this.eventHandler} values={false} />
+                    <CheckBox labelFor="Diesel + CNG" className="fuel" onChange={this.eventHandler} values={false} />
+                    <CheckBox labelFor="Petrol + CNG" className="fuel" onChange={this.eventHandler} values={false} />
                 </div>
 
                 <div className="engine-filter">
 
                     <h3>Transmission Type</h3>
-                    <CheckBox labelFor="Manual" className="eng" onChange={this.eventHandler} values={this.state} />
-                    <CheckBox labelFor="Automatic" className="eng" onChange={this.eventHandler} values={this.state} />
+                    <CheckBox labelFor="Manual" className="eng" onChange={this.eventHandler} values={false} />
+                    <CheckBox labelFor="Automatic" className="eng" onChange={this.eventHandler} values={false} />
                 </div>
 
                 <div className="seats-filter">
 
                     <h3>Seating Capacity</h3>
-                    <CheckBox labelFor="5 seater" className="seats" onChange={this.eventHandler} values={this.state} />
-                    <CheckBox labelFor="7 seater" className="seats" onChange={this.eventHandler} values={this.state} />
+                    <CheckBox labelFor="5 seater" className="seats" onChange={this.eventHandler} values={false} />
+                    <CheckBox labelFor="7 seater" className="seats" onChange={this.eventHandler} values={false} />
 
                 </div>
 
