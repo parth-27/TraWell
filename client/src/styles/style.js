@@ -94,6 +94,10 @@ export const SubmitButton = styled.button`
   	color: #fff;
   	transition: 250ms;
   }
+  &:disabled{
+    opacity:0.25;
+    pointer-events:none;
+  }
 `;
 
 export const DisplayError = styled.p`
