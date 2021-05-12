@@ -3,6 +3,7 @@ import Filters from "../../components/Filters/Filters";
 import CarDeck from "../../components/CardDeck/CardDeck";
 import axios from 'axios';
 import { GlobalState } from '../../context/index';
+import { authHeader } from "../../../services/authHeader";
 
 export const RentCar = () => {
 
@@ -15,18 +16,23 @@ export const RentCar = () => {
 
     React.useEffect(() => {
 
-        console.log("fuckkkkkkkkkkkkkkkkkkkk");
         const payload = JSON.parse(localStorage.getItem("location"));
         setCity(payload.city);
         setToDate(payload.to);
         setFromDate(payload.from);
-        console.log(city, toDate, fromDate);    
-        axios.post("http://localhost:8000/car/filter", JSON.parse(localStorage.getItem("location")))
+        console.log(city, toDate, fromDate);
+
+        axios({
+            method: 'post',
+            url: "http://localhost:8000/car/filter",
+            headers: authHeader(),
+            data: JSON.parse(localStorage.getItem("location")),
+        })
             .then((res) => {
                 if (res.status == 200) {
                     console.log(res.data);
                     data = res.data;
-                    setResponse(oldData => [...oldData,...data]);
+                    setResponse(oldData => [...oldData, ...data]);
                 }
                 else {
                 }
@@ -35,7 +41,7 @@ export const RentCar = () => {
             });
     }, [])
     return (
-        <div style={{display:"flex",flexDirection:"row"}}>
+        <div style={{ display: "flex", flexDirection: "row" }}>
             <Filters />
             <CarDeck
                 data={response}
