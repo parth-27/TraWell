@@ -56,12 +56,13 @@ export function Signup(props) {
     });
     
     const handleChange = (e) => {
+        console.log(e.target.value);
         const { name, value } = e.target;
         setUserInfo((prevState) => ({
             ...prevState,
             [name]: value,
         }));
-        // console.log(userInfo.email, userInfo.password);
+        console.log(userInfo);
     };
 
     const validateForm = () => {
@@ -181,8 +182,18 @@ export function Signup(props) {
                 <Input type="tel" placeholder="0123456789" pattern="[0-9]{10}" maxlength="10" onChange={handleChange} name="phoneNumber" required />
                 <Input placeholder="Address 1" onChange={handleChange} name="address1" required/>
                 <Input placeholder="Address 2" onChange={handleChange} name="address2" required/>
-                <Input placeholder="City" onChange={handleChange} name="city" required/>
-                <Input placeholder="Pincode" onChange={handleChange} name="pincode" required/>
+                {/* <Input placeholder="City" onChange={handleChange} name="city" required/> */}
+                <div className="selectDiv" style={{ marginBottom: "10px" }}>
+                    <select required className="dropdown-inputs" name="city" id="city-selection" onChange={handleChange}>
+                        <option disabled selected>City</option>
+                        <option value="Ahmedabad">Ahemadabad</option>
+                        <option value="Gandhinagar">Gandhinagar</option>
+                        <option value="Rajkot">Rajkot</option>
+                        <option value="Surat">Surat</option>
+                        <option value="Dahod">Dahod</option>
+                    </select>
+                </div>
+                <Input placeholder="Pincode" onChange={handleChange} name="pincode" required />
                 <SubmitButton onClick={handleSubmit} >Signup</SubmitButton>
             </FormContainer>
             <Marginer direction="vertical" margin="1em" />
