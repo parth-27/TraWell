@@ -21,6 +21,9 @@ module.exports.addcar = function (req, res) {
       }
       finalcity = user[0].city;
     });
+    const pattern = date.compile("YYYY-MM-DD");
+    var tod = date.format(new Date(req.body.to), pattern);
+    var fromd = date.format(new Date(req.body.from), pattern);
     cars.find({}, function (err, results) {
       count = results.length;
       count = count + 1;
@@ -39,11 +42,12 @@ module.exports.addcar = function (req, res) {
         color: req.body.color,
         engine_type: req.body.eng,
         features: req.body.features,
-        to_date: req.body.to,
-        from_date: req.body.from,
+        to_date: tod,
+        from_date: fromd,
         city: finalcity,
         lender_email: req.email,
       });
+      console.log(newcar);
       cars.create(newcar, function (err) {
         if (err) {
           console.log("Error in adding the car to database");
@@ -236,7 +240,7 @@ module.exports.getCarfromLocationAndDate = function (req, res) {
 
 module.exports.filter = async function (req, res) {
   try {
-    console.log(req.body);
+    console.log(req.headers);
     const pattern = date.compile("YYYY-MM-DD");
     var tod = date.format(new Date(req.body.to), pattern);
     var fromd = date.format(new Date(req.body.from), pattern);
@@ -264,21 +268,9 @@ module.exports.filter = async function (req, res) {
         $and: [
           {
             $or: [
-              {
-                $and: [
-                  { from_date: { $lt: fromd } },
-                  { to_date: { $gt: fromd } },
-                ],
-              },
-              {
-                $and: [{ from_date: { $lt: tod } }, { to_date: { $gt: tod } }],
-              },
-              {
-                $and: [
-                  { from_date: { $gt: fromd } },
-                  { to_date: { $lt: tod } },
-                ],
-              },
+              { $and: [ { from_date: { $lt: fromd } },  { to_date: { $gt: fromd } } ] },
+              { $and: [ { from_date: { $lt: tod } }, { to_date: { $gt: tod } } ] },
+              { $and: [ { from_date: { $gt: fromd } },  { to_date: { $lt: tod } } ] },
             ],
           },
           { cancel: 0 },
@@ -296,6 +288,8 @@ module.exports.filter = async function (req, res) {
         cars.find(
           {
             $and: [
+              { from_date: { $lt: fromd } }, 
+              { to_date: { $gt: tod } },
               { city: req.body.city },
               { category: { $in: req.body.categories } },
               { company: { $in: req.body.brand } },
@@ -328,12 +322,18 @@ module.exports.filter = async function (req, res) {
                       lender_details: u,
                       car_details: item,
                     };
+                    console.log(ans.car_details.from_date);
+                    console.log(fromd);
+                    console.log(ans.car_details.to_date);
+                    console.log(tod);
                     fcar.push(ans);
                   }
                 );
               }
             });
+            console.log(fcar);
             return res.status(200).json(fcar);
+            
           }
         );
       }
