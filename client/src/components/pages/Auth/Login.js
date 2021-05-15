@@ -22,7 +22,7 @@ export function Login(props) {
         color: 'rgba(170, 170, 170, 1)',
         fontSize: '15px',
         fontWeight: '500',
-        margin: '10px 0',
+        margin: '0.5% 0%',
         textDecoration: 'none',
     }
 
@@ -147,14 +147,12 @@ export function Login(props) {
     return (
         <BoxContainer>
             <DisplayError>{errorState.error && errorState.statement}</DisplayError>
-            <FormContainer >
+            <FormContainer>
                 <Input ref={inputRef} placeholder="Email" name="email" onChange={handleChange} required />
                 <Input type="password" placeholder="Password" name="password" onChange={ handleChange } required/>
                 <SubmitButton onClick={handleSubmit}>Login</SubmitButton>
             </FormContainer>
             <Link to="/user/forgotPassword" style={navLinkStyle}>Forgot Password?</Link>
-            <Marginer direction="vertical" margin="1em" />
-            <Marginer direction="vertical" margin={5} />
             <Link to="/user/signup" style={navLinkStyle} onClick={switchToSignup}>
                 Dont have an Account?<span style={boldLink}>Sign Up</span>
             </Link>

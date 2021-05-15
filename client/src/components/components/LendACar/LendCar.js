@@ -388,10 +388,10 @@ class LendCar extends React.Component {
 						accept=".png, .jpg, .jpeg"
 						label="Car Image"
 						name="previewImage"
-						style={{height:"42px"}}
+						style={{height:"60px"}}
 					/>
 
-					<SubmitButton onClick={this.handleCropImage} style={{ padding: "2% 1%", margin: "8% 2% 0% 2%" }}>Crop</SubmitButton>
+					<SubmitButton onClick={this.handleCropImage} style={{ width:"80%", padding: "2% 1%", margin: "8% 10% 5% 10%" }}>Crop</SubmitButton>
 					<br />
 
 					<input required id="dep" placeholder="Deposit Amount eg. 5000" onChange={e => this.setDep(e)} />
@@ -403,7 +403,6 @@ class LendCar extends React.Component {
 					<div className="journeyRow">
 						{/* <div className="journeyFrom"> <input type="date" min={this.state.currentDate} className="fromDate" required onChange={e => this.setFrom(e)} /> </div> */}
 						<MuiPickersUtilsProvider utils={DateFnsUtils}>
-
 							<KeyboardDatePicker
 								margin="normal"
 								id="date-picker-dialog"

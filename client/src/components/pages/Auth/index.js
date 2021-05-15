@@ -110,6 +110,7 @@ const backdropVariants = {
 		transform: "rotate(-5deg)",
 		top: 0,
 		left: 0,
+		zIndex : 1,
 	},
 	collapsed: {
 		width: "50%",
@@ -118,6 +119,7 @@ const backdropVariants = {
 		transform: "rotate(-20deg)",
 		top: 10,
 		left: 10,
+		zIndex : 1,
 	},
 };
 

@@ -44,3 +44,26 @@
   color: #fff;
   transition: 250ms;
 }
+
+.modal-container{ 
+  position: relative;
+  height: 550px;
+}
+
+.modal-content{
+  overflow-y: scroll;
+  height: 500px;
+}
+
+.basic-details{
+  width: 90%;
+  margin: 10% auto 0% auto;
+}
+
+.address-details, .location-details, .email-details{
+  height: 20px; 
+  line-height: 20px; 
+  display: flex; 
+  flex-direction: row;
+  margin: 3%;
+}
