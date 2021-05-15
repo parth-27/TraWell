@@ -102,11 +102,10 @@ export const Information = () => {
             pincode: user.pincode,
         }
 
-        if (userInfoUpdated.updatedFullName !== userInfo.fullName)
-        {
+        if (userInfoUpdated.updatedFullName !== userInfo.fullName) {
             payload = {
                 ...payload,
-                fullName:userInfoUpdated.updatedFullName
+                fullName: userInfoUpdated.updatedFullName
             }
         }
 
@@ -185,55 +184,60 @@ export const Information = () => {
                 Edit Profile
             </button>
 
-            <Modal visible={open} width="750" height="750" effect="fadeInUp" onClickAway={() => hideModal()}>
+            <Modal visible={open} width="750" height="600" effect="fadeInUp" onClickAway={() => hideModal()}>
                 <div className="modal-container" >
-                    <div className="modal-header">
-                        <h1>Car Rental</h1>
-                        <p>Safe Car Rentals in India</p>
+                    <div className="modal-header" style={{ display: "flex", flexDirection: "row" }}>
+                        <h1 style={{ flexGrow: "1" }}>Edit Profile</h1>
                         <Icon className='far fa-times-circle' />
-                        <hr />
                     </div>
-                    <div className="modal-content" style={{ overflowY: 'scroll', position: 'relative', height: "550px" }} >
-                        {image &&
-                            <AvatarEditor
-                                ref={setEditorRef}
-                                image={image}
-                                width={200}
-                                height={200}
-                                borderRadius={100}
-                                color={[0, 0, 0, 0.6]} // RGBA
-                                scale={1.2}
-                                rotate={0}
+                    <hr />
+                    <div className="modal-content">
+                        <FormContainer>
+                            {image ? (
+                                <div style={{ width: "50%", margin: "5% 25%"}}>
+                                <AvatarEditor
+                                    ref={setEditorRef}
+                                    image={image}
+                                    width={300}
+                                    height={300}
+                                    borderRadius={200}
+                                    color={[0, 0, 0, 0.6]} // RGBA
+                                    scale={1.2}
+                                    rotate={0}
+                                /></div>
+                                ) : (
+                                    <div style={{ width: "50%", margin: "5% 25%", borderRadius:"200px", border:"1px solid black" }}>
+                                        <img src="\acc.png" alt={"user-profile"} className="profile-img" />
+                                    </div>
+                            )
+                            }
+                            <Input
+                                onChange={handleFile}
+                                fluid
+                                type="file"
+                                label="New Avatar"
+                                name="previewImage"
                             />
-                        }
-                        <Input
-                            onChange={handleFile}
-                            fluid
-                            type="file"
-                            label="New Avatar"
-                            name="previewImage"
-                        />
-                        <FormContainer >
                             <Input ref={inputRef} placeholder="Full Name" value={userInfoUpdated.updatedFullName} onChange={handleChange} name="updatedFullName" required />
                             <Input type="text" placeholder="Email" value={userInfo.email} name="email" disabled />
                             <Input type="tel" placeholder="0123456789" value={userInfoUpdated.updatedPhoneNumber} pattern="[0-9]{10}" maxlength="10" onChange={handleChange} name="updatedPhoneNumber" required />
                             <Input placeholder="Address 1" onChange={handleChange} name="updatedAddress1" />
                             <Input placeholder="City" value={userInfoUpdated.updatedCity} onChange={handleChange} name="updatedCity" />
                             <Input placeholder="Pincode" value={userInfoUpdated.updatedPincode} onChange={handleChange} name="updatedPincode" />
-                            <span style={{ display: "flex" }}>
-                                <SubmitButton onClick={(e) => {handleSubmit(e);}} style={{ flex: 1 }} > Edit Profile </SubmitButton>
-                                <SubmitButton onClick={(e) => changePassword(e)} style={{ flex: 1 }} > Change Password </SubmitButton>
+                            <span style={{ display: "flex", flexDirection:"row", width:"100%", marginTop:"5%"}}>
+                                <SubmitButton onClick={(e) => { handleSubmit(e); }} style={{ width:"40%", margin:"0% 5%", padding:"2% 8%" }} > Edit Profile </SubmitButton>
+                                <SubmitButton onClick={(e) => changePassword(e)} style={{ width:"40%", margin:"0% 5%", padding:"2% 8%" }} > Change Password </SubmitButton>
                             </span>
                         </FormContainer>
                     </div>
                 </div>
             </Modal>
-            <div className="basic_details" style={{ width: "90%", margin: "8% auto 0% auto", }}>
-                <div className="address" style={{ height: "20px", lineHeight: "20px", display: "flex", flexDirection: "row", margin: "3%" }}>
-                    <LocationOn /><p>{userInfo.address}</p></div>
-                <div className="location" style={{ height: "20px", lineHeight: "20px", display: "flex", flexDirection: "row", margin: "3%" }}>
-                    <LocationCity /><p>{userInfo.city}</p></div>
-                <div className="email" style={{ height: "20px", lineHeight: "20px", display: "flex", flexDirection: "row", margin: "3%" }}> <Email /><p>{userInfo.email}</p></div>
+            <div className="basic_details">
+                <div className="address-details">
+                    <LocationOn /><p style={{paddingLeft:"3%"}}>{userInfo.address}</p></div>
+                <div className="location-details">
+                    <LocationCity /><p style={{paddingLeft:"3%"}}>{userInfo.city}</p></div>
+                <div className="email-details"> <Email /><p style={{paddingLeft:"3%"}}>{userInfo.email}</p></div>
             </div>
         </div>
     )

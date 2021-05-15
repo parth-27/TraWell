@@ -10,32 +10,32 @@ const UserCarCard = ({ item }, cardtype) => {
         <div className="user-car-card-2">
             <div className="left-user-car-card">
                 <div className="car-image-name">
-                    <img src={item.picture} className="car-image" />
+                    <img src={item.car_details ? item.car_details.picture : ""} className="car-image" />
                 </div>
             </div>
             <div className="right-user-car-card">
                 <div className="car-generals">
                     <div className="seats">
                         <p> Seats</p>
-                        <p> {item.no_of_passenger} </p>
+                        <p> {item.car_details ? item.car_details.no_of_passengers : ""} </p>
                     </div>
                     <hr className="vertical" />
                     <div className="engine">
                         <p>  Engine</p>
-                        <p>{item.engine_type}</p>
+                        <p>{item.car_details ? item.car_details.engine_type : ""}</p>
                     </div>
                     <hr className="vertical" />
                     <div className="fuel">
                         <p>Fuel</p>
-                        <p>{item.fuel_type}</p>
+                        <p>{item.car_details ? item.car_details.fuel_type : ""}</p>
                     </div>
                 </div>
                 <div className="car-name">
                     <div className="car-details">
-                        <p> {"Car Name : " + item.company +" " +item.modl} </p>
-                        <p> {"Registration No. : " + item.registration_no} </p>
-                        <p> {"Deal starts from : " + item.booking_details.from_date.split("T")[0]} </p>
-                        <p> {"Deal Ending : " + item.booking_details.to_date.split("T")[0]} </p>
+                        <p> {"Car Name : " + (item.car_details ? item.car_details.company+" " +item.modl : "")} </p>
+                        <p> {"Registration No. : " + (item.car_details ? item.car_details.registration+" " +item.modl : "")} </p>
+                        <p> {"Deal starts from : " + (item.booking_details ? item.booking_details.from_date.split("T")[0] : "")} </p>
+                        <p> {"Deal Ending : " + (item.booking_details ? item.booking_details.to_date.split("T")[0] : "")} </p>
                     </div>
                 </div>
                 <div>
@@ -50,7 +50,7 @@ const UserCarCard = ({ item }, cardtype) => {
         <div className="user-car-card">
             <div className="left-user-car-card">
                 <div className="car-image-div">
-                    <img src={item.image} alt={"ajfbehjf"} className="user-car-image" />
+                    <img src={item.car_details ? item.car_details.picture : ""} alt={"ajfbehjf"} className="user-car-image" />
                 </div>
                 <div className="car-details">
                     <p> {"Car Name : " + (item.car_details ? item.car_details.carid : "")} </p>
@@ -67,17 +67,17 @@ const UserCarCard = ({ item }, cardtype) => {
                 <div className="right-user-car-card">
                     <div className="person-info">
                         {cardtype=="4" ? (
-                            <>
+                            <div>
                                 <p> {"Lender Name : " + (item.lender_details ? item.lender_details.name : "")} </p>
                                 <p> {"Lender City : " +  (item.lender_details ? item.lender_details.city : "")} </p>
                                 <p> {"Lender Contact : " +  (item.lender_details ? item.lender_details.contact : "")} </p>
-                            </>
+                            </div>
                         ) : (
-                            <>
+                            <div>
                                 <p> {"Renter Name : " +  (item.borrower_details ? item.borrower_details.name : "")} </p>
                                 <p> {"Renter City : " + (item.borrower_details ? item.borrower_details.city : "")} </p>
                                 <p> {"Renter Contact : " + (item.borrower_details ? item.borrower_details.contact: "")} </p>
-                            </>
+                            </div>
                         )
                         }
                     </div>
@@ -123,18 +123,18 @@ const UserCarCard = ({ item }, cardtype) => {
                 <div className="right-user-car-card">
                     <div className="person-info">
                         {cardtype == "2" && (
-                            <>
+                            <div>
                                 <p> {"Lender Name : " + (item.lender_details ? item.lender_details.name : "")} </p>
                                 <p> {"Lender City : " + (item.lender_details ? item.lender_details.city : "")} </p>
                                 <p> {"Lender Contact : " + (item.lender_details ? item.lender_details.contact : "")} </p>
-                            </>)
+                            </div>)
                         }
                         {cardtype == "1" && (
-                            <>
+                            <div>
                                 <p> {"Renter Name : " +  (item.borrower_details ? item.borrower_details.name : "")} </p>
                                 <p> {"Renter City : " +  (item.borrower_details ? item.borrower_details.city : "")} </p>
                                 <p> {"Renter Contact : " +  (item.borrower_details ?item.borrower_details.contact : "")} </p>
-                            </>)
+                            </div>)
                         }
                     </div>
                     <div className="rent-details">

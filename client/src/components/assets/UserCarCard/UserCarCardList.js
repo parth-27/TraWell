@@ -4,12 +4,12 @@ import UserCarCard from "./UserCarCard";
 const UserCarCardList = ({ list }, cardtype) => {
 
 	return (
-		<div className="cars-div">
-			<ul className="list">
+		<div className="user-cars-div">
+			<ul className="user-car-list">
 				{
 					list.map((item, index) => {
 						console.log(item);
-						return (<li className="user-car-card"><UserCarCard cardtype={cardtype} key={index} item={item} /></li>);
+						return (<li className="user-car-card-container"><UserCarCard cardtype={cardtype} key={index} item={item} /></li>);
 					})
 				}
 			</ul>

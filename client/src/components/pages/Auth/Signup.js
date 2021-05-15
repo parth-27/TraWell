@@ -20,9 +20,8 @@ export function Signup(props) {
 
     const navLinkStyle = {
         color: 'rgba(170, 170, 170, 1)',
-        fontSize: '15px',
+        fontSize: '2.5vh',
         fontWeight: '500',
-        margin: '10px 0',
         textDecoration: 'none',
     }
 
@@ -58,6 +57,8 @@ export function Signup(props) {
     const handleChange = (e) => {
         console.log(e.target.value);
         const { name, value } = e.target;
+        if (e.target.name=="city")
+            document.getElementById("city-selection").style.color="black";
         setUserInfo((prevState) => ({
             ...prevState,
             [name]: value,
@@ -96,8 +97,6 @@ export function Signup(props) {
             })
             return false;
         }
-
-
 
         if (userInfo.phoneNumber.length < 10) {
             setErrorState({
@@ -174,7 +173,7 @@ export function Signup(props) {
     return (
         <BoxContainer>
             <DisplayError>{errorState.error && errorState.statement}</DisplayError>
-            <FormContainer >
+            <FormContainer>
                 <Input ref={inputRef} placeholder="Full Name" onChange={ handleChange } name="fullName" required/>
                 <Input type="email" placeholder="Email" onChange={handleChange} name="email" required/>
                 <Input type="password" placeholder="Password with atleast one letter and one number" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" onChange={handleChange} name="password" required/>
@@ -183,14 +182,14 @@ export function Signup(props) {
                 <Input placeholder="Address 1" onChange={handleChange} name="address1" required/>
                 <Input placeholder="Address 2" onChange={handleChange} name="address2" required/>
                 {/* <Input placeholder="City" onChange={handleChange} name="city" required/> */}
-                <div className="selectDiv" style={{ marginBottom: "10px" }}>
-                    <select required className="dropdown-inputs" name="city" id="city-selection" onChange={handleChange}>
-                        <option disabled selected>City</option>
-                        <option value="Ahmedabad">Ahemadabad</option>
-                        <option value="Gandhinagar">Gandhinagar</option>
-                        <option value="Rajkot">Rajkot</option>
-                        <option value="Surat">Surat</option>
-                        <option value="Dahod">Dahod</option>
+                <div className="selectDiv" style={{ marginBottom: "2%", marginTop:"2%"}}>
+                    <select required className="dropdown-inputs" name="city" id="city-selection" style={{border:"1px solid #aaaaac", color:"#aaaaac"}} onChange={handleChange}>
+                        <option disabled selected style={{color:"#aaaaac"}}>City</option>
+                        <option value="Ahmedabad" style={{color:"#000"}}>Ahemadabad</option>
+                        <option value="Gandhinagar" style={{color:"#000"}}>Gandhinagar</option>
+                        <option value="Rajkot" style={{color:"#000"}}>Rajkot</option>
+                        <option value="Surat" style={{color:"#000"}}>Surat</option>
+                        <option value="Dahod" style={{color:"#000"}}>Dahod</option>
                     </select>
                 </div>
                 <Input placeholder="Pincode" onChange={handleChange} name="pincode" required />

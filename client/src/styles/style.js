@@ -5,14 +5,14 @@ export const BoxContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 10px;
+  margin: 5% auto;
 `;
 
 export const FormContainer = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 0px 2.5px rgba(15, 15, 15, 0.19);
+  padding:1% 5%;
 `;
 
 export const MutedLink = styled.a`
@@ -34,10 +34,11 @@ export const BoldLink = styled.a`
 export const Input = styled.input`
   margin-bottom:10px;
   width: 100%;
-  height: 42px;
+  font-size:3vh;
   outline: none;
   border: 1px solid rgba(200, 200, 200, 0.03);
-  padding: 0 10px;
+  padding: 2% 5%;
+  margin: 2% 0%;
   transition: all, 200ms ease-in-out;
   box-sizing: border-box;
   border-bottom: 1.4px solid transparent;
@@ -57,10 +58,11 @@ export const Input = styled.input`
 
 export const SubmitButton = styled.button`
   background-color: transparent;
-  padding: 11px 40%;
+  padding: 2.5% 40%;
+  margin: 5% 0%;
   width: 100%;
   color: #151515;
-  font-size: 20px;
+  font-size: 3vh;
   font-weight: 600;
   border: 1px solid #151515;
   border-radius: 2px;

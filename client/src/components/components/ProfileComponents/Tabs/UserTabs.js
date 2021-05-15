@@ -49,8 +49,10 @@ function TabPanel(props) {
   
   const useStyles = makeStyles((theme) => ({
     root: {
-      backgroundColor: "#eef2f7",
+      backgroundColor: "#fff",
       width: "75%",
+      boxShadow: "-1px 1px 13px 1px rgba(0, 0, 0, 0.3)",
+      marginLeft:"2%",
     },
   }));
 
@@ -180,7 +182,6 @@ export const UserTabs = () => {
     )
 }
 
-
 const dataItem = {
     added_all: [
         {
@@ -238,7 +239,9 @@ const dataItem = {
                 "city": "Ahmedabad",
                 "lender_email": "shreyansh_shah@yahoo.com",
                 "__v": 0,
-                "features": []
+                "features": [],
+                pictures : "",
+                name:""
             },
             "borrower_details": {
                 "_id": "6095984532c6712ca89596ed",
@@ -403,39 +406,53 @@ const dataItem = {
         ],
         requestbyme: [
             {
-                bookingID: "",
-                carid: "",
-                pictures: "",
-                registration_no: "",
-                rent: "",
-                deposite: "",
-                company: "",
-                modl: "",
-                lender_email: "",
-                lender_name: "",
-                lender_city: "",
-                lender_contact: "",
-                from_date: "",
-                to_date: "",
-                booking_status: 1,
-            }, {
-                bookingID: "",
-                carid: "",
-                pictures: "",
-                registration_no: "",
-                rent: "",
-                deposite: "",
-                company: "",
-                modl: "",
-                lender_email: "",
-                lender_name: "",
-                lender_city: "",
-                lender_contact: "",
-                from_date: "",
-                to_date: "",
-                booking_status: 1,
+                "booking_details": {
+                    "trip_status": 0,
+                    "cancel": 0,
+                    "_id": "6093f8920e7bfc4b044a3e45",
+                    "bookingid": "B1",
+                    "lender_email": "jeet.s3@ahduni.edu.in",
+                    "borrower_email": "manavkumar.v@ahduni.edu.in",
+                    "carid": "C1",
+                    "from_date": "2021-05-08T00:00:00.000Z",
+                    "to_date": "2021-05-11T00:00:00.000Z",
+                    "rent": 5000,
+                    "__v": 0
+                },
+                "car_details": {
+                    carid: "C3",
+        modl: "i20",
+            company : "Hyundai",
+            category : "Hatchback",
+            rent : 5000,
+            fuel_type : "Diesel",
+            no_of_passengers : 5,
+            plan : "per Day",
+            engine_type : "Manual",
+            penalty : 5000,
+            features : ["Airbags", "Stereo", "Fog Lamp"],
+            registration_no : 546732112446,
+            picture: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1000&q=80",
+            lender_email : "jeet.s3@ahduni.edu.in",
+            lender_name : "Jeet D. Shah",
+            lender_add : "41-C, Green Park Soc., Nr. Axis Bank, Surendranagar, Gujarat, 356786",
+            lender_phone : 5426412434,
+            ref_deposit : 2145,
+                },
+                "lender_details": {
+                    "_id": "6095984532c6712ca89596ed",
+                    "name": "jeet shah",
+                    "email": "jeet.s3@ahduni.edu.in",
+                    "password": "$2a$10$/5QJOlieKq.yEtlNF6Kzn.YY4SPF/WCmu171GtiFCRs9f8fgWN0f6",
+                    "phone_no": 6549873210,
+                    "address": "ah,ahm",
+                    "pincode": 380001,
+                    "city": "ahm",
+                    "createdAt": "2021-05-07T19:43:01.948Z",
+                    "updatedAt": "2021-05-07T19:43:01.948Z",
+                    "__v": 0
+                }
             },
-        ]
+        ],
     }
 }
-
