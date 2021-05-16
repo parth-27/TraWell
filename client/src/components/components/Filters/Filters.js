@@ -1,15 +1,17 @@
-import React, { useRef, useLayoutEffect } from 'react';
+import React from 'react';
 import "./Filters.css";
 import { CheckBox } from "./../../assets/Checkbox/CheckBox";
-import axios from 'axios';
 import { withRouter } from 'react-router-dom';
+import _ from 'lodash';
 
 class Filters extends React.Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
+            to: this.props.toDate,
+            from: this.props.fromDate,
+            city:this.props.city,
             categories: [],
             brand: [],
             fuel: [],
@@ -18,89 +20,115 @@ class Filters extends React.Component {
         }
     }
 
-    componentDidUpdate() {
-        const payload = {...this.state}
-        console.log(payload);
-        // axios.post("http://localhost:8000/car/filter", payload)
-        //     .then((res) => {
-        //         if (res.status == 200) {
-        //             console.log(payload)
-        //             this.props.history.push("/rent");
-        //         }
-        //         else {
-        //             this.props.history.push("/");
-        //         }
-        //     }).catch((err) => {
-        //         console.log(err);
-        //     });
+    static getDerivedStateFromProps(props, state) {
+        if (props.toDate !== state.to) {
+            return {
+                to: props.toDate,
+                from: props.fromDate,
+                city:props.city
+            };
+        }
+        return null;
     }
+
+    setFilters = () => {
+
+        if (!this.debouncedFn) {
+            this.debouncedFn = _.debounce(() => {
+                this.props.fetchData(this.state);
+            }, 1000);
+        }
+        this.debouncedFn();
+    }
+
+    // componentDidUpdate() {
+    //     console.log("fuck you filters");
+    //     const payload = {...this.state}
+    //     console.log(payload);
+    //     axios({
+    //         method: 'post',
+    //         url: "http://localhost:8000/car/filter",
+    //         headers: authHeader(),
+    //         data:payload
+    //     }).then((res) => {
+    //             if (res.status == 200) {
+    //                 console.log(res);
+    //                 this.props.getData(res.data);
+    //             }
+    //             else {
+    //                 // this.props.history.push("/");
+    //             }
+    //         }).catch((err) => {
+    //             console.log(err);
+    //         });
+    // }
 
     eventHandler = (e) => {
 
-        if (e.target.className == "categories") {
+        if (e.target.className === "categories") {
             if (e.target.checked) {
                 this.setState({
                     categories: [...this.state.categories, e.target.name]
-                });
+                }, () => this.setFilters());
             }
             else
             {
                 let cat = this.state.categories.filter(item => item !== e.target.name);
                 this.setState({
                     categories: [...cat]
-                }, () => console.log("new state",this.state));
+                }, () => this.setFilters());
             }
         }
-        else if (e.target.className == "brand") {
+        else if (e.target.className === "brand") {
             if (e.target.checked) {
                 this.setState({
                     brand: [...this.state.brand, e.target.name]
-                });
+                }, () => this.setFilters());
             }
             else {
                 let cat = this.state.brand.filter(item => item !== e.target.name);
                 this.setState({
                     brand: [...cat]
-                });
+                }, () => this.setFilters());
             }
         }
-        else if (e.target.className == "fuel") {
+        else if (e.target.className === "fuel") {
             if (e.target.checked) {
                 this.setState({
                     fuel: [...this.state.fuel, e.target.name]
-                });
+                }, () => this.setFilters());
             }
             else {
                 let cat = this.state.fuel.filter(item => item !== e.target.name);
                 this.setState({
                     fuel: [...cat]
-                });
+                }, () => this.setFilters());
             }
         }
-        else if (e.target.className == "eng") {
+        else if (e.target.className === "eng") {
             if (e.target.checked) {
                 this.setState({
                     eng: [...this.state.eng, e.target.name]
-                });
+                }, () => this.setFilters());
             }
             else {
                 let cat = this.state.eng.filter(item => item !== e.target.name);
                 this.setState({
                     eng: [...cat]
-                });
+                }, () => this.setFilters());
             }
         }
-        else if (e.target.className == "seats") {
+        else if (e.target.className === "seats") {
             if (e.target.checked) {
                 this.setState({
                     seats: [...this.state.seats, e.target.name]
-                });
+                }, () => this.setFilters());
             }
             else {
                 let cat = this.state.seats.filter(item => item !== e.target.name);
                 this.setState({
                     seats: [...cat]
-                });
+                }, () => this.setFilters());
             }
         }
 
@@ -132,8 +160,8 @@ class Filters extends React.Component {
                 <div className="fuel-filter">
 
                     <h3>Fuel Type</h3>
-                    <CheckBox labelFor="Diesel Only" className="fuel" onChange={this.eventHandler} values={false} />
-                    <CheckBox labelFor="Petrol Only" className="fuel" onChange={this.eventHandler} values={false} />
+                    <CheckBox labelFor="Diesel" className="fuel" onChange={this.eventHandler} values={false} />
+                    <CheckBox labelFor="Petrol" className="fuel" onChange={this.eventHandler} values={false} />
                     <CheckBox labelFor="Diesel + CNG" className="fuel" onChange={this.eventHandler} values={false} />
                     <CheckBox labelFor="Petrol + CNG" className="fuel" onChange={this.eventHandler} values={false} />
                 </div>
@@ -142,7 +170,7 @@ class Filters extends React.Component {
 
                     <h3>Transmission Type</h3>
                     <CheckBox labelFor="Manual" className="eng" onChange={this.eventHandler} values={false} />
-                    <CheckBox labelFor="Automatic" className="eng" onChange={this.eventHandler} values={false} />
+                    <CheckBox labelFor="Auto" className="eng" onChange={this.eventHandler} values={false} />
                 </div>
 
                 <div className="seats-filter">

@@ -8,7 +8,6 @@ import SearchBar from './SearchBar';
 import { SubmitButton } from '../../../styles/style';
 import AuthService from "../../../services/auth";
 import { Dialog, DialogContent } from '@material-ui/core';
-import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 
 class HeroComponent extends React.Component {

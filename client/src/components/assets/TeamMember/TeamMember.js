@@ -5,7 +5,7 @@ function TeamMember({name, imgsrc, position, github, linkedin, email, twitter}) 
          <li class="team-member">
             <div class="our-team" data-aos="zoom-in" data-aos-duration="3000ms">
                 <div class="pic">
-                    <img src={imgsrc} />
+                    <img src={imgsrc} alt="team"/>
                 </div>
                 <div class="team-content">
                     <h3 class="title">{name}</h3>

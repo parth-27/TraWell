@@ -1,6 +1,6 @@
-import React, { useState,useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from "styled-components";
-import { BoxContainer, FormContainer, Input, SubmitButton,DisplayError } from "../../../styles/style";
+import { BoxContainer, FormContainer, Input, SubmitButton, DisplayError } from "../../../styles/style";
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import { GlobalState } from '../../context/index';
@@ -86,14 +86,13 @@ export const ForgotPassword = () => {
         e.preventDefault();
 
         var emailPattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
-        
+
         if (emailPattern.test(email.email) && email.email.length !== 0)
             sendToServer();
-        else
-        {
+        else {
             setErrorState({
                 error: true,
-                statement:"Please Enter Valid Email ID"
+                statement: "Please Enter Valid Email ID"
             })
             history.push("/user/forgotPassword");
         }
@@ -103,9 +102,9 @@ export const ForgotPassword = () => {
         const payload = {
             email: email.email,
         }
-        
+
         axios.post("http://localhost:8000/user/resetpassmail", payload).then((res) => {
-            if (res.status == 200) {
+            if (res.status === 200) {
                 dispatch({
                     type: "LOGIN_SUCESS",
                     payload: {

@@ -1,6 +1,6 @@
-import React,{useState,useContext} from 'react';
+import React, { useState, useContext } from 'react';
 import styled from "styled-components";
-import { BoxContainer, FormContainer, Input, SubmitButton,DisplayError } from "../../../styles/style";
+import { BoxContainer, FormContainer, Input, SubmitButton, DisplayError } from "../../../styles/style";
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import { GlobalState } from '../../context/index';
@@ -84,7 +84,7 @@ export const ConfirmOTP = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+
         sendToServer();
     };
 
@@ -92,11 +92,10 @@ export const ConfirmOTP = () => {
     const sendToServer = () => {
         const payload = {
             otp: otp,
-            email:email,
+            email: email,
         }
 
-        if (user.count === 3)
-        {
+        if (user.count === 3) {
             setErrorState({
                 error: true,
                 statement: "To Many Attemps Failed Please Try Again"
@@ -106,16 +105,15 @@ export const ConfirmOTP = () => {
             });
             history.push("/user/forgotPassword");
         }
-        else
-        {
+        else {
 
             axios.post("http://localhost:8000/user/verifyotp", payload).then((res) => {
-                
-                if (res.status == 200) {
+
+                if (res.status === 200) {
                     history.push({
                         pathname: "/user/resetPassword",
                     });
-                    
+
                 } else {
                     console.log(res)
                     setErrorState({

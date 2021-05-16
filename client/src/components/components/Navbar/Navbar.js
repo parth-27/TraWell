@@ -82,7 +82,7 @@ function Navbar() {
 
     const fetchUserProfile = () => {
         axios.get("http://localhost:8000/user/profile", { headers: authHeader() }).then((res) => {
-            if (res.status == 200) {
+            if (res.status === 200) {
                 console.log(res);
                 dispatch({
                     type: "SET_USER_DETAILS",

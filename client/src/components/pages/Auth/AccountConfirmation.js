@@ -102,7 +102,7 @@ export const AccountConfirmation = (props) => {
             otp:otp
         }
 
-        if (user.count == 3)
+        if (user.count === 3)
         {
             setErrorState({
                 error: true,
@@ -116,13 +116,13 @@ export const AccountConfirmation = (props) => {
         else
         {
             axios.post("http://localhost:8000/user/create", payload).then((res) => {
-                if (res.status == 200) {
+                if (res.status === 200) {
                     dispatch({
                         type: "CLEAR_USER",
                     });
                     history.push("/user/signin")
                 }
-                else if (res.status == 404)
+                else if (res.status === 404)
                 {
                     setErrorState({
                         error: true,

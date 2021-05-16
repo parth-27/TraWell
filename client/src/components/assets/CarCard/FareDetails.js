@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import { BoxContainer, FormContainer,Input,SubmitButton,DisplayError } from '../../../styles/style';
+import { BoxContainer, FormContainer,SubmitButton} from '../../../styles/style';
 import AuthService from "../../../services/auth";
 import { useHistory } from 'react-router-dom';
 import { CheckBox } from '../Checkbox/CheckBox';
@@ -9,10 +9,6 @@ import { authHeader } from "../../../services/authHeader";
 const FareDetails = (props) => {
 
     const history = useHistory();
-    const [errorState, setErrorState] = useState({
-        error: false,
-        statement: ""
-    });
 
     const [first, setFirstState] = useState(false);
     const [second, setSecondState] = useState(false);
@@ -38,7 +34,7 @@ const FareDetails = (props) => {
             data: payload
         }).then((res) => {
             console.log(res);
-            if (res.status == 200) {
+            if (res.status === 200) {
                 history.push("/");
             }
         }).catch = (err) => {
@@ -87,7 +83,6 @@ const FareDetails = (props) => {
                 <p className="restriction" style={{ marginTop: "1%" }}><p style={{ color: "red", float: "left", marginRight: "1%" }}>*</p> These amount are based on the per day plan </p>
             </div>
             <BoxContainer >
-                <DisplayError>{errorState.error && errorState.statement}</DisplayError>
                 <FormContainer style={{boxShadow:"0 0 0"}}>
                     <div style={{ display: "flex", flexDirection: "row" }}>
                         <CheckBox values={first} onChange={firstCheckbox} labelFor="The vehicle will be at your sole risk from the date and time of receiving the vehicle until the vehicle is returned to the user. You undertake to return the vehicle in the same condition that you received it, fair wear and tear excepted." className="T&C1" />

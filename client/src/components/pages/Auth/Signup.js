@@ -57,7 +57,7 @@ export function Signup(props) {
     const handleChange = (e) => {
         console.log(e.target.value);
         const { name, value } = e.target;
-        if (e.target.name=="city")
+        if (e.target.name==="city")
             document.getElementById("city-selection").style.color="black";
         setUserInfo((prevState) => ({
             ...prevState,
@@ -134,7 +134,7 @@ export function Signup(props) {
         }
 
         axios.post("http://localhost:8000/user/userverifymail", payload).then((res) => {
-            if (res.status == 200)
+            if (res.status === 200)
             {
                 dispatch({
                     type: "TEMP_DETAILS",

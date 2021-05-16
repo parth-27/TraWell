@@ -8,10 +8,10 @@ function AboutUsContent() {
                 <div className="outer-border">
                     <div className="mid-border">
                         <div className="inner-border">
-                            <img className="corner-decoration corner-left-top" src={"/borders/top-left.png"} />
-                            <img className="corner-decoration corner-right-top" src={"/borders/top-left.png"} />
-                            <img className="corner-decoration corner-right-bottom" src={"/borders/top-left.png"} />
-                            <img className="corner-decoration corner-left-bottom" src={"/borders/top-left.png"} />
+                            <img className="corner-decoration corner-left-top" src={"/borders/top-left.png"} alt="border"/>
+                            <img className="corner-decoration corner-right-top" src={"/borders/top-left.png"} alt="border"/>
+                            <img className="corner-decoration corner-right-bottom" src={"/borders/top-left.png"} alt="border"/>
+                            <img className="corner-decoration corner-left-bottom" src={"/borders/top-left.png"} alt="border"/>
                             
                             <div className="container" style={{marginBottom:"5%"}}>
                                 <div className="box-content">

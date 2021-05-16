@@ -153,7 +153,7 @@ export const NewPassword = () => {
             password: newPass.password,
         }
         axios.post("http://localhost:8000/user/setnewpass", payload).then((res) => {
-            if (res.status == 200) {
+            if (res.status === 200) {
                 history.push("/user/signin")
                 dispatch({
                     type: "CLEAR_USER",

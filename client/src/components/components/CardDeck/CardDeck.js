@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./CardDeck.css";
-import dummyData from "../../../data";
-
 import CardList from "../../assets/CarCard/CardList";
 import SkeletonCard from "../../assets/CarCard/SkeletonCarCard";
 

@@ -17,7 +17,7 @@ const BookingDetails = (props) => {
                     <div className="car-image-name">
                         <h2>{props.carName}</h2>
                         <div>
-                            <img src={props.picture} className="car-image" />
+                            <img src={props.picture} className="car-image" alt="Car"/>
                         </div>
                     </div>
                     <div className="car-generals">

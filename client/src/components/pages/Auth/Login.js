@@ -1,5 +1,4 @@
 import React, { useContext,useEffect,useState,useRef } from "react";
-import { Marginer } from "./marginer";
 import {
     BoxContainer,
     FormContainer,
@@ -117,7 +116,7 @@ export function Login(props) {
         };
         
         axios.post("http://localhost:8000/user/createsession", payload).then((res) => {
-            if (res.status == 200) {
+            if (res.status === 200) {
                 localStorage.setItem("user", JSON.stringify(res.data));
                 dispatch({
                     type: "LOGIN_SUCESS",

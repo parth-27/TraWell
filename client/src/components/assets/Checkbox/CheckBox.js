@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './CheckBox.css';
 
 export class CheckBox extends React.Component {

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import CarCard from "./CarCard";
 import Modal from "react-awesome-modal";
-import { PhoneSharp, Schedule, LocationOn } from "@material-ui/icons";
 import BookingDetails from "./BookingDetails";
 import GeneralInstructions from "./GeneralInstructions";
 import FareDetails from "./FareDetails";
@@ -61,7 +60,7 @@ const CardList = ({ list,toDate,fromDate }) => {
 			<Modal visible={visible} effect="fadeInUp" width="95%" height="90%" onClickAway={() => hideModal()}>
 				<div className="modal-div">
 					<div className="close-div">
-						<button onClick={() => hideModal()} className="close-btn"><img src="/close-button.png" className="image-design" /></button>
+						<button onClick={() => hideModal()} className="close-btn"><img src="/close-button.png" className="image-design" alt="btn"/></button>
 					</div>
 					<div className="car-details-container">
 						<BookingDetails
