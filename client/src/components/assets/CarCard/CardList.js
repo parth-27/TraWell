@@ -28,21 +28,21 @@ const CardList = ({ list,toDate,fromDate }) => {
 
 	function openModal(item) {
 		setVisible(true);
+		console.log("items", item);
 		setCar({
 			carId: item.car_details ? item.car_details.carid : "",
-			carName: ( item.car_details ? item.car_details.company : "" ) + " " +( item.car_details ? item.car_details.modl : "" ),
-			seats: item.car_details ? item.car_details.no_of_passengers:"",
-			rent: item.car_details ? item.car_details.rent:"",
-			penalty: item.car_details ? item.car_details.penalty:"",
-			engine: item.car_details ? item.car_details.engine_type:"",
-			fuel: item.car_details ? item.car_details.fuel_type:"",
-			features: item.car_details ? item.car_details.features:"",
-			picture: item.car_details ? item.car_details.picture:"",
-			lender_id: item.car_details ? item.car_details.lender_email:"",
-			lender_name: item.lender_details ? item.lender_details.lender_name:"",
-			lender_add: item.lender_details ? item.lender_details.lender_add:"",
-			lender_phone: item.lender_details ? item.lender_details.lender_phone:"",
-			ref_deposit: item.lender_details ? item.lender_details.ref_deposit:"",
+			carName: (item.car_details ? item.car_details.company : "") + " " + (item.car_details ? item.car_details.modl : ""),
+			seats: item.car_details ? item.car_details.no_of_passengers : "",
+			rent: item.car_details ? item.car_details.rent : "",
+			engine: item.car_details ? item.car_details.engine_type : "",
+			fuel: item.car_details ? item.car_details.fuel_type : "",
+			features: item.car_details ? item.car_details.features : "",
+			picture: item.car_details ? item.car_details.picture : "",
+			ref_deposit: item.car_details ? item.car_details.deposite : "",
+			lender_id: item.lender_details ? item.lender_details.email : "",
+			lender_name: item.lender_details ? item.lender_details.name : "",
+			lender_add: item.lender_details ? item.lender_details.city : "",
+			lender_phone: item.lender_details ? item.lender_details.phone_no : "",
 		});
 	}
 

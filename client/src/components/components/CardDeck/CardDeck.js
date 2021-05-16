@@ -10,11 +10,11 @@ const Main = (props) => {
   // Load this effect on mount
   useEffect(() => {
     setLoading(true);
-    console.log(props)
+    //console.log(props)
     const timer = setTimeout(() => {
       if (props.data)
       {
-        console.log(props.data);
+        //console.log(props.data);
         setCars(props.data);
       }
       setLoading(false);

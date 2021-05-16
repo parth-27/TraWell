@@ -14,7 +14,7 @@ export default function SearchBar(props) {
     React.useEffect(() => {
         props.setTo(to);
         props.setFrom(from);
-    }, [to,from,props])
+    }, [to, from]);
 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
