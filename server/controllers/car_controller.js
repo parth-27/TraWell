@@ -21,6 +21,7 @@ module.exports.addcar = function (req, res) {
       }
       finalcity = user[0].city;
     });
+    console.log(finalcity);
     const pattern = date.compile("YYYY-MM-DD");
     var tod = date.format(new Date(req.body.to), pattern);
     var fromd = date.format(new Date(req.body.from), pattern);
@@ -239,6 +240,7 @@ module.exports.getCarfromLocationAndDate = function (req, res) {
 };
 
 module.exports.filter = async function (req, res) {
+  console.log(req.email);
   try {
     console.log(req.headers);
     const pattern = date.compile("YYYY-MM-DD");
@@ -288,6 +290,7 @@ module.exports.filter = async function (req, res) {
         cars.find(
           {
             $and: [
+              { lender_email: { $ne: req.email } },
               { from_date: { $lt: fromd } }, 
               { to_date: { $gt: tod } },
               { city: req.body.city },
@@ -543,6 +546,54 @@ module.exports.bookcar = function (req, res) {
         }
         res.status(200).end();
       });
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ message: "Error in catch block" });
+  }
+};
+
+module.exports.updateCarDetails = function (req, res) {
+  try {
+    console.log(req.body);
+    cars.findOne({ carid: req.body.carid }, async function (err, result) {
+      if (err || !result) {
+        console.log(err);
+        return res.status(400).json({ message: "server error" });
+      }
+      if(req.email != result.body.lender_email){
+        return res.status(200).json({ message: "Car does not belong to this user"});
+      }
+      var finalcity;
+      user.find({ email: req.email }, function (err, user) {
+        if (err || !user) {
+          return res.status(400).json({ message: "Server Error" });
+        }
+        finalcity = user[0].city;
+      });
+      console.log(finalcity);
+      const pattern = date.compile("YYYY-MM-DD");
+      var tod = date.format(new Date(req.body.to), pattern);
+      var fromd = date.format(new Date(req.body.from), pattern);
+      result.pictures = req.body.croppedImage;
+      result.registration_no = req.body.registration;
+      result.rent = req.body.rent;
+      result.deposite = req.body.deposit;
+      result.company = req.body.company;
+      result.modl = req.body.model;
+      result.category = req.body.category;
+      result.fuel_type = req.body.fuel;
+      result.no_of_passengers = req.body.seats;
+      result.color = req.body.color;
+      result.engine_type = req.body.eng;
+      result.features = req.body.features;
+      result.to_date = tod;
+      result.from_date = fromd;
+      result.city = finalcity;
+      await result.save();
+      return res
+        .status(200)
+        .json({ message: "Car details updated successfully" });
     });
   } catch (err) {
     console.log(err);
