@@ -240,107 +240,97 @@ module.exports.getCarfromLocationAndDate = function (req, res) {
 };
 
 module.exports.filter = async function (req, res) {
-  console.log(req.email);
   try {
-    console.log(req.headers);
+    console.log(req);
     const pattern = date.compile("YYYY-MM-DD");
     var tod = date.format(new Date(req.body.to), pattern);
     var fromd = date.format(new Date(req.body.from), pattern);
-    var dcars = [];
-    var ccar = [];
-    var fcar = [];
+    var categories = [],
+      brand = [],
+      eng = [],
+      fuel = [],
+      seats = [];
+    // color = [];
+    finalcars = [];
+    const email = req.body.email ? req.body.email : "";
     if (req.body.categories.length == 0) {
-      req.body.categories = ["Hatchback", "Sedan", "SUV", "MUV"];
+      categories.push("Hatchback", "Sedan", "SUV", "MUV");
+    } else {
+      categories = req.body.categories;
     }
     if (req.body.brand.length == 0) {
-      req.body.brand = ["Hyundai", "Maruti Suzuki", "Mahindra", "Jeep", "Kia"];
+      brand.push("Hyundai", "Maruti Suzuki", "Mahindra", "Jeep", "Kia");
+    } else {
+      brand = req.body.brand;
     }
     if (req.body.fuel.length == 0) {
-      req.body.fuel = ["Petrol", "Diesel", "Petrol + CNG", "Diesel + CNG"];
+      fuel.push("Petrol", "Diesel", "Petrol + CNG", "Diesel + CNG");
+    } else {
+      fuel = req.body.fuel;
     }
     if (req.body.eng.length == 0) {
-      req.body.eng = ["Manual", "Auto"];
+      eng.push("Manual", "Auto");
+    } else {
+      eng = req.body.eng;
     }
     if (req.body.seats.length == 0) {
-      req.body.seats = [7, 5];
+      seats.push(7, 5);
+    } else {
+      seats = req.body.seats;
     }
+    // if (req.body.color.length == 0) {
+    //   color.push("Crimson Red", "Silver", "White", "Yellow", "Black");
+    // } else {
+    //   color = req.body.color;
+    // }
+    const bookings = await confirmedbookings.find({
+      $and: [
+        {
+          $or: [
+            {
+              from_date: { $lt: fromd },
+              to_date: { $gt: fromd },
+            },
+            {
+              from_date: { $lt: tod },
+              to_date: { $gt: tod },
+            },
+            {
+              from_date: { $gt: fromd },
+              to_date: { $lt: tod },
+            },
+          ],
+        },
+        { cancel: 0 },
+      ],
+    });
+    const carss = await cars.find({
+      category: { $in: categories },
+      company: { $in: brand },
+      fuel_type: { $in: fuel },
+      engine_type: { $in: eng },
+      no_of_passengers: { $in: seats },
+      city: req.body.city,
+      // color: { $in: color },
+      lender_email: { $ne: email },
+    });
 
-    await confirmedbookings.find(
-      {
-        $and: [
-          {
-            $or: [
-              { $and: [ { from_date: { $lt: fromd } },  { to_date: { $gt: fromd } } ] },
-              { $and: [ { from_date: { $lt: tod } }, { to_date: { $gt: tod } } ] },
-              { $and: [ { from_date: { $gt: fromd } },  { to_date: { $lt: tod } } ] },
-            ],
-          },
-          { cancel: 0 },
-        ],
-      },
-      async function (err, bookings) {
-        if (err) {
-          console.log(err);
-          res.status(400).end();
+    for (let index = 0; index < carss.length; index++) {
+      let count = 0;
+      for (let temp = 0; temp < bookings.length; temp++) {
+        if (carss[index].carid != bookings[temp].carid) {
+          count = count + 1;
         }
-        await asyncForEach(bookings, function (item) {
-          dcars.push(item);
-        });
-        datecarobj = Object.assign({}, dcars);
-        cars.find(
-          {
-            $and: [
-              { lender_email: { $ne: req.email } },
-              { from_date: { $lt: fromd } }, 
-              { to_date: { $gt: tod } },
-              { city: req.body.city },
-              { category: { $in: req.body.categories } },
-              { company: { $in: req.body.brand } },
-              { fuel_type: { $in: req.body.fuel } },
-              { engine_type: { $in: req.body.eng } },
-              { no_of_passengers: { $in: req.body.seats } },
-            ],
-          },
-          async function (err, carwcity) {
-            if (err) {
-              console.log(err);
-              res.status(400).end();
-            }
-            await asyncForEach(carwcity, function (item) {
-              ccar.push(item);
-            });
-            citycarobj = Object.assign({}, ccar);
-            await asyncForEach(ccar, async function (item) {
-              if (dcars.includes(item)) {
-              } else {
-                await user.findOne(
-                  { email: item.lender_email },
-                  function (e, u) {
-                    if (e || !u) {
-                      return res
-                        .status(404)
-                        .json({ message: "Error in processing user" });
-                    }
-                    const ans = {
-                      lender_details: u,
-                      car_details: item,
-                    };
-                    console.log(ans.car_details.from_date);
-                    console.log(fromd);
-                    console.log(ans.car_details.to_date);
-                    console.log(tod);
-                    fcar.push(ans);
-                  }
-                );
-              }
-            });
-            console.log(fcar);
-            return res.status(200).json(fcar);
-            
-          }
-        );
       }
-    );
+      if (count == bookings.length) {
+        finalcars.push(carss[index]);
+      }
+    }
+    res.status(200).json(finalcars);
+    //         from_date              to_date
+    // fromd                 tod
+    //                       fromd               tod
+    // fromd                                     tod
   } catch (err) {
     console.log(err);
     res.status(404).json({ message: "Error in catch block" });
@@ -561,8 +551,10 @@ module.exports.updateCarDetails = function (req, res) {
         console.log(err);
         return res.status(400).json({ message: "server error" });
       }
-      if(req.email != result.body.lender_email){
-        return res.status(200).json({ message: "Car does not belong to this user"});
+      if (req.email != result.body.lender_email) {
+        return res
+          .status(200)
+          .json({ message: "Car does not belong to this user" });
       }
       var finalcity;
       user.find({ email: req.email }, function (err, user) {
