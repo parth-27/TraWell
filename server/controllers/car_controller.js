@@ -241,7 +241,6 @@ module.exports.getCarfromLocationAndDate = function (req, res) {
 
 module.exports.filter = async function (req, res) {
   try {
-    console.log(req);
     const pattern = date.compile("YYYY-MM-DD");
     var tod = date.format(new Date(req.body.to), pattern);
     var fromd = date.format(new Date(req.body.from), pattern);
@@ -250,7 +249,7 @@ module.exports.filter = async function (req, res) {
       eng = [],
       fuel = [],
       seats = [];
-    // color = [];
+    color = [];
     finalcars = [];
     const email = req.body.email ? req.body.email : "";
     if (req.body.categories.length == 0) {
@@ -278,11 +277,11 @@ module.exports.filter = async function (req, res) {
     } else {
       seats = req.body.seats;
     }
-    // if (req.body.color.length == 0) {
-    //   color.push("Crimson Red", "Silver", "White", "Yellow", "Black");
-    // } else {
-    //   color = req.body.color;
-    // }
+    if (req.body.color.length == 0) {
+      color.push("Crimson Red", "Silver", "White", "Yellow", "Black");
+    } else {
+      color = req.body.color;
+    }
     const bookings = await confirmedbookings.find({
       $and: [
         {
@@ -311,7 +310,7 @@ module.exports.filter = async function (req, res) {
       engine_type: { $in: eng },
       no_of_passengers: { $in: seats },
       city: req.body.city,
-      // color: { $in: color },
+      color: { $in: color },
       lender_email: { $ne: email },
     });
 
@@ -326,7 +325,26 @@ module.exports.filter = async function (req, res) {
         finalcars.push(carss[index]);
       }
     }
-    res.status(200).json(finalcars);
+    let tempdata = [];
+    for (let index = 0; index < finalcars.length; index++) {
+      const userdetail = await user.findOne({
+        email: finalcars[index].lender_email,
+      });
+      const data = {
+        cardeatails: finalcars[index],
+        lenderdetails: {
+          _id: userdetail._id,
+          name: userdetail.name,
+          email: userdetail.email,
+          phone_no: userdetail.phone_no,
+          address: userdetail.address,
+          pincode: userdetail.pincode,
+          city: userdetail.city,
+        },
+      };
+      tempdata.push(data);
+    }
+    res.status(200).json(tempdata);
     //         from_date              to_date
     // fromd                 tod
     //                       fromd               tod
