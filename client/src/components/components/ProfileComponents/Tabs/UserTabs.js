@@ -100,7 +100,7 @@ export const UserTabs = () => {
         } else if (value == 2) {
             axios({
                 method: "get",
-                url: "http://localhost:8000/user/getaddedcar",
+                url: "http://localhost:8000/user/getrentedcar",
                 headers: authHeader(),
             }).then((res) => {
                 if (res.status == 200) {

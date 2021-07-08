@@ -134,6 +134,8 @@ function Navbar() {
             fuel: [],
             eng: [],
             seats: [],
+            color: [],
+            email: "",
         }
 
         localStorage.setItem("location", JSON.stringify(payload));

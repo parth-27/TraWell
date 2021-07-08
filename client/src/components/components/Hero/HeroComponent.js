@@ -170,6 +170,8 @@ class HeroComponent extends React.Component {
 			fuel: [],
 			eng: [],
 			seats: [],
+			color: [],
+			email:"",
 		}
 		
 		console.log(payload);

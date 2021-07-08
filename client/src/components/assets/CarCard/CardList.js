@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import CarCard from "./CarCard";
 import Modal from "react-awesome-modal";
 import BookingDetails from "./BookingDetails";
@@ -26,23 +26,28 @@ const CardList = ({ list,toDate,fromDate }) => {
 		ref_deposit: 10000,
 	})
 
+	useEffect(() => {
+		console.log(list);
+		debugger;
+	}, [list])
+
 	function openModal(item) {
 		setVisible(true);
 		console.log("items", item);
 		setCar({
-			carId: item.car_details ? item.car_details.carid : "",
-			carName: (item.car_details ? item.car_details.company : "") + " " + (item.car_details ? item.car_details.modl : ""),
-			seats: item.car_details ? item.car_details.no_of_passengers : "",
-			rent: item.car_details ? item.car_details.rent : "",
-			engine: item.car_details ? item.car_details.engine_type : "",
-			fuel: item.car_details ? item.car_details.fuel_type : "",
-			features: item.car_details ? item.car_details.features : "",
-			picture: item.car_details ? item.car_details.picture : "",
-			ref_deposit: item.car_details ? item.car_details.deposite : "",
-			lender_id: item.lender_details ? item.lender_details.email : "",
-			lender_name: item.lender_details ? item.lender_details.name : "",
-			lender_add: item.lender_details ? item.lender_details.city : "",
-			lender_phone: item.lender_details ? item.lender_details.phone_no : "",
+			carId: item.cardeatails ? item.cardeatails.carid : "",
+			carName: (item.cardeatails ? item.cardeatails.company : "") + " " + (item.cardeatails ? item.cardeatails.modl : ""),
+			seats: item.cardeatails ? item.cardeatails.no_of_passengers : "",
+			rent: item.cardeatails ? item.cardeatails.rent : "",
+			engine: item.cardeatails ? item.cardeatails.engine_type : "",
+			fuel: item.cardeatails ? item.cardeatails.fuel_type : "",
+			features: item.cardeatails ? item.cardeatails.features : "",
+			picture: item.cardeatails ? item.cardeatails.pictures : "",
+			ref_deposit: item.cardeatails ? item.cardeatails.deposite : "",
+			lender_id: item.lenderdetails ? item.lenderdetails.email : "",
+			lender_name: item.lenderdetails ? item.lenderdetails.name : "",
+			lender_add: item.lenderdetails ? item.lenderdetails.city : "",
+			lender_phone: item.lenderdetails ? item.lenderdetails.phone_no : "",
 		});
 	}
 
