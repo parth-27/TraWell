@@ -26,10 +26,10 @@ const CardList = ({ list,toDate,fromDate }) => {
 		ref_deposit: 10000,
 	})
 
-	useEffect(() => {
-		console.log(list);
-		debugger;
-	}, [list])
+	// useEffect(() => {
+	// 	console.log(list);
+	// 	debugger;
+	// }, [list])
 
 	function openModal(item) {
 		setVisible(true);

@@ -3,40 +3,43 @@ import "./CardDeck.css";
 import CardList from "../../assets/CarCard/CardList";
 import SkeletonCard from "../../assets/CarCard/SkeletonCarCard";
 
-const Main = (props) => {
+const Main = ({data,city,toDate,fromDate}) => {
   const [cars, setCars] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Load this effect on mount
   useEffect(() => {
     setLoading(true);
     //console.log(props)
-    const timer = setTimeout(() => {
-      if (props.data)
-      {
-        //console.log(props.data);
-        setCars(props.data);
-      }
+    if (data)
+    {
+      //console.log(data);
+      setCars(data);
+    }
+    if (cars)
       setLoading(false);
-    }, 2000);
-    // Cancel the timer while unmounting
-    return () => clearTimeout(timer);
-  }, [props]);
+  });
 
   return (
     <div className="Main">
-      {loading && <SkeletonCard />}
-      {!loading &&
-          (<section key="0">
-            <hr className="hr-text2" data-content={"Cars in "+props.city+" for Rent"}/>
-        <CardList
-          list={cars}
-          toDate={props.toDate}
-          fromDate={props.fromDate}
-            />
-            <hr />
-          </section>
-        )}
+      {
+        loading
+          ?
+          <SkeletonCard />
+          :
+          (
+            <section key="0">
+              <hr className="hr-text2" data-content={"Cars in " + city + " for Rent"} />
+                <CardList
+                  list={cars}
+                  toDate={toDate}
+                  fromDate={fromDate}
+                />
+              <hr />
+            </section>
+          )
+      }
+      
     </div>
   );
 };
