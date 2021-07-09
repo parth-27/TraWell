@@ -41,11 +41,6 @@ export const RentCar = () => {
         setCity(payload.city);
         setToDate(payload.to);
         setFromDate(payload.from);
-        
-        if (user.userEmail)
-            payload.email = user.userEmail;
-        
-        console.log(user.userEmail);
 
         axios({
             method: 'post',
@@ -72,7 +67,6 @@ export const RentCar = () => {
                 fromDate={fromDate}
                 city={city}
                 fetchData={loadData}
-                email={user.userEmail}
             />
             {
                 response

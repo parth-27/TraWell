@@ -123,10 +123,10 @@ export const Information = () => {
             }
         }
 
-        if ((userInfoUpdated.updatedAddress1 + ',' + userInfoUpdated.updatedAddress2) !== userInfo.address) {
+        if ((userInfoUpdated.updatedAddress1) !== userInfo.address) {
             payload = {
                 ...payload,
-                address: (userInfoUpdated.updatedAddress1 + ',' + userInfoUpdated.updatedAddress2)
+                address: (userInfoUpdated.updatedAddress1)
             }
         }
 
@@ -188,7 +188,7 @@ export const Information = () => {
                 <div className="modal-container" >
                     <div className="modal-header" style={{ display: "flex", flexDirection: "row" }}>
                         <h1 style={{ flexGrow: "1" }}>Edit Profile</h1>
-                        <Icon className='far fa-times-circle' />
+                        <Icon className='far fa-times-circle' onClick={() => hideModal()} style={{cursor:"pointer"}}/>
                     </div>
                     <hr />
                     <div className="modal-content">

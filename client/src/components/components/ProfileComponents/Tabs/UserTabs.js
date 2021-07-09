@@ -62,6 +62,7 @@ export const UserTabs = () => {
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
     const history = useHistory();
+    const [data, setData] = React.useState();
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -80,7 +81,8 @@ export const UserTabs = () => {
                 headers: authHeader(),
             }).then((res) => {
                 if (res.status == 200) {
-                    console.log(res);
+                    console.log(res.data);
+                    setData(res.data)
                 }
             }).catch = (err) => {
                 console.log(err);
@@ -92,7 +94,8 @@ export const UserTabs = () => {
                 headers: authHeader(),
             }).then((res) => {
                 if (res.status == 200) {
-                    console.log(res);
+                    console.log(res.data);
+                    setData(res.data)
                 }
             }).catch = (err) => {
                 console.log(err);
@@ -104,7 +107,8 @@ export const UserTabs = () => {
                 headers: authHeader(),
             }).then((res) => {
                 if (res.status == 200) {
-                    console.log(res);
+                    console.log(res.data);
+                    setData(res.data)
                 }
             }).catch = (err) => {
                 console.log(err);
@@ -116,7 +120,8 @@ export const UserTabs = () => {
                 headers: authHeader(),
             }).then((res) => {
                 if (res.status == 200) {
-                    console.log(res);
+                    console.log(res.data.lendedby);
+                    setData(res.data.lendedby)
                 }
             }).catch = (err) => {
                 console.log(err);
@@ -128,7 +133,8 @@ export const UserTabs = () => {
                 headers: authHeader(),
             }).then((res) => {
                 if (res.status == 200) {
-                    console.log(res);
+                    console.log(res.data.borrowedby);
+                    setData(res.data.borrowedby);
                 }
             }).catch = (err) => {
                 console.log(err);
@@ -161,21 +167,21 @@ export const UserTabs = () => {
                 style={{ fontSize: "3vh" }}
             >
                 <TabPanel value={value} index={0} dir={theme.direction}>
-                    <UserCarCardList list={dataItem.added_all} cardtype="0" />
+                    {data && <UserCarCardList list={data} cardtype="0" />}
                 </TabPanel>
                 <TabPanel value={value} index={1} dir={theme.direction}>
-                    <UserCarCardList list={dataItem.lended} cardtype="1" />
+                    {data && <UserCarCardList list={dataItem.lended} cardtype="1" />}
                 </TabPanel>
                 <TabPanel value={value} index={2} dir={theme.direction}>
-                    <UserCarCardList list={dataItem.rented} cardtype="2" />
+                    {data && <UserCarCardList list={dataItem.rented} cardtype="2" />}
                 </TabPanel>
 
                 <TabPanel value={value} index={3} dir={theme.direction}>
-                    <UserCarCardList list={dataItem.request.requesttome} cardtype="3" />
+                    {data && <UserCarCardList list={data} cardtype="3" />}
                 </TabPanel>
 
                 <TabPanel value={value} index={4} dir={theme.direction}>
-                    <UserCarCardList list={dataItem.request.requestbyme} cardtype="4" />
+                    {data && <UserCarCardList list={data} cardtype="4" />}
                 </TabPanel>
             </SwipeableViews>
         </div>

@@ -18,7 +18,7 @@ class Filters extends React.Component {
             eng: [],
             seats: [],
             color: [],
-            email:this.props.email,
+            email: JSON.parse(localStorage.getItem("UserEmail")) ? JSON.parse(localStorage.getItem("UserEmail")) : "",
         }
     }
 
@@ -28,7 +28,6 @@ class Filters extends React.Component {
                 to: props.toDate,
                 from: props.fromDate,
                 city: props.city,
-                email:props.email,
             };
         }
         return null;

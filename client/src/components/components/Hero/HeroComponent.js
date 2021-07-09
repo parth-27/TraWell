@@ -173,6 +173,9 @@ class HeroComponent extends React.Component {
 			color: [],
 			email:"",
 		}
+
+		if (JSON.parse(localStorage.getItem("UserEmail")))
+			payload.email = JSON.parse(localStorage.getItem("UserEmail"));
 		
 		console.log(payload);
 

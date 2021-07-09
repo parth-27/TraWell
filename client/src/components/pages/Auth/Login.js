@@ -118,6 +118,7 @@ export function Login(props) {
         axios.post("http://localhost:8000/user/createsession", payload).then((res) => {
             if (res.status === 200) {
                 localStorage.setItem("user", JSON.stringify(res.data));
+                localStorage.setItem("UserEmail", JSON.stringify(userInfo.email));
                 dispatch({
                     type: "LOGIN_SUCESS",
                     payload: {
