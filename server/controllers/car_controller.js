@@ -287,25 +287,11 @@ module.exports.filter = async function (req, res) {
 
 module.exports.cancelconfirmedbooking = async function (req, res) {
   try {
-    await confirmedbookings.findOne(
-      { bookingid: req.body.bookingid },
-      async function (err, cb) {
-        if (err || !cb) {
-          return res.status(400).json({ message: "Server Error" });
-        }
-        console.log(cb);
-        cb.status = 1;
-        await cb.save(function (e) {
-          if (e) {
-            console.log(`Error in processing cancel booking request`);
-            return res
-              .status(400)
-              .json({ message: "Error in processing request" });
-          }
-          res.status(200).json({ message: "Successfully cancelled booking" });
-        });
-      }
+    await confirmedbookings.findOneAndUpdate(
+      { bookingID: req.body.bookingid },
+      { status: 1 }
     );
+    res.status(200).json({ message: "Successfully cancelled booking" });
   } catch (err) {
     console.log(err);
     res.status(404).json({ message: "Error in catch block" });
@@ -342,7 +328,11 @@ module.exports.acceptrequestbooking = async function (req, res) {
       if (carss[index].booking_status == -1) {
         var d3 = date.format(new Date(carss[index].to_date), pattern);
         var d4 = date.format(new Date(carss[index].from_date), pattern);
-        if (((d2 < d3) && (d3 < d1)) || ((d2 < d4) && (d4 < d1)) || ((d4 < d2) && (d3 > d2)) ) {
+        if (
+          (d2 < d3 && d3 < d1) ||
+          (d2 < d4 && d4 < d1) ||
+          (d4 < d2 && d3 > d2)
+        ) {
           await requestbookings.findOneAndUpdate(
             { bookingID: carss[index].bookingID },
             { booking_status: 0 }

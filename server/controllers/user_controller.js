@@ -272,9 +272,9 @@ module.exports.getrentedcar = async function (req, res) {
       var fromd = date.format(new Date(car[index].from_date), pattern);
       var tod = date.format(new Date(car[index].to_date), pattern);
       if (tod < d1) {
-        car[index].trip_status = 0;
-      } else if (d1 < fromd) {
         car[index].trip_status = 1;
+      } else if (d1 < fromd) {
+        car[index].trip_status = 0;
       } else {
         car[index].trip_status = -1;
       }
@@ -310,9 +310,9 @@ module.exports.getlendedcar = async function (req, res) {
       var fromd = date.format(new Date(car[index].from_date), pattern);
       var tod = date.format(new Date(car[index].to_date), pattern);
       if (tod < d1) {
-        car[index].trip_status = 0;
-      } else if (d1 < fromd) {
         car[index].trip_status = 1;
+      } else if (d1 < fromd) {
+        car[index].trip_status = 0;
       } else {
         car[index].trip_status = -1;
       }
@@ -347,15 +347,15 @@ module.exports.getrequestedcar = async function (req, res) {
 
     const lender_car = await RequestedBooking.find({ lender_email: req.email });
     for (let index = 0; index < lender_car.length; index++) {
-      var fromd = date.format(new Date(lender_car[index].from_date), pattern);
-      var tod = date.format(new Date(lender_car[index].to_date), pattern);
-      if (tod < d1) {
-        lender_car[index].trip_status = 0;
-      } else if (d1 < fromd) {
-        lender_car[index].trip_status = 1;
-      } else {
-        lender_car[index].trip_status = -1;
-      }
+      // var fromd = date.format(new Date(lender_car[index].from_date), pattern);
+      // var tod = date.format(new Date(lender_car[index].to_date), pattern);
+      // if (tod < d1) {
+      //   lender_car[index].trip_status = 0;
+      // } else if (d1 < fromd) {
+      //   lender_car[index].trip_status = 1;
+      // } else {
+      //   lender_car[index].trip_status = -1;
+      // }
       const tempcar = await Car.findOne({ carid: lender_car[index].carID });
       const temp_borrower = await User.findOne({
         email: lender_car[index].borrower_email,
@@ -375,15 +375,15 @@ module.exports.getrequestedcar = async function (req, res) {
       borrower_email: req.email,
     });
     for (let index = 0; index < borrow_car.length; index++) {
-      var fromd = date.format(new Date(borrow_car[index].from_date), pattern);
-      var tod = date.format(new Date(borrow_car[index].to_date), pattern);
-      if (tod < d1) {
-        borrow_car[index].trip_status = 0;
-      } else if (d1 < fromd) {
-        borrow_car[index].trip_status = 1;
-      } else {
-        borrow_car[index].trip_status = -1;
-      }
+      // var fromd = date.format(new Date(borrow_car[index].from_date), pattern);
+      // var tod = date.format(new Date(borrow_car[index].to_date), pattern);
+      // if (tod < d1) {
+      //   borrow_car[index].trip_status = 0;
+      // } else if (d1 < fromd) {
+      //   borrow_car[index].trip_status = 1;
+      // } else {
+      //   borrow_car[index].trip_status = -1;
+      // }
       const tempcar = await Car.findOne({
         carid: borrow_car[index].carID,
       });
