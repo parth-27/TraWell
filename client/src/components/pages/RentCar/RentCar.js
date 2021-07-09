@@ -1,8 +1,9 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import Filters from "../../components/Filters/Filters";
 import CarDeck from "../../components/CardDeck/CardDeck";
 import axios from 'axios';
 import { authHeader } from "../../../services/authHeader";
+import { GlobalState } from '../../context/index';
 
 export const RentCar = () => {
 
@@ -10,6 +11,7 @@ export const RentCar = () => {
     const [city, setCity] = React.useState();
     const [toDate, setToDate] = React.useState();
     const [fromDate, setFromDate] = React.useState();
+    const [user, dispatch] = useContext(GlobalState);
     var data;
 
     const loadData = (payload) => {
@@ -35,10 +37,15 @@ export const RentCar = () => {
 
     React.useEffect(() => {
 
-        const payload = JSON.parse(localStorage.getItem("location"));
+        var payload = JSON.parse(localStorage.getItem("location"));
         setCity(payload.city);
         setToDate(payload.to);
         setFromDate(payload.from);
+        
+        if (user.userEmail)
+            payload.email = user.userEmail;
+        
+        console.log(user.userEmail);
 
         axios({
             method: 'post',
@@ -65,6 +72,7 @@ export const RentCar = () => {
                 fromDate={fromDate}
                 city={city}
                 fetchData={loadData}
+                email={user.userEmail}
             />
             {
                 response

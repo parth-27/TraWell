@@ -1,5 +1,5 @@
-import React,{useState} from 'react';
-import { BoxContainer, FormContainer,SubmitButton} from '../../../styles/style';
+import React, { useState } from 'react';
+import { BoxContainer, FormContainer, SubmitButton, DisplayError } from '../../../styles/style';
 import AuthService from "../../../services/auth";
 import { useHistory } from 'react-router-dom';
 import { CheckBox } from '../Checkbox/CheckBox';
@@ -14,18 +14,17 @@ const FareDetails = (props) => {
     const [second, setSecondState] = useState(false);
 
     const requestCar = (e) => {
-        console.log("fuck you btton");
         e.preventDefault();
-        
+
         const payload = {
             carid: props.carid,
             lender_email: props.lender_email,
             from_date: props.fromDate,
             to_date: props.toDate,
-            rent:props.rent,
+            rent: props.rent,
         }
 
-        console.log("--------------",payload);
+        console.log("--------------", payload);
 
         axios({
             method: "post",
@@ -83,29 +82,28 @@ const FareDetails = (props) => {
                 <p className="restriction" style={{ marginTop: "1%" }}><p style={{ color: "red", float: "left", marginRight: "1%" }}>*</p> These amount are based on the per day plan </p>
             </div>
             <BoxContainer >
-                <FormContainer style={{boxShadow:"0 0 0"}}>
+                {
+                    !(AuthService.getCurrentUser() && AuthService.getCurrentUser().accessToken)
+                    &&
+                    <DisplayError>Please First Login into the Site</DisplayError>
+                }
+                <FormContainer style={{ boxShadow: "0 0 0" }}>
                     <div style={{ display: "flex", flexDirection: "row" }}>
                         <CheckBox values={first} onChange={firstCheckbox} labelFor="The vehicle will be at your sole risk from the date and time of receiving the vehicle until the vehicle is returned to the user. You undertake to return the vehicle in the same condition that you received it, fair wear and tear excepted." className="T&C1" />
                     </div>
                     <div style={{ display: "flex", flexDirection: "row" }}>
                         <CheckBox values={second} onChange={secondCheckbox} className="T&C2" labelFor="You will return the vehicle, on the expiry or termination of this agreement, at your expense to the owner at the collection address recorded in the agreement. You acknowledge that failure to return the vehicle in terms of this agreement will constitute a breach of the agreement and illegal possession by you, and the owner may report the vehicle as stolen and/or repossess the vehicle wherever same may be found and from whomsoever is in possession thereof" />
                     </div>
-                    {
-                        !(AuthService.getCurrentUser() && AuthService.getCurrentUser().accessToken)
-                            ?
-                            <SubmitButton style={{ padding: "3%"}} onClick={()=>history.push("/user/signin")} >Request Car</SubmitButton>
-                            :
-                            <SubmitButton
-                                style={{
-                                padding: "3%",
-                                opacity: (!first || !second) ? 0.25 : 1
-                                }}
-                                onClick={(event) => requestCar(event)}
-                                disabled={!first || !second}
-                            >
-                                Request Car
-                            </SubmitButton>
-                    }
+                    <SubmitButton
+                        style={{
+                            padding: "3%",
+                            opacity: (!first || !second || !(AuthService.getCurrentUser() && AuthService.getCurrentUser().accessToken)) ? 0.25 : 1
+                        }}
+                        onClick={(event) => requestCar(event)}
+                        disabled={!first || !second || !(AuthService.getCurrentUser() && AuthService.getCurrentUser().accessToken)}
+                    >
+                        Request Car
+                    </SubmitButton>
                 </FormContainer>
             </BoxContainer>
         </div>

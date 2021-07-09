@@ -138,6 +138,9 @@ function Navbar() {
             email: "",
         }
 
+        if (user.userEmail)
+            payload.email = user.userEmail;
+
         localStorage.setItem("location", JSON.stringify(payload));
         
         console.log(payload);
