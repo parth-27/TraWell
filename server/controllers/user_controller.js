@@ -278,7 +278,7 @@ module.exports.getrentedcar = async function (req, res) {
       } else {
         car[index].trip_status = -1;
       }
-      const temp_car = await Car.findOne({ carid: car[index].carID });
+      const temp_car = await Car.findOne({ carID: car[index].carID });
       const temp_borrower = await User.findOne({
         email: car[index].borrower_email,
       });
@@ -331,7 +331,7 @@ module.exports.getlendedcar = async function (req, res) {
       };
       answer.push(temp_result);
     }
-    res.status(200).json({ answer });
+    res.status(200).json(answer);
   } catch (err) {
     console.log(err);
     res.status(404).json({ message: "Error in catch block" });
