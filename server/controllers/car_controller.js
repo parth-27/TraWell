@@ -3,6 +3,7 @@ const confirmedbookings = require("../models/confirmedBooking");
 const requestbookings = require("../models/requestBooking");
 const date = require("date-and-time");
 const user = require("../models/user");
+const dayjs = require("dayjs");
 
 const asyncForEach = async (array, callback) => {
   for (let index = 0; index < array.length; index++) {
@@ -331,7 +332,7 @@ module.exports.filter = async function (req, res) {
         email: finalcars[index].lender_email,
       });
       const data = {
-        cardeatails: finalcars[index],
+        car_details: finalcars[index],
         lenderdetails: {
           _id: userdetail._id,
           name: userdetail.name,
@@ -500,7 +501,9 @@ module.exports.requestbooking = async function (req, res) {
       const pattern = date.compile("YYYY-MM-DD");
       var d1 = date.format(new Date(req.body.to_date), pattern);
       var d2 = date.format(new Date(req.body.from_date), pattern);
-      const days = date.subtract(d1, d2).toDays();
+      const td = dayjs(req.body.to_date, "YYYY-MM-DD");
+      const fm = dayjs(req.body.from_date, "YYYY-MM-DD");
+      const days = td.diff(fm, "day");
       const finalrent = days * req.body.rent;
       const newrequestedbooking = new requestbookings({
         bookingID: bookingid,
