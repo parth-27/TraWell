@@ -133,7 +133,7 @@ export const UserTabs = () => {
                 headers: authHeader(),
             }).then((res) => {
                 if (res.status == 200) {
-                    console.log(res.data.borrowedby);
+                    console.log(res.data.borrowedby,"user tabs 4");
                     setData(res.data.borrowedby);
                 }
             }).catch = (err) => {
@@ -170,10 +170,10 @@ export const UserTabs = () => {
                     {data && <UserCarCardList list={data} cardtype="0" />}
                 </TabPanel>
                 <TabPanel value={value} index={1} dir={theme.direction}>
-                    {data && <UserCarCardList list={dataItem.lended} cardtype="1" />}
+                    {data && <UserCarCardList list={data} cardtype="1" />}
                 </TabPanel>
                 <TabPanel value={value} index={2} dir={theme.direction}>
-                    {data && <UserCarCardList list={dataItem.rented} cardtype="2" />}
+                    {data && <UserCarCardList list={data} cardtype="2" />}
                 </TabPanel>
 
                 <TabPanel value={value} index={3} dir={theme.direction}>

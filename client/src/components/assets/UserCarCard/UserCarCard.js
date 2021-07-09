@@ -3,29 +3,67 @@ import { CheckBox } from "./../Checkbox/CheckBox";
 import './UserCarCard.css';
 import * as dayjs from 'dayjs';
 import axios from 'axios';
+import { authHeader } from "../../../services/authHeader";
 
 const UserCarCard = ({ item, cardtype }) => {
-    console.log(cardtype);
+    console.log(cardtype,item);
 
-    const sendResponse = (status,bookingid) => {
+    const sendResponse = (status, bookingid, carid) => {
+        
+        const payload = {
+            bookingid: bookingid,
+            carid:carid,
+        }
+
+        console.log(payload);
         
         if (status === 1)
         {
-            axios.post("http://localhost:8000/cars/acceptrequestbooking", bookingid)
+            axios({
+                method: 'post',
+                url: "http://localhost:8000/car/acceptrequestbooking",
+                headers: authHeader(),
+                data: payload,
+            })
             .then((res) => {
-                console.log(res)
+                if (res.status == 200) {
+                    console.log(res);
+                }
                 
             }).catch((err) => {
                 console.log(err);
                 console.log("frontend");
             });
         }
+        else if(status === 2)
+        {
+            axios({
+                method: 'post',
+                url: "http://localhost:8000/car/cancelrequestbooking",
+                headers: authHeader(),
+                data: payload,
+            })
+            .then((res) => {
+                    if (res.status == 200) {
+                        console.log(res);
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                    console.log("frontend");
+                });
+        }
         else
         {
-            axios.post("http://localhost:8000/cars/cancelrequestbooking", bookingid)
+            axios({
+                method: 'post',
+                url: "http://localhost:8000/car/cancelconfirmedbooking",
+                headers: authHeader(),
+                data: payload,
+            })
                 .then((res) => {
-                    console.log(res)
-
+                    if (res.status == 200) {
+                        console.log(res);
+                    }
                 }).catch((err) => {
                     console.log(err);
                     console.log("frontend");
@@ -132,13 +170,25 @@ const UserCarCard = ({ item, cardtype }) => {
                             cardtype == "3" && (item.booking_details ? item.booking_details.booking_status : -1) === -1 && (
                                 <div className="car-requested">
                                     <p> Rent Requested </p>
-                                        <button onClick={() => sendResponse(1, item.booking_details ? item.booking_details.bookingid : "")}> Accept </button>
-                                        <button onClick={() => sendResponse(-1, item.booking_details ? item.booking_details.bookingid : "")}> Decline </button>
+                                        <button onClick={() => sendResponse(1, item.booking_details ? item.booking_details.bookingID : "", item.booking_details ? item.booking_details.carID : "")}> Accept </button>
+                                        <button onClick={() => sendResponse(-1, item.booking_details ? item.booking_details.bookingID : "", item.booking_details ? item.booking_details.carID : "")}> Decline </button>
+                                </div>
+                                )}
+                            
+                            {cardtype == "3" && (item.booking_details ? item.booking_details.booking_status : -1) === 0 && (
+                            <div className="car-requested">
+                                <p> You have denied this request </p>
+                            </div>
+                            )}
+
+                            {cardtype == "3" && (item.booking_details ? item.booking_details.booking_status : -1) === 1 && (
+                                <div className="car-requested">
+                                    <p> You have accepted this request </p>
                                 </div>
                             )}
 
                         { // pending request , user = renter
-                            cardtype == "4" && (item.booking_details ? item.booking_details.booking_status : -1) === 0 && (
+                            cardtype == "4" && (item.booking_details ? item.booking_details.booking_status : -1) === -1 && (
                                 <div className="req-response-wait">
                                     <p> The car rent request has been sent. Waiting for the lender to accept or deny. </p>
                                 </div>
@@ -166,14 +216,14 @@ const UserCarCard = ({ item, cardtype }) => {
                                 <div>
                                     <p> {"Lender Name : " + (item.lender_details ? item.lender_details.name : "")} </p>
                                     <p> {"Lender City : " + (item.lender_details ? item.lender_details.city : "")} </p>
-                                    <p> {"Lender Contact : " + (item.lender_details ? item.lender_details.contact : "")} </p>
+                                    <p> {"Lender Contact : " + (item.lender_details ? item.lender_details.phone_no : "")} </p>
                                 </div>)
                             }
                             {cardtype == "1" && (
                                 <div>
                                     <p> {"Renter Name : " + (item.borrower_details ? item.borrower_details.name : "")} </p>
                                     <p> {"Renter City : " + (item.borrower_details ? item.borrower_details.city : "")} </p>
-                                    <p> {"Renter Contact : " + (item.borrower_details ? item.borrower_details.contact : "")} </p>
+                                    <p> {"Renter Contact : " + (item.borrower_details ? item.borrower_details.phone_no : "")} </p>
                                 </div>)
                             }
                         </div>
@@ -186,7 +236,7 @@ const UserCarCard = ({ item, cardtype }) => {
                         </div>
                         <div className="rent-status-details">
                             <div className="rent-progress">
-                                <p>Booking Status : </p>
+                                <p>Trip Status : </p>
                                 {(item.booking_details ? item.booking_details.trip_status : 0) == 1 ? (<p>Completed</p>) : (
                                     (item.booking_details ? item.booking_details.trip_status : 0) == 0 ? (
                                         <>
@@ -195,7 +245,7 @@ const UserCarCard = ({ item, cardtype }) => {
                                         </>) : (
                                         <>
                                             <p>Upcoming</p>
-                                            <button> Cancel the trip </button>
+                                            {cardtype === "2" && <button onClick={() => sendResponse(3, item.booking_details ? item.booking_details.bookingid : "", item.booking_details ? item.booking_details.carid : "")} > Cancel the trip </button>}
                                         </>))}
                             </div>
                         </div>
