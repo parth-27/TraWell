@@ -254,11 +254,7 @@ module.exports.getaddedcar = async function (req, res) {
       if (err || !car) {
         return res.status(400).json({ message: "Server Error" });
       }
-      if (car.length == 0) {
-        return res.status(200).json({ message: "You have not added any car" });
-      } else {
-        return res.status(200).json(car);
-      }
+      return res.status(200).json(car);
     });
   } catch (err) {
     console.log(err);
