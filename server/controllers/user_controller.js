@@ -316,7 +316,7 @@ module.exports.getlendedcar = async function (req, res) {
       } else {
         car[index].trip_status = -1;
       }
-      const temp_car = await Car.findOne({ carid: car[index].carID });
+      const temp_car = await Car.findOne({ carID: car[index].carID });
       const temp_borrower = await User.findOne({
         email: car[index].borrower_email,
       });

@@ -287,10 +287,12 @@ module.exports.filter = async function (req, res) {
 
 module.exports.cancelconfirmedbooking = async function (req, res) {
   try {
+    console.log(req.body.bookingid);
     await confirmedbookings.findOneAndUpdate(
-      { bookingID: req.body.bookingid },
-      { status: 1 }
+      { bookingid: req.body.bookingid },
+      { cancel: 1 }
     );
+    
     res.status(200).json({ message: "Successfully cancelled booking" });
   } catch (err) {
     console.log(err);
@@ -300,6 +302,7 @@ module.exports.cancelconfirmedbooking = async function (req, res) {
 
 module.exports.acceptrequestbooking = async function (req, res) {
   try {
+    console.log(req.body);
     const pattern = date.compile("YYYY-MM-DD");
     var d1;
     var d2;
