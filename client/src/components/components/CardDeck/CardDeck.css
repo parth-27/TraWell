@@ -225,8 +225,8 @@
 }
 
 .vertical {
-  margin-top: 6.5%;
-  height: 100%; /* you might need some positioning for this to work, see other questions about 100% height */
+  margin-top: 1em;
+  height: 3vw;
   width: 0;
   border: 1px dotted rgb(99, 99, 99);
 }

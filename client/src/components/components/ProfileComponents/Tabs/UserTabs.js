@@ -22,7 +22,7 @@ function TabPanel(props) {
         role="tabpanel"
         hidden={value !== index}
         id={`full-width-tabpanel-${index}`}
-        aria-labelledby={`full-width-tab-${index}`}
+        aria-labelledby={`scrollable-auto-tab-${index}`}
         {...other}
       >
         {value === index && (
@@ -42,17 +42,19 @@ function TabPanel(props) {
   
   function a11yProps(index) {
     return {
-      id: `full-width-tab-${index}`,
-      'aria-controls': `full-width-tabpanel-${index}`,
+      id: `scrollable-auto-tab-${index}`,
+      'aria-controls': `scrollable-auto-tabpanel-${index}`,
     };
   }
   
   const useStyles = makeStyles((theme) => ({
     root: {
-      backgroundColor: "#fff",
-      width: "75%",
-      boxShadow: "-1px 1px 13px 1px rgba(0, 0, 0, 0.3)",
-      marginLeft:"2%",
+        flexGrow: 1,
+        width: '75%',
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: "-1px 1px 13px 1px rgba(0, 0, 0, 0.3)",
+        margin:"auto 5%",
+        top : "0%"
     },
   }));
 
@@ -74,52 +76,52 @@ export const UserTabs = () => {
     };
 
     useEffect(() => {
-        if (value == 0) {
+        if (value === 0) {
             axios({
                 method: "get",
                 url: "http://localhost:8000/user/getaddedcar",
                 headers: authHeader(),
             }).then((res) => {
-                if (res.status == 200) {
+                if (res.status === 200) {
                     console.log(res.data);
                     setData(res.data)
                 }
             }).catch = (err) => {
                 console.log(err);
             };
-        } else if (value == 1) {
+        } else if (value === 1) {
             axios({
                 method: "get",
                 url: "http://localhost:8000/user/getlendedcar",
                 headers: authHeader(),
             }).then((res) => {
-                if (res.status == 200) {
+                if (res.status === 200) {
                     console.log(res.data);
                     setData(res.data)
                 }
             }).catch = (err) => {
                 console.log(err);
             };
-        } else if (value == 2) {
+        } else if (value === 2) {
             axios({
                 method: "get",
                 url: "http://localhost:8000/user/getrentedcar",
                 headers: authHeader(),
             }).then((res) => {
-                if (res.status == 200) {
+                if (res.status === 200) {
                     console.log(res.data);
                     setData(res.data)
                 }
             }).catch = (err) => {
                 console.log(err);
             };
-        } else if (value == 3) {
+        } else if (value === 3) {
             axios({
                 method: "get",
                 url: "http://localhost:8000/user/getrequestedcar",
                 headers: authHeader(),
             }).then((res) => {
-                if (res.status == 200) {
+                if (res.status === 200) {
                     console.log(res.data.lendedby);
                     setData(res.data.lendedby)
                 }
@@ -132,7 +134,7 @@ export const UserTabs = () => {
                 url: "http://localhost:8000/user/getrequestedcar",
                 headers: authHeader(),
             }).then((res) => {
-                if (res.status == 200) {
+                if (res.status === 200) {
                     console.log(res.data.borrowedby,"user tabs 4");
                     setData(res.data.borrowedby);
                 }
@@ -150,14 +152,15 @@ export const UserTabs = () => {
                     onChange={handleChange}
                     indicatorColor="primary"
                     textColor="primary"
-                    variant="fullWidth"
-                    aria-label="full width tabs example"
+                    variant="scrollable"
+                    scrollButtons="auto"
+                    aria-label="scrollable auto tabs example"
                 >
-                    <Tab style={{ padding: "1% 3%" }} label="My Cars" {...a11yProps(0)} ></Tab>
-                    <Tab style={{ padding: "1% 3%" }} label="Lended Cars" {...a11yProps(1)}></Tab>
-                    <Tab style={{ padding: "1% 3%" }} label="Rented Cars" {...a11yProps(2)}></Tab>
-                    <Tab style={{ padding: "1% 3%" }} label="Received Requests" {...a11yProps(3)}></Tab>
-                    <Tab style={{ padding: "1% 3%" }} label="Sent Requests" {...a11yProps(4)}></Tab>
+                    <Tab style={{ padding: "1%" }} label="My Cars" {...a11yProps(0)} ></Tab>
+                    <Tab style={{ padding: "1%" }} label="Lended Cars" {...a11yProps(1)}></Tab>
+                    <Tab style={{ padding: "1%" }} label="Rented Cars" {...a11yProps(2)}></Tab>
+                    <Tab style={{ padding: "1%" }} label="Received Requests" {...a11yProps(3)}></Tab>
+                    <Tab style={{ padding: "1%" }} label="Sent Requests" {...a11yProps(4)}></Tab>
                 </Tabs>
             </AppBar>
             <SwipeableViews
