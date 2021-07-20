@@ -27,17 +27,9 @@
     background-color: #f2f2f2;
 }
 
-.value-x{
-    font-size: 0.9rem;
-    font-weight: 200;
-    font-family: sans-serif;
-    height: 1.8em;
-    line-height: 1.8em;
-}
-
 .left-user-car-card{
     flex:1;
-    padding: 2% 0% 2% 2%;
+    padding: 2% 2% 2% 2%;
     height: 100%;
 }
 
@@ -59,25 +51,35 @@
 
 .car-name-details-2{
     padding-left: 2em;
+    background-color: white;
 }
 
-.car-generals, .button-list-2{
+.car-generals{
     text-align: center;
     justify-items: center;
     justify-content: space-between;
+    background-color: white;
 }
 
-.button-list-2 > button{
+
+.button-list-2{
+    justify-content: space-evenly;
+    text-align: center;
+    display: flex;
+    flex-direction : row;
+}
+
+
+.button-xyz{
     padding: 0.3em 1em;
-    margin : 0.3em 1em;
     font-size : 1.15rem;
     background-color: rgb(252, 251, 248);
     border-radius: 10px;
+    cursor : pointer;
 }
 
 .car-image-div{
     width:90%;
-    height:auto;
     margin : 2% 5%;
 }
 
@@ -96,6 +98,15 @@
     padding-left: 3%;
 }
 
+
+.value-x{
+    font-size: 0.9rem;
+    font-weight: 200;
+    font-family: sans-serif;
+    height: 1.8em;
+    line-height: 1.8em;
+}
+
 .person-info, .rent-details{
     padding: 2% 5%;
     background-color: white;
@@ -107,6 +118,25 @@
 }
 .rent-details{
     margin-top:3%;
+}
+
+.rent-info-req{
+    margin-top:3%;
+    padding : 2% 5%;
+    background-color: white;
+}
+
+.car-requested{
+    margin-top : 5%;
+}
+
+.rent-progress{
+    display : flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width : 100%;
+    padding : 1em auto;
+    margin-top : 3%;
 }
 
 

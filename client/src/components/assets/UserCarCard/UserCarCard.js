@@ -10,13 +10,17 @@ import { FormContainer, SubmitButton, Input } from '../../../styles/style';
 import { useHistory } from 'react-router-dom';
 import AvatarEditor from 'react-avatar-editor';
 import { LocationCity, LocationOn, Email } from '@material-ui/icons';
+import { cityz, colorz, fuel } from './../../components/LendACar/CarsData';
+import DateFnsUtils from '@date-io/date-fns';
+import { KeyboardDatePicker, MuiPickersUtilsProvider, } from '@material-ui/pickers';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 const UserCarCard = ({ item, cardtype }) => {
     console.log(cardtype,item);
 
     const [user, dispatch] = React.useContext(GlobalState);
     const [openModal, setOpenModal] = useState(false);
-    const inputRef = useRef(null);
     const setEditorRef = useRef();
     const history = useHistory();
 
@@ -31,6 +35,10 @@ const UserCarCard = ({ item, cardtype }) => {
         no_of_passengers : "",
         engine : "",
         fuel : "",
+        rent : "",
+        deposit : "",
+        to_date : "",
+        from_date : "",
     });
 
     const [carInfoUpdated, setCarInfoUpdated] = useState({
@@ -44,6 +52,10 @@ const UserCarCard = ({ item, cardtype }) => {
         no_of_passengers : "",
         engine : "",
         fuel : "",
+        rent : "",
+        deposit : "",
+        to_date : "",
+        from_date : "",
     });
 
     const [image, setImage] = useState("");
@@ -76,7 +88,6 @@ const UserCarCard = ({ item, cardtype }) => {
             from_date : item.from_date,
             to_date : item.to_date,
         })
-        inputRef.current.focus()
         document.title = "Edit Car Details"
     }, [openModal])
 
@@ -93,7 +104,31 @@ const UserCarCard = ({ item, cardtype }) => {
     //         base64data = reader.result;                
     //         console.log(base64data);
     //     }
-    // }
+    // }\
+
+    const updateCity = (e) => {
+        setCarInfoUpdated({...carInfoUpdated, city:e.target.value});
+        console.log("City updated!");
+    }
+
+    const updateColor = (e) => {
+        setCarInfoUpdated({...carInfoUpdated, color:e.target.value});
+        console.log("Color updated!");
+    }
+
+    const updateFuel = (e) => {
+        setCarInfoUpdated({...carInfoUpdated, fuel:e.target.value});
+        console.log("Fuel updated!");
+    }
+
+    const updateFrom = (str) => {
+        setCarInfoUpdated({...carInfoUpdated, from_date:str});
+    }
+
+    const updateTo = (str) => {
+        setCarInfoUpdated({...carInfoUpdated, to_date:str});
+    }
+
     const handleOpen = () => setOpenModal(true);
 
     const hideModal = () => setOpenModal(false);
@@ -101,7 +136,7 @@ const UserCarCard = ({ item, cardtype }) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setcarInfoUpdated((prevState) => ({
+        setCarInfoUpdated((prevState) => ({
             ...prevState,
             [name]: value,
         }));
@@ -132,15 +167,15 @@ const UserCarCard = ({ item, cardtype }) => {
 
         var payload = {
             carId : carInfo.carId,
-            city : (carInfoUpdated.city !== carInfo.city) ? carUpdatedInfo.city : carInfo.city,
-            carImage : (carInfoUpdated.carImage !== carInfo.carImage) ? carUpdatedInfo.carImage : carInfo.carImage,
-            rent : (carInfoUpdated.rent !== carInfo.rent) ? carUpdatedInfo.rent : carInfo.rent,
-            deposit : (carInfoUpdated.deposit !== carInfo.deposit) ? carUpdatedInfo.deposit : carInfo.deposit,
-            fuel : (carInfoUpdated.fuel !== carInfo.fuel) ? carUpdatedInfo.fuel : carInfo.fuel,
-            color : (carInfoUpdated.color !== carInfo.color) ? carUpdatedInfo.color : carInfo.color,
-            to_date : (carInfoUpdated.to_date !== carInfo.to_date) ? carUpdatedInfo.to_date : carInfo.to_date,
-            from_date : (carInfoUpdated.from_date !== carInfo.from_date) ? carUpdatedInfo.from_date : carInfo.from_date,
-            features : (carInfoUpdated.features !== carInfo.features) ? carUpdatedInfo.features : carInfo.features,
+            city : (carInfoUpdated.city !== carInfo.city) ? carInfoUpdated.city : carInfo.city,
+            carImage : (carInfoUpdated.carImage !== carInfo.carImage) ? carInfoUpdated.carImage : carInfo.carImage,
+            rent : (carInfoUpdated.rent !== carInfo.rent) ? carInfoUpdated.rent : carInfo.rent,
+            deposit : (carInfoUpdated.deposit !== carInfo.deposit) ? carInfoUpdated.deposit : carInfo.deposit,
+            fuel : (carInfoUpdated.fuel !== carInfo.fuel) ? carInfoUpdated.fuel : carInfo.fuel,
+            color : (carInfoUpdated.color !== carInfo.color) ? carInfoUpdated.color : carInfo.color,
+            to_date : (carInfoUpdated.to_date !== carInfo.to_date) ? carInfoUpdated.to_date : carInfo.to_date,
+            from_date : (carInfoUpdated.from_date !== carInfo.from_date) ? carInfoUpdated.from_date : carInfo.from_date,
+            features : (carInfoUpdated.features !== carInfo.features) ? carInfoUpdated.features : carInfo.features,
         }
 
         console.log(payload);
@@ -160,6 +195,9 @@ const UserCarCard = ({ item, cardtype }) => {
         };
     };
 
+    const deleteCar =() =>{
+        console.log('delete kijiye..');
+    }
 
 
     const sendResponse = (status, bookingid, carid) => {
@@ -225,6 +263,18 @@ const UserCarCard = ({ item, cardtype }) => {
         }
     }
 
+    // const removeClick = (i) => {
+	// 	let features = [...carInfoUpdated.features];
+	// 	features.splice(i,1);
+	// 	setCarInfoUpdated({ features : features });
+	// }
+
+    // const addFeature = (i, event) => {
+	// 	let features = [...carInfoUpdated.features];
+	// 	features[i].feature = event.target.value;
+	// 	setCarInfoUpdated({ features : features });
+	// }
+
     let dayz = 0;
     if (cardtype !== "0")
     {
@@ -270,7 +320,7 @@ const UserCarCard = ({ item, cardtype }) => {
                         </div>
                     </div>
                     <div className="button-list-2">
-                        <button onclick={() => handleOpen()}>Edit</button>
+                        <button onClick={() => handleOpen()} style={{color : "#1d98cb", border : "1px solid #1d98cb"}} className="button-xyz">Edit</button>
 
                         <Modal visible={openModal} width="750" height="600" effect="fadeInUp" onClickAway={() => hideModal()}>
                             <div className="modal-container" >
@@ -306,29 +356,114 @@ const UserCarCard = ({ item, cardtype }) => {
                                             label="New Avatar"
                                             name="previewImage"
                                         />
-                                        <Input ref={inputRef} placeholder="Car Model" value={carInfo.carModel} name="carModel" required disabled/>
+                                        <Input placeholder="Car Model" value={carInfo.carModel} name="carModel" required disabled/>
                                         <Input type="text" placeholder="Car Company" value={carInfo.company} name="carCompany" disabled />
                                         <Input type="text" placeholder="Registration No" value={carInfo.registration_no} name="reg_no" disabled />
                                         <Input type="text" placeholder="Engine Type" value={carInfo.engine} name="engine" disabled />
-                                        <Input type="text" placeholder="Rent" value={carUpdatedInfo.fuel} name="rent" onChange={handleChange} disabled />
-                                        <Input type="text" placeholder="Deposit" value={carUpdatedInfo.fuel} name="deposit" onChange={handleChange} disabled />
+                                        <Input type="text" placeholder="Rent" value={carInfoUpdated.fuel} name="rent" onChange={handleChange} disabled />
+                                        <Input type="text" placeholder="Deposit" value={carInfoUpdated.fuel} name="deposit" onChange={handleChange} disabled />
+                                        
+                                        <div className="selectDiv">
+                                            <select required className="dropdown-inputs" id="color-selection" onChange={(e) => updateColor(e)} >
+                                                <option value={carInfoUpdated.color} selected>{carInfoUpdated.color}</option>
+                                                {colorz.map((opts) =>  {
+                                                    if(opts!==carInfoUpdated.color)
+                                                        return ( <option key={opts} >{opts}</option> )
+                                                })}
+                                            </select>
+                                        </div>
+
+                                        <div className="selectDiv">
+                                            <select required className="dropdown-inputs" id="city-selection" onChange={(e) => updateCity(e)} >
+                                                <option value={carInfoUpdated.city} selected>{carInfoUpdated.city}</option>
+                                                {cityz.map((opts) => {
+                                                    if(opts!==carInfoUpdated.city)
+                                                        return ( <option key={opts} >{opts}</option> )
+                                                })}
+                                            </select>
+                                        </div>
+
+                                        <br />
+                                        <div className="selectDiv">
+                                            <select required className="dropdown-inputs" id="fuel-selection" onChange={e=>updateFuel(e)} >
+                                                <option value={carInfoUpdated.fuel} selected>{carInfoUpdated.fuel}</option>
+                                                {fuel.map((opts) =>  {
+                                                    if(opts!==carInfoUpdated.fuel)
+                                                        return ( <option key={opts} >{opts}</option> )
+                                                })}
+                                            </select>
+                                        </div>
+                                        <br />
+                                        
+                                        <div className="journeyRow">
+                                        {/* <div className="journeyFrom"> <input type="date" min={this.state.currentDate} className="fromDate" required onChange={e => this.setFrom(e)} /> </div> */}
+                                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                            <KeyboardDatePicker
+                                                margin="normal"
+                                                id="date-picker-dialog"
+                                                label="From"
+                                                format="MM/dd/yyyy"
+                                                value={carInfoUpdated.from_date}
+                                                minDate={new Date().toString()}
+                                                onChange={(date) => updateFrom(date)}
+                                                KeyboardButtonProps={{
+                                                    'aria-label': 'change date',
+                                                }}
+                                            />
+
+                                        </MuiPickersUtilsProvider>
+
+                                        <div style={{ width: "15%", margin: "8% auto 0.75% auto", textAlign: "center" }}>
+                                            <img src='/doublearrowside.png' width="25" height="25" alt="arrow" />
+                                        </div>
+                                        {/* <div className="toImage">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="30"><g fill="none"><g><g><g><g transform="translate(0 1)"><path stroke="#979797" d="M.5 15h40" stroke-linecap="square" /><circle cx="20" cy="16" r="13" fill="#9B9B9B" stroke="#F7F7F7" /><text fill="#fff" font-family="Helvetica" font-size="13" font-weight="bold"><tspan x="12" y="21">TO</tspan></text></g></g></g></g></g></svg>
+                                        </div> */}
+                                        {/* <div className="journeyTo"><input type="date" min={this.state.from} className="toDate" required onChange={e => this.setTo(e)} /></div> */}
+                                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+
+                                            <KeyboardDatePicker
+                                                margin="normal"
+                                                id="date-picker-dialog"
+                                                label="To"
+                                                format="MM/dd/yyyy"
+                                                value={carInfoUpdated.to_date}
+                                                minDate={carInfoUpdated.from_date}
+                                                onChange={(date) => updateTo(date)}
+                                                KeyboardButtonProps={{
+                                                    'aria-label': 'change date',
+                                                }}
+                                            />
+                                        </MuiPickersUtilsProvider>
+                                    </div>
+
+                                    {/* <h3 >Edit Features</h3>
+                                    {carInfoUpdated.features.map((el, i) => (
+                                        <div key={i}>
+                                            <input type="text" style={{width:"90%",fontSize:"3.5vh",marginTop:"3%"}} value={el.feature || ""} 
+                                                onChange={e => addFeature(i, e)} 
+                                            />
+                                            <button onClick={() => removeClick(i)} style={{ borderRadius: "50px", border: "0", padding: "auto", marginLeft: "2%", cursor: "pointer", backgroundColor: "white" }}><HighlightOffIcon /> </button>
+                                        </div>
+                                    ))}
+
+                                    <button style={{ borderRadius: "50px", border: "0", padding: "auto", marginLeft: "2%", cursor: "pointer", backgroundColor: "white" }} 
+                                        //onClick={(e) => console.log(e)}
+                                    > <AddCircleIcon /></button> */}
+					
                                         {/*
-                                        Drop down for city,
-                                        Drop down for fuel,
-                                        Drop down for color,
                                         Add-Remove type input for Features
                                         Date input type for To_date, from date
-                                        */}
-                                        
-                                        <span style={{ display: "flex", flexDirection:"row", width:"100%", marginTop:"5%"}}>
-                                            <SubmitButton onClick={(e) => { handleSubmit(e); }} style={{ width:"40%", margin:"0% 5%", padding:"2% 8%" }} > Edit Car Details </SubmitButton>
-                                        </span>
+                                        */}    
+                                    <SubmitButton onClick={(e) => { handleSubmit(e); }} style={{ width:"40%", margin:"auto", padding:"2% 8%" }} > Edit Car Details </SubmitButton>
                                     </FormContainer>
                                 </div>
                             </div>
                         </Modal>
 
-                        <button>Delete</button>
+
+
+                        <button style={{color : "red", border : "1px solid red"}} className="button-xyz" onClick={() => deleteCar()}>Delete</button>
                     </div>
                 </div>
             </div>
@@ -340,11 +475,16 @@ const UserCarCard = ({ item, cardtype }) => {
                     <div className="car-image-div">
                         <img src={item.car_details ? item.car_details.pictures : ""} alt={"ajfbehjf"} className="user-car-image" />
                     </div>
+                    <div style={{backgroundColor : "white"}}>
                     <div className="car-details">
-                            <p>
-                                {/* {"Car Name : " + (item.car_details ? item.car_details.company : "" + " " + item.car_details ? item.car_details.modl : "")} */}
-                            </p>
-                        <p> {"Registration No. : " + (item.car_details ? item.car_details.registration_no : "")} </p>
+                        <p> Car Name :</p>
+                        <p className="value-x"> {item.car_details ?  " " + item.car_details.company + " " + item.car_details.modl : ""} </p> 
+                    </div><div className="car-details">
+                        <p> Registration No. : </p>
+                        <p className="value-x"> {item.car_details ? " " + item.car_details.registration_no : ""} </p>
+                    </div>
+                    
+                    <div className="car-details">
                         {cardtype !== "3" && cardtype !== "4" &&
                             (<>
                                 <p> {"Deal starts from : " + (item.booking_details ? item.booking_details.from_date.split("T")[0] : "")} </p>
@@ -352,38 +492,82 @@ const UserCarCard = ({ item, cardtype }) => {
                             </>)
                         }
                     </div>
+                    </div>
                 </div>
                 {cardtype === "3" || cardtype === "4" ? (
                     <div className="right-user-car-card">
                         <div className="person-info">
                             {cardtype === "4" ? (
                                 <div>
-                                    <p> {"Lender Name : " + (item.lender_details ? item.lender_details.name : "")} </p>
-                                    <p> {"Lender City : " + (item.lender_details ? item.lender_details.city : "")} </p>
-                                    <p> {"Lender Contact : " + (item.lender_details ? item.lender_details.phone_no : "")} </p>
+                                    <div className="car-details">
+                                        <p> Lender Name :</p>
+                                        <p className="value-x"> {item.lender_details ? " " + item.lender_details.name : ""} </p> 
+                                    </div>
+                                    
+                                    <div className="car-details">
+                                        <p> Lender City : </p>
+                                        <p className="value-x"> {item.lender_details ? " " + item.lender_details.city : ""} </p> 
+                                    </div>
+                                    
+                                    <div className="car-details">
+                                        <p> Lender Contact : </p>
+                                        <p className="value-x"> {item.lender_details ? " " + item.lender_details.phone_no : ""} </p> 
+                                    </div>
                                 </div>
                             ) : (
                                 <div>
-                                    <p> {"Renter Name : " + (item.borrower_details ? item.borrower_details.name : "")} </p>
-                                    <p> {"Renter City : " + (item.borrower_details ? item.borrower_details.city : "")} </p>
-                                    <p> {"Renter Contact : " + (item.borrower_details ? item.borrower_details.phone_no : "")} </p>
+                                    <div className="car-details">
+                                        <p> Renter Name :</p>
+                                        <p className="value-x"> {item.borrower_details ? " " + item.borrower_details.name : ""} </p> 
+                                    </div>
+                                    
+                                    <div className="car-details">
+                                        <p> Renter City : </p>
+                                        <p className="value-x"> {item.borrower_details ? " " + item.borrower_details.city : ""} </p> 
+                                    </div>
+                                    
+                                    <div className="car-details">
+                                        <p> Renter Contact : </p>
+                                        <p className="value-x"> {item.borrower_details ? " " + item.borrower_details.phone_no : ""} </p> 
+                                    </div>
                                 </div>
                             )
                             }
                         </div>
                         <div className="rent-info-req">
-                            <p> {"Deal starts from : " + (item.booking_details ? item.booking_details.from_date.split("T")[0] : "")} </p>
-                            <p> {"Deal Ending : " + (item.booking_details ? item.booking_details.to_date.split("T")[0] : "")} </p>
-                            <p> {"Rental Period : " + dayz} </p>
-                            <p> {"Rent per day : " + (item.car_details ? item.car_details.rent : "")} </p>
-                            <p> {"Rental Fare : " + (item.booking_details ? item.booking_details.rent : "")} </p>
+                            <div className="car-details">
+                                <p> Deal starts from :</p>
+                                <p className="value-x"> {item.booking_details ? " " + item.booking_details.from_date.split("T")[0] : ""} </p> 
+                            </div>
+                            
+                            <div className="car-details">
+                                <p> Deal Ending : </p>
+                                <p className="value-x"> {item.booking_details ? " " + item.booking_details.to_date.split("T")[0] : ""} </p> 
+                            </div>
+                            
+                            <div className="car-details">
+                                <p> Rental Period : </p>
+                                <p className="value-x"> { " " + dayz} </p> 
+                            </div>
+
+                            <div className="car-details">
+                                <p> Rent per day : </p>
+                                <p className="value-x"> {item.car_details ? " " + item.car_details.rent : ""} </p> 
+                            </div>
+                            
+                            <div className="car-details">
+                                <p> Rental Fare : </p>
+                                <p className="value-x"> {item.booking_details ? " " + item.booking_details.rent : ""} </p> 
+                            </div>
                         </div>
                         { // pending request , user = lender
                             cardtype === "3" && (item.booking_details ? item.booking_details.booking_status : -1) === -1 && (
                                 <div className="car-requested">
                                     <p> Rent Requested </p>
-                                        <button onClick={() => sendResponse(1, item.booking_details ? item.booking_details.bookingID : "", item.booking_details ? item.booking_details.carID : "")}> Accept </button>
-                                        <button onClick={() => sendResponse(-1, item.booking_details ? item.booking_details.bookingID : "", item.booking_details ? item.booking_details.carID : "")}> Decline </button>
+                                    <div style={{display:"flex", flexDirection : "row", justifyContent:"space-evenly", marginTop:"2%"}}>
+                                        <button className="button-xyz" style={{color : "#1d98cb", border : "1px solid #1d98cb"}} onClick={() => sendResponse(1, item.booking_details ? item.booking_details.bookingID : "", item.booking_details ? item.booking_details.carID : "")}> Accept </button>
+                                        <button className="button-xyz" style={{color : "red", border : "1px solid red"}} onClick={() => sendResponse(-1, item.booking_details ? item.booking_details.bookingID : "", item.booking_details ? item.booking_details.carID : "")}> Decline </button>
+                                    </div>
                                 </div>
                                 )}
                             
@@ -426,40 +610,83 @@ const UserCarCard = ({ item, cardtype }) => {
                         <div className="person-info">
                             {cardtype === "2" && (
                                 <div>
-                                    <p> {"Lender Name : " + (item.lender_details ? item.lender_details.name : "")} </p>
-                                    <p> {"Lender City : " + (item.lender_details ? item.lender_details.city : "")} </p>
-                                    <p> {"Lender Contact : " + (item.lender_details ? item.lender_details.phone_no : "")} </p>
+                                    <div className="car-details">
+                                        <p> Lender Name :</p>
+                                        <p className="value-x"> {item.lender_details ? " " + item.lender_details.name : ""} </p> 
+                                    </div>
+                                    
+                                    <div className="car-details">
+                                        <p> Lender City : </p>
+                                        <p className="value-x"> {item.lender_details ? " " + item.lender_details.city : ""} </p> 
+                                    </div>
+                                    
+                                    <div className="car-details">
+                                        <p> Lender Contact : </p>
+                                        <p className="value-x"> {item.lender_details ? " " + item.lender_details.phone_no : ""} </p> 
+                                    </div>
                                 </div>)
                             }
                             {cardtype === "1" && (
                                 <div>
-                                    <p> {"Renter Name : " + (item.borrower_details ? item.borrower_details.name : "")} </p>
-                                    <p> {"Renter City : " + (item.borrower_details ? item.borrower_details.city : "")} </p>
-                                    <p> {"Renter Contact : " + (item.borrower_details ? item.borrower_details.phone_no : "")} </p>
+                                    <div className="car-details">
+                                        <p> Renter Name :</p>
+                                        <p className="value-x"> {item.borrower_details ? " " + item.borrower_details.name : ""} </p> 
+                                    </div>
+                                    
+                                    <div className="car-details">
+                                        <p> Renter City : </p>
+                                        <p className="value-x"> {item.borrower_details ? " " + item.borrower_details.city : ""} </p> 
+                                    </div>
+                                    
+                                    <div className="car-details">
+                                        <p> Renter Contact : </p>
+                                        <p className="value-x"> {item.borrower_details ? " " + item.borrower_details.phone_no : ""} </p> 
+                                    </div>
                                 </div>)
                             }
                         </div>
                         <div className="rent-details">
-                            <p> {"No. of days : " + dayz} </p>
-                            <p> {"Rent per day : " + (item.car_details ? item.car_details.rent : "")} </p>
-                            <p> {"Total Rental Fare : " + (item.booking_details ? item.booking_details.rent : "")} </p>
-                            <p> {"Insurance and GST : Inclusive"}</p>
-                            <p> {"Final Payable amount : " + (item.booking_details ? item.booking_details.rent : "")} </p>
+                            <div className="car-details">
+                                <p> Rental Period : </p>
+                                <p className="value-x"> { " " + dayz} </p> 
+                            </div>
+
+                            <div className="car-details">
+                                <p> Rent per day : </p>
+                                <p className="value-x"> {item.car_details ? " " + item.car_details.rent : ""} </p> 
+                            </div>
+                            
+                            <div className="car-details">
+                                <p> Rental Fare : </p>
+                                <p className="value-x"> {item.booking_details ? " " + item.booking_details.rent : ""} </p> 
+                            </div>
+                            <div className="car-details">
+                                <p> Insurance and GST : </p>
+                                <p className="value-x"> {" Inclusive"} </p> 
+                            </div>
+                            <div className="car-details">
+                                <p> Final Payable amount :</p>
+                                <p className="value-x"> {item.booking_details ? " " + item.booking_details.rent : ""} </p> 
+                            </div>
                         </div>
                         <div className="rent-status-details">
                             <div className="rent-progress">
                                 <p>Trip Status : </p>
-                                {(item.booking_details ? item.booking_details.trip_status : 0) === 1 ? (<p>Completed</p>) : (
+                                {(item.booking_details ? item.booking_details.trip_status : 0) === 1 ? (<p style={{color : "green", borderBottom : "1px solid green", padding : "0.25em"}}>Completed</p>) : (
                                     (item.booking_details ? item.booking_details.trip_status : 0) === 0 ? (
-                                        <>
-                                            <p>On-Going</p>
-                                            {cardtype === "2" && <button> Mark deal as completed </button>}
-                                        </>) : (
-                                        <>
-                                            <p>Upcoming</p>
-                                            {cardtype === "2" && <button onClick={() => sendResponse(3, item.booking_details ? item.booking_details.bookingid : "", item.booking_details ? item.booking_details.carid : "")} > Cancel the trip </button>}
-                                        </>))}
+                                        <p style={{color : "#1d98cb", borderBottom : "1px solid #1d98cb", padding : "0.25em"}}>On-Going</p>
+                                    ) : (
+                                        <p style={{color : "orange", borderBottom : "1px solid orange", padding : "0.25em"}}>Upcoming</p>
+                                    ))}
                             </div>
+                            {cardtype === "2" && (
+                                <div style={{margin : "1em auto"}}>
+                                {(item.booking_details ? item.booking_details.trip_status : 0) === 0 ? (
+                                        <button style={{color : "#1d98cb", border : "1px solid #1d98cb"}} className="button-xyz"> Mark deal as completed </button>
+                                        ) : (
+                                        <button onClick={() => sendResponse(3, item.booking_details ? item.booking_details.bookingid : "", item.booking_details ? item.booking_details.carid : "")} style={{color : "red", border : "1px solid red"}} className="button-xyz"> Cancel the trip </button>
+                                        )}
+                                </div>)}
                         </div>
                     </div>
                 )}

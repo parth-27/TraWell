@@ -145,7 +145,7 @@ export const UserTabs = () => {
     }, [value])
 
     return (
-        <div className={classes.root}>
+        <div>
             <AppBar position="static" color="default">
                 <Tabs
                     value={value}
