@@ -8,6 +8,7 @@ const UserCarCardList = ({ list,cardtype }) => {
 			<ul className="user-car-list">
 				{
 					list.map((item, index) => {
+						console.log(item);
 						return (<li className="user-car-card-container"><UserCarCard cardtype={cardtype} key={index} item={item} /></li>);
 					})
 				}

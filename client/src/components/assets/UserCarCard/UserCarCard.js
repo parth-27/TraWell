@@ -3,10 +3,10 @@ import './UserCarCard.css';
 import * as dayjs from 'dayjs';
 import axios from 'axios';
 import { authHeader } from "../../../services/authHeader";
-import { GlobalState } from '../../../context/index';
+import { GlobalState } from '../../context/index';
 import { Icon, Avatar } from '@material-ui/core';
 import Modal from 'react-awesome-modal';
-import { FormContainer, SubmitButton, Input } from '../../../../styles/style';
+import { FormContainer, SubmitButton, Input } from '../../../styles/style';
 import { useHistory } from 'react-router-dom';
 import AvatarEditor from 'react-avatar-editor';
 import { LocationCity, LocationOn, Email } from '@material-ui/icons';
@@ -21,43 +21,63 @@ const UserCarCard = ({ item, cardtype }) => {
     const history = useHistory();
 
     const [carInfo, setCarInfo] = useState({
-        carName: "",
-        rent: "",
-        phoneNumber: "",
-        address: "",
+        carId : "",
+        registration_no : "",
+        carModel : "",
+        company : "",
+        carImage : "",
+        features : [],
         city: "",
-        pincode: "",
+        no_of_passengers : "",
+        engine : "",
+        fuel : "",
     });
 
-    const [userInfoUpdated, setUserInfoUpdated] = useState({
-        updatedFullName: "",
-        updatedPhoneNumber: "",
-        updatedAddress1: "",
-        updatedCity: "",
-        updatedPincode: "",
+    const [carInfoUpdated, setCarInfoUpdated] = useState({
+        carId : "",
+        registration_no : "",
+        carModel : "",
+        company : "",
+        carImage : "",
+        features : [],
+        city: "",
+        no_of_passengers : "",
+        engine : "",
+        fuel : "",
     });
 
     const [image, setImage] = useState("");
     const [croppedImage, setCroppedImage] = useState("");
 
     useEffect(() => {
-        setUserInfo({
-            fullName: user.fullName,
-            email: user.userEmail,
-            phoneNumber: user.phoneNumber,
-            address: user.address,
-            city: user.city,
-            pincode: user.pincode,
+        setCarInfo({
+            carId : item.id,
+            registration_no : item.registration_no,
+            carModel : item.modl,
+            company : item.company,
+            carImage : item.pictures,
+            features : item.features,
+            city: item.city,
+            no_of_passengers : item.no_of_passengers,
+            engine : item.engine_type,
+            fuel : item.fuel_type,
+            deposit : item.deposite,
+            color : item.color,
+            from_date : item.from_date,
+            to_date : item.to_date,
         })
-        setUserInfoUpdated({
-            updatedFullName: user.fullName,
-            updatedPhoneNumber: user.phoneNumber,
-            updatedAddress1: user.address,
-            updatedCity: user.city,
-            updatedPincode: user.pincode,
+        setCarInfoUpdated({
+            carImage : item.pictures,
+            features : item.features,
+            city: item.city,
+            fuel : item.fuel_type,
+            deposit : item.deposite,
+            color : item.color,
+            from_date : item.from_date,
+            to_date : item.to_date,
         })
         inputRef.current.focus()
-        document.title = "Edit Details"
+        document.title = "Edit Car Details"
     }, [openModal])
 
     // let objectURL = "";
@@ -81,7 +101,7 @@ const UserCarCard = ({ item, cardtype }) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setUserInfoUpdated((prevState) => ({
+        setcarInfoUpdated((prevState) => ({
             ...prevState,
             [name]: value,
         }));
@@ -100,6 +120,45 @@ const UserCarCard = ({ item, cardtype }) => {
         }
     };
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // if (setEditorRef) {
+        //     setEditorRef.getImageScaledToCanvas().toBlob(blob => {
+        //         let imageUrl = URL.createObjectURL(blob);
+        //         console.log(imageUrl);
+        //         setCroppedImage(imageUrl);
+        //     });
+        // }
+
+        var payload = {
+            carId : carInfo.carId,
+            city : (carInfoUpdated.city !== carInfo.city) ? carUpdatedInfo.city : carInfo.city,
+            carImage : (carInfoUpdated.carImage !== carInfo.carImage) ? carUpdatedInfo.carImage : carInfo.carImage,
+            rent : (carInfoUpdated.rent !== carInfo.rent) ? carUpdatedInfo.rent : carInfo.rent,
+            deposit : (carInfoUpdated.deposit !== carInfo.deposit) ? carUpdatedInfo.deposit : carInfo.deposit,
+            fuel : (carInfoUpdated.fuel !== carInfo.fuel) ? carUpdatedInfo.fuel : carInfo.fuel,
+            color : (carInfoUpdated.color !== carInfo.color) ? carUpdatedInfo.color : carInfo.color,
+            to_date : (carInfoUpdated.to_date !== carInfo.to_date) ? carUpdatedInfo.to_date : carInfo.to_date,
+            from_date : (carInfoUpdated.from_date !== carInfo.from_date) ? carUpdatedInfo.from_date : carInfo.from_date,
+            features : (carInfoUpdated.features !== carInfo.features) ? carUpdatedInfo.features : carInfo.features,
+        }
+
+        console.log(payload);
+
+        axios({
+            method: "post",
+            url: "http://localhost:8000/user/updatecardetails",
+            headers: authHeader(),
+            data: payload
+        }).then((res) => {
+            console.log(res);
+            if (res.status == 200) {
+                history.push("/");
+            }
+        }).catch = (err) => {
+            console.log(err);
+        };
+    };
 
 
 
@@ -216,7 +275,7 @@ const UserCarCard = ({ item, cardtype }) => {
                         <Modal visible={openModal} width="750" height="600" effect="fadeInUp" onClickAway={() => hideModal()}>
                             <div className="modal-container" >
                                 <div className="modal-header" style={{ display: "flex", flexDirection: "row" }}>
-                                    <h1 style={{ flexGrow: "1" }}>Edit Profile</h1>
+                                    <h1 style={{ flexGrow: "1" }}>Edit Car Details</h1>
                                     <Icon className='far fa-times-circle' onClick={() => hideModal()} style={{cursor:"pointer"}}/>
                                 </div>
                                 <hr />
@@ -236,7 +295,7 @@ const UserCarCard = ({ item, cardtype }) => {
                                             /></div>
                                             ) : (
                                                 <div style={{ width: "50%", margin: "5% 25%", borderRadius:"200px", border:"1px solid black" }}>
-                                                    <img src="\acc.png" alt={"user-profile"} className="profile-img" />
+                                                    <img src={carInfo.carImage} alt={"user-profile"} className="profile-img" />
                                                 </div>
                                         )
                                         }
@@ -247,15 +306,22 @@ const UserCarCard = ({ item, cardtype }) => {
                                             label="New Avatar"
                                             name="previewImage"
                                         />
-                                        <Input ref={inputRef} placeholder="Full Name" value={userInfoUpdated.updatedFullName} onChange={handleChange} name="updatedFullName" required />
-                                        <Input type="text" placeholder="Email" value={userInfo.email} name="email" disabled />
-                                        <Input type="tel" placeholder="0123456789" value={userInfoUpdated.updatedPhoneNumber} pattern="[0-9]{10}" maxlength="10" onChange={handleChange} name="updatedPhoneNumber" required />
-                                        <Input placeholder="Address 1" onChange={handleChange} name="updatedAddress1" />
-                                        <Input placeholder="City" value={userInfoUpdated.updatedCity} onChange={handleChange} name="updatedCity" />
-                                        <Input placeholder="Pincode" value={userInfoUpdated.updatedPincode} onChange={handleChange} name="updatedPincode" />
+                                        <Input ref={inputRef} placeholder="Car Model" value={carInfo.carModel} name="carModel" required disabled/>
+                                        <Input type="text" placeholder="Car Company" value={carInfo.company} name="carCompany" disabled />
+                                        <Input type="text" placeholder="Registration No" value={carInfo.registration_no} name="reg_no" disabled />
+                                        <Input type="text" placeholder="Engine Type" value={carInfo.engine} name="engine" disabled />
+                                        <Input type="text" placeholder="Rent" value={carUpdatedInfo.fuel} name="rent" onChange={handleChange} disabled />
+                                        <Input type="text" placeholder="Deposit" value={carUpdatedInfo.fuel} name="deposit" onChange={handleChange} disabled />
+                                        {/*
+                                        Drop down for city,
+                                        Drop down for fuel,
+                                        Drop down for color,
+                                        Add-Remove type input for Features
+                                        Date input type for To_date, from date
+                                        */}
+                                        
                                         <span style={{ display: "flex", flexDirection:"row", width:"100%", marginTop:"5%"}}>
-                                            <SubmitButton onClick={(e) => { handleSubmit(e); }} style={{ width:"40%", margin:"0% 5%", padding:"2% 8%" }} > Edit Profile </SubmitButton>
-                                            <SubmitButton onClick={(e) => changePassword(e)} style={{ width:"40%", margin:"0% 5%", padding:"2% 8%" }} > Change Password </SubmitButton>
+                                            <SubmitButton onClick={(e) => { handleSubmit(e); }} style={{ width:"40%", margin:"0% 5%", padding:"2% 8%" }} > Edit Car Details </SubmitButton>
                                         </span>
                                     </FormContainer>
                                 </div>
