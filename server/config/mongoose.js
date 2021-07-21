@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
+require("dotenv").config();
 
 const MongoClient = require("mongodb").MongoClient;
-const uri =
-  "mongodb+srv://jds311:TraWell@123@cluster0.xvgj9.mongodb.net/TraWell?retryWrites=true&w=majority";
+const uri = String(process.env.DB_URL);
 mongoose.connect(uri, {
   useCreateIndex: true,
   useNewUrlParser: true,
