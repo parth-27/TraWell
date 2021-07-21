@@ -133,7 +133,7 @@ export function Signup(props) {
             city:userInfo.city,
         }
 
-        axios.post("http://localhost:8000/user/userverifymail", payload).then((res) => {
+        axios.post("/user/userverifymail", payload).then((res) => {
             if (res.status === 200)
             {
                 dispatch({

@@ -81,7 +81,7 @@ function Navbar() {
     window.addEventListener('scroll', changeBackground);
 
     const fetchUserProfile = () => {
-        axios.get("http://localhost:8000/user/profile", { headers: authHeader() }).then((res) => {
+        axios.get("/user/profile", { headers: authHeader() }).then((res) => {
             if (res.status === 200) {
                 console.log(res);
                 dispatch({
@@ -159,7 +159,7 @@ function Navbar() {
         hideModal();
         history.push("/rent");
 
-        // axios.post("http://localhost:8000/car/filter", payload)
+        // axios.post("/car/filter", payload)
         //     .then((res) => {
         //         if (res.status == 200) {
         //             console.log(res)

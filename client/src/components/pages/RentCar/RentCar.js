@@ -18,7 +18,7 @@ export const RentCar = () => {
         console.log(payload);
         axios({
             method: 'post',
-            url: "http://localhost:8000/car/filter",
+            url: "/car/filter",
             headers: authHeader(),
             data: payload,
         })
@@ -44,7 +44,7 @@ export const RentCar = () => {
 
         axios({
             method: 'post',
-            url: "http://localhost:8000/car/filter",
+            url: "/car/filter",
             headers: authHeader(),
             data: JSON.parse(localStorage.getItem("location")),
         })

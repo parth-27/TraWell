@@ -115,7 +115,7 @@ export const AccountConfirmation = (props) => {
         }
         else
         {
-            axios.post("http://localhost:8000/user/create", payload).then((res) => {
+            axios.post("/user/create", payload).then((res) => {
                 if (res.status === 200) {
                     dispatch({
                         type: "CLEAR_USER",

@@ -107,7 +107,7 @@ export const ConfirmOTP = () => {
         }
         else {
 
-            axios.post("http://localhost:8000/user/verifyotp", payload).then((res) => {
+            axios.post("/user/verifyotp", payload).then((res) => {
 
                 if (res.status === 200) {
                     history.push({

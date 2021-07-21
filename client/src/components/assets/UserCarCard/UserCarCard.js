@@ -182,7 +182,7 @@ const UserCarCard = ({ item, cardtype }) => {
 
         axios({
             method: "post",
-            url: "http://localhost:8000/user/updatecardetails",
+            url: "/user/updatecardetails",
             headers: authHeader(),
             data: payload
         }).then((res) => {
@@ -213,7 +213,7 @@ const UserCarCard = ({ item, cardtype }) => {
         {
             axios({
                 method: 'post',
-                url: "http://localhost:8000/car/acceptrequestbooking",
+                url: "/car/acceptrequestbooking",
                 headers: authHeader(),
                 data: payload,
             })
@@ -231,7 +231,7 @@ const UserCarCard = ({ item, cardtype }) => {
         {
             axios({
                 method: 'post',
-                url: "http://localhost:8000/car/cancelrequestbooking",
+                url: "/car/cancelrequestbooking",
                 headers: authHeader(),
                 data: payload,
             })
@@ -248,7 +248,7 @@ const UserCarCard = ({ item, cardtype }) => {
         {
             axios({
                 method: 'post',
-                url: "http://localhost:8000/car/cancelconfirmedbooking",
+                url: "/car/cancelconfirmedbooking",
                 headers: authHeader(),
                 data: payload,
             })

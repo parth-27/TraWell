@@ -79,7 +79,7 @@ export const UserTabs = () => {
         if (value === 0) {
             axios({
                 method: "get",
-                url: "http://localhost:8000/user/getaddedcar",
+                url: "/user/getaddedcar",
                 headers: authHeader(),
             }).then((res) => {
                 if (res.status === 200) {
@@ -92,7 +92,7 @@ export const UserTabs = () => {
         } else if (value === 1) {
             axios({
                 method: "get",
-                url: "http://localhost:8000/user/getlendedcar",
+                url: "/user/getlendedcar",
                 headers: authHeader(),
             }).then((res) => {
                 if (res.status === 200) {
@@ -105,7 +105,7 @@ export const UserTabs = () => {
         } else if (value === 2) {
             axios({
                 method: "get",
-                url: "http://localhost:8000/user/getrentedcar",
+                url: "/user/getrentedcar",
                 headers: authHeader(),
             }).then((res) => {
                 if (res.status === 200) {
@@ -118,7 +118,7 @@ export const UserTabs = () => {
         } else if (value === 3) {
             axios({
                 method: "get",
-                url: "http://localhost:8000/user/getrequestedcar",
+                url: "/user/getrequestedcar",
                 headers: authHeader(),
             }).then((res) => {
                 if (res.status === 200) {
@@ -131,7 +131,7 @@ export const UserTabs = () => {
         } else {
             axios({
                 method: "get",
-                url: "http://localhost:8000/user/getrequestedcar",
+                url: "/user/getrequestedcar",
                 headers: authHeader(),
             }).then((res) => {
                 if (res.status === 200) {

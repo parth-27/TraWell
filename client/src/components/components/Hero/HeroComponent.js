@@ -183,7 +183,7 @@ class HeroComponent extends React.Component {
 
 		this.props.history.push("/rent");
 
-		// axios.post("http://localhost:8000/car/filter",payload)
+		// axios.post("/car/filter",payload)
 		// 	.then((res) => {
 		// 		if (res.status == 200) {
 		// 			console.log(res);

@@ -141,7 +141,7 @@ export const Information = () => {
 
         axios({
             method: "post",
-            url: "http://localhost:8000/user/updateprofile",
+            url: "/user/updateprofile",
             headers: authHeader(),
             data: payload
         }).then((res) => {
@@ -160,7 +160,7 @@ export const Information = () => {
             email: userInfo.email,
         }
 
-        axios.post("http://localhost:8000/user/resetpassmail", payload).then((res) => {
+        axios.post("/user/resetpassmail", payload).then((res) => {
             if (res.status == 200) {
                 history.push("/user/confirmOTP",);
             } else {

@@ -28,7 +28,7 @@ const FareDetails = (props) => {
 
         axios({
             method: "post",
-            url: "http://localhost:8000/car/requestbooking",
+            url: "/car/requestbooking",
             headers: authHeader(),
             data: payload
         }).then((res) => {

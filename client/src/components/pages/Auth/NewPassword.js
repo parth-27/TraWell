@@ -152,7 +152,7 @@ export const NewPassword = () => {
             email: email1,
             password: newPass.password,
         }
-        axios.post("http://localhost:8000/user/setnewpass", payload).then((res) => {
+        axios.post("/user/setnewpass", payload).then((res) => {
             if (res.status === 200) {
                 history.push("/user/signin")
                 dispatch({

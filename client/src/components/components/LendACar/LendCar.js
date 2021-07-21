@@ -239,7 +239,7 @@ class LendCar extends React.Component {
 
 		axios({
 			method:'post',
-			url: "http://localhost:8000/car/addcar",
+			url: "/car/addcar",
 			headers: authHeader(),
 			data:payload,
 		})

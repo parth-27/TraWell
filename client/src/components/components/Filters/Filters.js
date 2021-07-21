@@ -49,7 +49,7 @@ class Filters extends React.Component {
     //     console.log(payload);
     //     axios({
     //         method: 'post',
-    //         url: "http://localhost:8000/car/filter",
+    //         url: "/car/filter",
     //         headers: authHeader(),
     //         data:payload
     //     }).then((res) => {
